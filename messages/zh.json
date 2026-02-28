@@ -1,0 +1,157 @@
+{
+  "brand": {
+    "name": "Shanno",
+    "studio": "Studio"
+  },
+  "nav": {
+    "products": "产品",
+    "about": "关于",
+    "settings": "设置",
+    "signOut": "退出登录",
+    "signIn": "登录"
+  },
+  "hero": {
+    "title": "Shanno <span>·</span> 独立 AI 产品工作室",
+    "subtitle": "为海外华人打造的 AI 工具集",
+    "description": "One-person studio building practical AI tools for Chinese speakers living abroad. Each product is designed to solve real problems and bridge information gaps.",
+    "cta": {
+      "getStarted": "查看价格方案"
+    }
+  },
+  "pricing": {
+    "headline": "简单透明的定价",
+    "subhead": "按需选择，只为所需付费",
+    "products": {
+      "grammarMaster": {
+        "name": "Grammar Master",
+        "nameCn": "语法大师",
+        "tagline": "English writing assistant for non-native speakers",
+        "taglineCn": "英文写作助手，告别 Chinglish",
+        "price": "¥199",
+        "period": "一次性",
+        "cta": "获取语法大师",
+        "features": [
+          "Real-time grammar correction",
+          "Style suggestions for professional writing",
+          "Chinglish pattern detection",
+          "Context-aware improvements"
+        ],
+        "featuresCn": [
+          "实时语法纠正",
+          "专业写作风格建议",
+          "中式英语检测",
+          "语境优化建议"
+        ]
+      },
+      "leaseAssistant": {
+        "name": "US Lease Assistant",
+        "nameCn": "美国租房合同审核",
+        "tagline": "AI-powered US lease review in 30 seconds",
+        "taglineCn": "美国租房合同智能审核，30秒读懂陷阱条款",
+        "price": "$9.90",
+        "period": "每次审核",
+        "cta": "获取租房审核",
+        "features": [
+          "Upload lease PDF for instant analysis",
+          "Identify hidden fees & unfair clauses",
+          "Negotiation suggestions included",
+          "Bilingual support (EN/CN)"
+        ],
+        "featuresCn": [
+          "上传合同 PDF 即刻分析",
+          "识别隐藏费用与不公平条款",
+          "提供谈判修改建议",
+          "中英双语支持"
+        ]
+      }
+    }
+  },
+  "products": {
+    "sectionTitle": "产品矩阵",
+    "sectionDescription": "每一个产品都源于真实痛点，用 AI 降低信息差和生活成本",
+    "status": {
+      "live": "已上线",
+      "beta": "测试中",
+      "comingSoon": "即将上线"
+    },
+    "cta": {
+      "learnMore": "了解更多",
+      "tryNow": "立即体验"
+    },
+    "leaseAi": {
+      "name": "Lease AI Review",
+      "nameCn": "美国租房合同审核",
+      "tagline": "AI-powered US lease review in 30 seconds",
+      "taglineCn": "美国租房合同智能审核，30秒读懂陷阱条款"
+    },
+    "grammarMaster": {
+      "name": "Grammar Master",
+      "nameCn": "语法大师",
+      "tagline": "English writing assistant for non-native speakers",
+      "taglineCn": "英文写作助手，告别 Chinglish"
+    },
+    "castMaster": {
+      "name": "Cast Master",
+      "nameCn": "播客大师",
+      "tagline": "AI assistant for short-form video creators",
+      "taglineCn": "短视频创作者的 AI 助手"
+    }
+  },
+  "about": {
+    "title": "关于 Shanno",
+    "intro": "我是一名独立开发者，专注于为<strong>海外华人、留学生群体</strong>打造实用的 AI 工具。",
+    "story": "每个产品都源于真实痛点。在美国生活多年，我深知在异国他乡面临的信息差和语言障碍。我希望通过 AI 技术，帮助更多人降低生活成本，做出更明智的决策。",
+    "builtWith": "Built with ❤️ by Shanno · Powered by AI",
+    "email": "shanno@tutorbox.cc"
+  },
+  "footer": {
+    "products": "产品",
+    "contact": "联系方式",
+    "legal": "法律条款",
+    "privacyPolicy": "隐私政策",
+    "termsOfService": "服务条款",
+    "refundPolicy": "退款政策"
+  },
+  "reserved": {
+    "brand": "Shanno Studio",
+    "copyright": "© 2024 Shanno Studio. 版权所有。基于"
+  },
+  "header": {
+    "brand": "Shanno Studio",
+    "avatarFallback": "CN",
+    "settings": "设置",
+    "signOut": "退出登录",
+    "signIn": "登录"
+  },
+  "feedback": {
+    "title": "反馈",
+    "description": "我们非常重视你的反馈。你希望我们如何改进体验？",
+    "cancel": "取消",
+    "toast": {
+      "submittedTitle": "反馈已提交",
+      "submittedDescription": "感谢你的反馈"
+    },
+    "validation": {
+      "nameRequired": "请填写姓名",
+      "feedbackRequired": "请填写反馈内容"
+    },
+    "form": {
+      "nameLabel": "你的姓名",
+      "namePlaceholder": "Jane Doe",
+      "feedbackLabel": "你的反馈",
+      "feedbackPlaceholder": "告诉我们如何改进产品",
+      "sending": "正在发送反馈...",
+      "submit": "发送反馈"
+    }
+  },
+  "modeToggle": {
+    "toggleTheme": "切换主题",
+    "light": "浅色",
+    "dark": "深色",
+    "system": "跟随系统"
+  },
+  "language": {
+    "en": "EN",
+    "zh": "中文"
+  }
+}
