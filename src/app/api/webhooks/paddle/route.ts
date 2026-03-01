@@ -1,10 +1,16 @@
 import { headers } from "next/headers";
+import { env } from "@/env";
 import { verifyPaddleWebhook } from "@/lib/paddle-server";
 import { db } from "@/db";
 import { subscriptions } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 export async function POST(req: Request) {
+  if (!env.PADDLE_WEBHOOK_SECRET) {
+    console.error("[webhooks/paddle] PADDLE_WEBHOOK_SECRET not configured");
+    return new Response("Server configuration error", { status: 503 });
+  }
+
   const rawBody = await req.text();
   const signature = (await headers()).get("Paddle-Signature") ?? "";
 

@@ -4,7 +4,8 @@ export async function verifyPaddleWebhook(
   rawBody: string,
   signature: string
 ): Promise<boolean> {
-  const secret = env.PADDLE_WEBHOOK_SECRET;
+  const secret = env.PADDLE_WEBHOOK_SECRET ?? "";
+  if (!secret) return false;
   const encoder = new TextEncoder();
   const key = await crypto.subtle.importKey(
     "raw",

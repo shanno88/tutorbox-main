@@ -1,21 +1,36 @@
 import { initializePaddle, Paddle } from "@paddle/paddle-js";
 import { env } from "@/env";
 
-let paddle: Paddle | undefined;
+let paddle: Paddle | null | undefined;
 
-export async function getPaddle() {
-  if (!paddle) {
-    paddle = await initializePaddle({
-      environment: env.NEXT_PUBLIC_PADDLE_ENV as "production" | "sandbox",
-      token: env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN,
-    });
+export async function getPaddle(): Promise<Paddle | null> {
+  const token = env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN;
+  const envValue = env.NEXT_PUBLIC_PADDLE_ENV;
+
+  if (!token || !envValue) {
+    if (typeof window !== "undefined") {
+      console.warn(
+        "[Paddle] Missing NEXT_PUBLIC_PADDLE_CLIENT_TOKEN or NEXT_PUBLIC_PADDLE_ENV. Checkout disabled."
+      );
+    }
+    return null;
   }
-  return paddle;
+
+  if (!paddle) {
+    const p = await initializePaddle({
+      environment: envValue as "production" | "sandbox",
+      token,
+    });
+    paddle = p ?? null;
+  }
+  return paddle ?? null;
 }
 
 export async function openCheckout(priceId: string) {
   const p = await getPaddle();
-  p?.Checkout.open({
-    items: [{ priceId, quantity: 1 }],
-  });
+  if (p) {
+    p.Checkout.open({
+      items: [{ priceId, quantity: 1 }],
+    });
+  }
 }
