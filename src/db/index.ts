@@ -10,13 +10,16 @@ declare global {
 
 let db: PostgresJsDatabase<typeof schema>;
 
+const databaseUrl = env.DATABASE_URL ?? "postgresql://postgres:example@localhost:5432/postgres";
+
 if (env.NODE_ENV === "production") {
-  db = drizzle(postgres(env.DATABASE_URL), { schema });
+  db = drizzle(postgres(databaseUrl), { schema });
 } else {
   if (!global.db) {
-    global.db = drizzle(postgres(env.DATABASE_URL), { schema });
+    global.db = drizzle(postgres(databaseUrl), { schema });
   }
   db = global.db;
 }
 
-export { db as database };
+export { db };
+export * from "./schema";

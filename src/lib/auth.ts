@@ -1,4 +1,4 @@
-﻿import { database } from "@/db";
+import { db } from "@/db";
 import { env } from "@/env";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { AuthOptions, DefaultSession } from "next-auth";
@@ -14,19 +14,19 @@ declare module "next-auth" {
 }
 
 export const authConfig = {
-  adapter: DrizzleAdapter(database) as Adapter,
+  adapter: DrizzleAdapter(db) as Adapter,
   session: {
     strategy: "jwt",
   },
   providers: [
     GoogleProvider({
-      clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET,
+      clientId: env.GOOGLE_CLIENT_ID ?? "",
+      clientSecret: env.GOOGLE_CLIENT_SECRET ?? "",
     }),
   ],
   callbacks: {
     async jwt({ token }) {
-      const dbUser = await database.query.users.findFirst({
+      const dbUser = await db.query.users.findFirst({
         where: (users, { eq }) => eq(users.email, token.email!),
       });
 

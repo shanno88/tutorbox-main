@@ -1,4 +1,4 @@
-import { database } from "@/db";
+import { db } from "@/db";
 import { Todo, todos } from "@/db/schema";
 import { count, eq } from "drizzle-orm";
 
@@ -9,7 +9,7 @@ import { count, eq } from "drizzle-orm";
  */
 
 export async function getTodo(todoId: string) {
-  const todo = await database.query.todos.findFirst({
+  const todo = await db.query.todos.findFirst({
     where: (todos, { eq }) => eq(todos.id, todoId),
   });
 
@@ -17,7 +17,7 @@ export async function getTodo(todoId: string) {
 }
 
 export async function getTodos(userId: string) {
-  const todos = await database.query.todos.findMany({
+  const todos = await db.query.todos.findMany({
     where: (todos, { eq }) => eq(todos.userId, userId),
     orderBy: (todos, { asc }) => [asc(todos.createdAt)],
   });
@@ -26,20 +26,20 @@ export async function getTodos(userId: string) {
 }
 
 export async function createTodo(newTodo: Omit<Todo, "id" | "createdAt">) {
-  const [todo] = await database.insert(todos).values(newTodo).returning();
+  const [todo] = await db.insert(todos).values(newTodo).returning();
   return todo;
 }
 
 export async function updateTodo(todoId: string, updatedFields: Partial<Todo>) {
-  await database.update(todos).set(updatedFields).where(eq(todos.id, todoId));
+  await db.update(todos).set(updatedFields).where(eq(todos.id, todoId));
 }
 
 export async function deleteTodo(todoId: string) {
-  await database.delete(todos).where(eq(todos.id, todoId));
+  await db.delete(todos).where(eq(todos.id, todoId));
 }
 
 export async function getTodosCount(userId: string) {
-  const [{ count: totalTodos }] = await database
+  const [{ count: totalTodos }] = await db
     .select({ count: count() })
     .from(todos)
     .where(eq(todos.userId, userId));

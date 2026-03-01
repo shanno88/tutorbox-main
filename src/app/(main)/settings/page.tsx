@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { DeleteAccountButton } from "./_components/delete-account-button";
 
+export const dynamic = "force-dynamic";
+
 export default function SettingsPage() {
   return (
     <div className="container mx-auto py-12">

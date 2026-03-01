@@ -1,4 +1,4 @@
-import { database } from "@/db";
+import { db } from "@/db";
 import { users, subscriptions } from "@/db/schema";
 import { eq, and, gt } from "drizzle-orm";
 import { NextResponse } from "next/server";
@@ -34,7 +34,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const user = await database
+    const user = await db
       .select({ id: users.id })
       .from(users)
       .where(eq(users.email, email))
@@ -46,7 +46,7 @@ export async function POST(req: Request) {
 
     const userId = user[0].id;
 
-    const subscription = await database
+    const subscription = await db
       .select()
       .from(subscriptions)
       .where(

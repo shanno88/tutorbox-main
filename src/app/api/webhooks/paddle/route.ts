@@ -1,6 +1,6 @@
 import { headers } from "next/headers";
 import { verifyPaddleWebhook } from "@/lib/paddle-server";
-import { database } from "@/db";
+import { db } from "@/db";
 import { subscriptions } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
@@ -25,7 +25,7 @@ export async function POST(req: Request) {
     const userId = sub.custom_data?.userId;
 
     if (userId) {
-      await database
+      await db
         .insert(subscriptions)
         .values({
           userId,
@@ -50,7 +50,7 @@ export async function POST(req: Request) {
     const sub = event.data;
     const userId = sub.custom_data?.userId;
     if (userId) {
-      await database
+      await db
         .delete(subscriptions)
         .where(eq(subscriptions.userId, userId));
     }

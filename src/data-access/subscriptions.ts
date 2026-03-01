@@ -1,7 +1,7 @@
-import { database } from "@/db";
+import { db } from "@/db";
 
 export async function getSubscription(userId: string) {
-  const subscription = await database.query.subscriptions.findFirst({
+  const subscription = await db.query.subscriptions.findFirst({
     where: (users, { eq }) => eq(users.userId, userId),
   });
 
