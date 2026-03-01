@@ -11,9 +11,9 @@
     "signIn": "Sign In"
   },
   "hero": {
-    "title": "Shanno <span>·</span> Independent AI Product Studio",
-    "subtitle": "AI tools built for Chinese speakers living abroad",
-    "description": "One-person studio building practical AI tools for Chinese speakers living abroad. Each product is designed to solve real problems and bridge information gaps.",
+    "title": "Shanno <span>·</span> 独立 AI 产品工作室",
+    "subtitle": "AI tools built for global users",
+    "description": "A one-person studio building practical AI tools for global users. Every product starts from real-world needs, helping you cut costs, save effort, and free up time to create greater value.",
     "cta": {
       "getStarted": "View Pricing"
     }
@@ -76,7 +76,9 @@
     },
     "cta": {
       "learnMore": "Learn More",
-      "tryNow": "Try Now"
+      "tryNow": "Try Now",
+      "applyIntegration": "Apply for Access",
+      "joinBeta": "Join Beta"
     },
     "leaseAi": {
       "name": "Lease AI Review",
@@ -99,8 +101,8 @@
   },
   "about": {
     "title": "About Shanno",
-    "intro": "I'm an independent developer focused on building practical AI tools for <strong>overseas Chinese and international students</strong>.",
-    "story": "Each product stems from real pain points. Having lived in the US for years, I deeply understand the information gaps and language barriers faced abroad. I hope to help more people reduce living costs and make smarter decisions through AI technology.",
+    "intro": "In the AI era, your biggest risk is wasted time and a slowly shrinking income.",
+    "story": "Shanno builds small, practical AI tools that boost your speed and efficiency, so you can actually get results that matter.",
     "builtWith": "Built with ❤️ by Shanno · Powered by AI",
     "email": "shanno@tutorbox.cc"
   },

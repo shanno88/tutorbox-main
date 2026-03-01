@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { FileSearch, PenTool, Video, ArrowRight } from "lucide-react";
+import { FileSearch, PenTool, Video, ArrowRight, MessageCircle, Globe, MessageSquare, GitBranch, BookOpen, TrendingUp } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
@@ -19,6 +19,12 @@ const iconMap: Record<string, ReactNode> = {
   "file-search": <FileSearch className="w-8 h-8" />,
   "pen-tool": <PenTool className="w-8 h-8" />,
   "video": <Video className="w-8 h-8" />,
+  "message-circle": <MessageCircle className="w-8 h-8" />,
+  "globe": <Globe className="w-8 h-8" />,
+  "message-square": <MessageSquare className="w-8 h-8" />,
+  "git-branch": <GitBranch className="w-8 h-8" />,
+  "book-open": <BookOpen className="w-8 h-8" />,
+  "trending-up": <TrendingUp className="w-8 h-8" />,
 };
 
 function ProductCard({ product }: { product: Product }) {
@@ -67,7 +73,11 @@ function ProductCard({ product }: { product: Product }) {
       <CardFooter>
         <Button asChild variant="outline" className="w-full group">
           <Link href={`/products/${product.slug}`}>
-            {product.status === "coming-soon" ? t("cta.learnMore") : t("cta.tryNow")}
+            {product.cta
+              ? t(product.cta === "申请接入" ? "cta.applyIntegration" : product.cta === "加入内测" ? "cta.joinBeta" : product.cta === "了解更多" ? "cta.learnMore" : "cta.tryNow")
+              : product.status === "coming-soon"
+                ? t("cta.learnMore")
+                : t("cta.tryNow")}
             <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </Button>

@@ -9,6 +9,7 @@ export interface Product {
   icon: string;
   status: 'live' | 'beta' | 'coming-soon';
   features: { en: string; cn: string }[];
+  cta?: '立即体验' | '了解更多' | '申请接入' | '加入内测';
 }
 
 export const products: Product[] = [
@@ -63,6 +64,110 @@ export const products: Product[] = [
       { en: 'Trend analysis', cn: '热点趋势分析' },
     ],
   },
+  // 【NEW PRODUCTS START】
+  {
+    slug: 'thinker-ai',
+    name: 'Thinker AI',
+    nameCn: '实时对话智核',
+    tagline: 'Real-time AI that listens, thinks, and acts during your voice or video calls.',
+    taglineCn: '实时语音 / 视频对话，一边听你说，一边替你思考和行动。',
+    description: 'Real-time AI that listens, thinks, and acts during your voice or video calls.',
+    descriptionCn: '实时语音 / 视频对话，一边听你说，一边替你思考和行动。',
+    icon: 'message-circle',
+    status: 'coming-soon',
+    cta: '了解更多',
+    features: [
+      { en: 'Real-time voice and video', cn: '实时语音视频对话' },
+      { en: 'Listen, think, and act', cn: '边听边思考边行动' },
+      { en: 'Conversation core', cn: '对话智核' },
+    ],
+  },
+  {
+    slug: 'webpilot',
+    name: 'WebPilot',
+    nameCn: 'AI 网页执行者',
+    tagline: 'Let AI log in, click, and scrape the web to actually complete your tasks online.',
+    taglineCn: '让 AI 帮你登录、点击、抓数据，不再只是给建议，而是直接把事做完。',
+    description: 'Let AI log in, click, and scrape the web to actually complete your tasks online.',
+    descriptionCn: '让 AI 帮你登录、点击、抓数据，不再只是给建议，而是直接把事做完。',
+    icon: 'globe',
+    status: 'coming-soon',
+    cta: '了解更多',
+    features: [
+      { en: 'Web automation', cn: '网页自动化执行' },
+      { en: 'Login and scrape', cn: '登录抓取数据' },
+      { en: 'Task completion', cn: '任务在线完成' },
+    ],
+  },
+  {
+    slug: 'chatport',
+    name: 'ChatPort',
+    nameCn: '多平台聊天入口',
+    tagline: 'Bring your AI assistant into Telegram, Slack, and WhatsApp so users can work in the chats they already use.',
+    taglineCn: '把你的 AI 助手接入 Telegram / Slack / WhatsApp，在熟悉的聊天框里完成工作。',
+    description: 'Bring your AI assistant into Telegram, Slack, and WhatsApp so users can work in the chats they already use.',
+    descriptionCn: '把你的 AI 助手接入 Telegram / Slack / WhatsApp，在熟悉的聊天框里完成工作。',
+    icon: 'message-square',
+    status: 'coming-soon',
+    cta: '申请接入',
+    features: [
+      { en: 'Multi-platform chat', cn: '多平台聊天入口' },
+      { en: 'Telegram, Slack, WhatsApp', cn: 'Telegram / Slack / WhatsApp' },
+      { en: 'Work in familiar chats', cn: '熟悉聊天框里工作' },
+    ],
+  },
+  {
+    slug: 'flowforge',
+    name: 'FlowForge',
+    nameCn: '自动化工作流中心',
+    tagline: 'Build end-to-end business workflows by chaining triggers, AI, and external services.',
+    taglineCn: '用触发器 + AI + 外部服务，搭出属于你的端到端自动化业务流程。',
+    description: 'Build end-to-end business workflows by chaining triggers, AI, and external services.',
+    descriptionCn: '用触发器 + AI + 外部服务，搭出属于你的端到端自动化业务流程。',
+    icon: 'git-branch',
+    status: 'coming-soon',
+    cta: '了解更多',
+    features: [
+      { en: 'Trigger + AI + services', cn: '触发器 + AI + 外部服务' },
+      { en: 'End-to-end workflows', cn: '端到端自动化流程' },
+      { en: 'Business automation', cn: '业务流程自动化' },
+    ],
+  },
+  {
+    slug: 'notemind',
+    name: 'NoteMind',
+    nameCn: '知识整理助手',
+    tagline: 'Automatically read text from images and documents so you can organize, search, and revisit your knowledge.',
+    taglineCn: '自动识别图片和文档中的文字，帮你整理、搜索和回顾分散的知识。',
+    description: 'Automatically read text from images and documents so you can organize, search, and revisit your knowledge.',
+    descriptionCn: '自动识别图片和文档中的文字，帮你整理、搜索和回顾分散的知识。',
+    icon: 'book-open',
+    status: 'beta',
+    cta: '加入内测',
+    features: [
+      { en: 'OCR from images and docs', cn: '图片文档文字识别' },
+      { en: 'Organize and search', cn: '整理搜索回顾' },
+      { en: 'Knowledge management', cn: '知识管理助手' },
+    ],
+  },
+  {
+    slug: 'polymarket-bot',
+    name: 'Polymarket Bot',
+    nameCn: '市场预测智能体',
+    tagline: 'Connects to prediction markets and on-chain data to help you track trends and generate insights with AI.',
+    taglineCn: '连接多种预测市场和链上数据，用 AI 帮你跟踪趋势、生成洞见和假设。',
+    description: 'Connects to prediction markets and on-chain data to help you track trends and generate insights with AI.',
+    descriptionCn: '连接多种预测市场和链上数据，用 AI 帮你跟踪趋势、生成洞见和假设。',
+    icon: 'trending-up',
+    status: 'coming-soon',
+    cta: '了解更多',
+    features: [
+      { en: 'Prediction markets', cn: '预测市场连接' },
+      { en: 'On-chain data', cn: '链上数据' },
+      { en: 'AI insights', cn: 'AI 洞见生成' },
+    ],
+  },
+  // 【NEW PRODUCTS END】
 ];
 
 export function getProductBySlug(slug: string): Product | undefined {

@@ -12,8 +12,8 @@
   },
   "hero": {
     "title": "Shanno <span>·</span> 独立 AI 产品工作室",
-    "subtitle": "为海外华人打造的 AI 工具集",
-    "description": "One-person studio building practical AI tools for Chinese speakers living abroad. Each product is designed to solve real problems and bridge information gaps.",
+    "subtitle": "为全球用户打造的 AI 工具集",
+    "description": "一人工作室，为全球用户打造实用的 AI 工具。每一款产品都从真实需求出发，帮你省钱省力，把时间腾出来创造更大的价值。",
     "cta": {
       "getStarted": "查看价格方案"
     }
@@ -58,7 +58,7 @@
           "Bilingual support (EN/CN)"
         ],
         "featuresCn": [
-          "上传合同 PDF 即刻分析",
+          "上传合同图片或截图，即刻分析",
           "识别隐藏费用与不公平条款",
           "提供谈判修改建议",
           "中英双语支持"
@@ -76,7 +76,9 @@
     },
     "cta": {
       "learnMore": "了解更多",
-      "tryNow": "立即体验"
+      "tryNow": "立即体验",
+      "applyIntegration": "申请接入",
+      "joinBeta": "加入内测"
     },
     "leaseAi": {
       "name": "Lease AI Review",
@@ -99,8 +101,8 @@
   },
   "about": {
     "title": "关于 Shanno",
-    "intro": "我是一名独立开发者，专注于为<strong>海外华人、留学生群体</strong>打造实用的 AI 工具。",
-    "story": "每个产品都源于真实痛点。在美国生活多年，我深知在异国他乡面临的信息差和语言障碍。我希望通过 AI 技术，帮助更多人降低生活成本，做出更明智的决策。",
+    "intro": "对于身处 AI 时代的你，最怕时间被浪费、收入在不知不觉中缩水。",
+    "story": "Shanno 做的，是一批真正能提速增效、帮你拿到结果的 AI 小工具。",
     "builtWith": "Built with ❤️ by Shanno · Powered by AI",
     "email": "shanno@tutorbox.cc"
   },
