@@ -1,8 +1,15 @@
 "use client";
 
-import { PaddleCheckoutButton } from "@/components/paddle/checkout-button";
 import { CheckIcon } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
+import { PaddleCheckoutButton } from "@/components/paddle/checkout-button";
+
+console.log(
+  "priceIds in component",
+  process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_GRAMMAR_YEARLY_USD,
+  process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_GRAMMAR_YEARLY_CNY,
+  process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_LEASE_ONETIME_USD,
+);
 
 export function PricingSection() {
   const t = useTranslations("pricing");

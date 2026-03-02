@@ -22,7 +22,7 @@ export function PaddleCheckoutButton({
       return;
     }
     console.log("[PaddleCheckoutButton] Using priceId", priceId);
-    await openCheckout(priceId);
+    await openCheckout({ priceId });
   };
 
   return (
