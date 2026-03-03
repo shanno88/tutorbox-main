@@ -101,3 +101,18 @@ export const subscriptions = pgTable("subscriptions", {
 });
 
 export type Todo = typeof todos.$inferSelect;
+
+// src/db/schema.ts （末尾追加）
+//import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
+
+export const productGrants = pgTable("product_grant", {
+  id:            text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+  userId:        text("userId").notNull().references(() => users.id, { onDelete: "cascade" }),
+  productKey:    text("productKey").notNull(),   // "thinker-ai" | "flowforge" | "webpilot"
+  type:          text("type").notNull(),          // "trial" | "paid" | "gift"
+  status:        text("status").notNull(),        // "active" | "expired"
+  trialStartsAt: timestamp("trialStartsAt"),
+  trialEndsAt:   timestamp("trialEndsAt"),
+  createdAt:     timestamp("createdAt").defaultNow().notNull(),
+});
+
