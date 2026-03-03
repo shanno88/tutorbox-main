@@ -2,8 +2,8 @@ import { headers } from "next/headers";
 import { env } from "@/env";
 import { verifyPaddleWebhook } from "@/lib/paddle-server";
 import { db } from "@/db";
-import { subscriptions } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { productGrants, subscriptions } from "@/db/schema";
+import { and, eq } from "drizzle-orm";
 
 export async function POST(req: Request) {
   if (!env.PADDLE_WEBHOOK_SECRET) {
@@ -59,6 +59,43 @@ export async function POST(req: Request) {
       await db
         .delete(subscriptions)
         .where(eq(subscriptions.userId, userId));
+    }
+  }
+
+  if (type === "transaction.completed") {
+    const transaction = event.data;
+    const userId = transaction.custom_data?.userId;
+    const priceId = transaction.items?.[0]?.price?.id;
+
+    const priceToProduct: Record<string, string> = {
+      "pri_01khwk19y0af40zae5fnysj5t3": "grammar-master",
+      "pri_01kggqdgjrgyryb19xs3veb1js": "grammar-master",
+      "pri_01kgrhp2wtthebpgwmn8eh5ssy": "lease-ai",
+    };
+
+    const productKey = priceId ? priceToProduct[priceId] : undefined;
+
+    if (userId && productKey) {
+      // Check if paid grant already exists
+      const existing = await db
+        .select()
+        .from(productGrants)
+        .where(
+          and(
+            eq(productGrants.userId, userId),
+            eq(productGrants.productKey, productKey),
+            eq(productGrants.type, "paid")
+          )
+        );
+
+      if (existing.length === 0) {
+        await db.insert(productGrants).values({
+          userId,
+          productKey,
+          type: "paid",
+          status: "active",
+        });
+      }
     }
   }
 
