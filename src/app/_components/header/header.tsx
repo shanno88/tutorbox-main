@@ -73,7 +73,7 @@ export async function Header() {
 
           <SignedOut>
             <Button asChild>
-              <Link href="/zh/login">{t("signIn")}</Link>
+              <Link href="/api/auth/signin">{t("signIn")}</Link>
             </Button>
           </SignedOut>
         </div>
