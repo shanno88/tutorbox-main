@@ -1,6 +1,7 @@
 "use client";
 
 import { products, Product } from "@/lib/products";
+import { products as trialConfig } from "@/config/products";
 import {
   Card,
   CardContent,
@@ -17,6 +18,7 @@ import {
   GitBranch, BookOpen, TrendingUp,
 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
@@ -55,6 +57,19 @@ function TrialButton({
   onStartTrial: (key: string) => void;
   starting: boolean;
 }) {
+  const trialProduct = trialConfig.find((p: (typeof trialConfig)[number]) => p.key === productSlug);
+  if (!trialStatus && trialProduct?.trialEnabled) {
+    return (
+      <Button
+        variant="default"
+        className="w-full mt-2"
+        disabled={starting}
+        onClick={() => onStartTrial(productSlug)}
+      >
+        {starting ? "开始中..." : "免费试用 7 天"}
+      </Button>
+    );
+  }
   if (!trialStatus) return null;
 
   switch (trialStatus.status) {
@@ -176,6 +191,10 @@ export function ProductsSection() {
   const [trialStatuses, setTrialStatuses] = useState<ProductStatusResponse[]>([]);
   const [startingKey, setStartingKey] = useState<string | null>(null);
 
+  const locale = useLocale();
+  const { data: session } = useSession();
+  const isLoggedIn = !!session?.user;
+
   // 拉取当前用户的产品状态
   useEffect(() => {
     fetch("/api/me/products")
@@ -188,6 +207,10 @@ export function ProductsSection() {
 
   // 开始试用
   async function handleStartTrial(productKey: string) {
+    if (!isLoggedIn) {
+      window.location.href = `/${locale}/login`;
+      return;
+    }
     setStartingKey(productKey);
     try {
       const res = await fetch("/api/me/products/start-trial", {
