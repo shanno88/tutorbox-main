@@ -1,6 +1,9 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { products as trialConfig } from "@/config/products";
+import { getSSRSession } from "@/lib/get-server-session";
+import { cookies } from "next/headers";
 
 const products = {
   'lease-ai': {
@@ -70,7 +73,7 @@ const products = {
   // 【NEW PRODUCTS END】
 };
 
-export default function ProductPage({
+export default async function ProductPage({
   params,
 }: {
   params: { slug: string };
@@ -78,6 +81,69 @@ export default function ProductPage({
   const product = products[params.slug as keyof typeof products];
 
   if (!product) return notFound();
+
+  // Check if this product requires trial gating
+  const trialProduct = trialConfig.find(
+    (p: (typeof trialConfig)[number]) => p.key === params.slug
+  );
+  const requiresGating = !!trialProduct?.trialEnabled;
+
+  let accessStatus: string | null = null;
+
+  if (requiresGating) {
+    const { user } = await getSSRSession();
+
+    if (!user) {
+      // Not logged in → show gate
+      accessStatus = "not_logged_in";
+    } else {
+      // Fetch product status server-side
+      const baseUrl = process.env.NEXTAUTH_URL ?? "http://localhost:3000";
+      const res = await fetch(`${baseUrl}/api/me/products`, {
+        headers: { cookie: cookies().toString() },
+        cache: "no-store",
+      });
+      const statuses = await res.json();
+      const productStatus = statuses.find(
+        (s: { productKey: string; status: string }) => s.productKey === params.slug
+      );
+      accessStatus = productStatus?.status ?? "not_started";
+    }
+  }
+
+  // Show gate if product requires trial and user doesn't have access
+  if (requiresGating && accessStatus !== "trial_active" && accessStatus !== "paid") {
+    return (
+      <main className="mx-auto max-w-3xl px-4 py-12">
+        <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
+        <p className="text-lg mb-4">{product.description}</p>
+
+        {accessStatus === "trial_expired" ? (
+          <div className="mt-8 p-6 border rounded-lg bg-gray-50">
+            <p className="text-lg font-semibold mb-2">试用已结束</p>
+            <p className="text-gray-600 mb-4">你的免费试用期已到期，升级后继续使用。</p>
+            <Button asChild variant="default" size="lg">
+              <Link href="/#products">查看方案</Link>
+            </Button>
+          </div>
+        ) : (
+          <div className="mt-8 p-6 border rounded-lg bg-gray-50">
+            <p className="text-lg font-semibold mb-2">需要先开始试用</p>
+            <p className="text-gray-600 mb-4">
+              {accessStatus === "not_logged_in"
+                ? "登录后即可免费试用此产品。"
+                : "你还没有开始试用，回到首页开始免费试用。"}
+            </p>
+            <Button asChild variant="default" size="lg">
+              <Link href={accessStatus === "not_logged_in" ? "/zh/login" : "/#products"}>
+                {accessStatus === "not_logged_in" ? "登录" : "去首页开始试用"}
+              </Link>
+            </Button>
+          </div>
+        )}
+      </main>
+    );
+  }
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-12">
