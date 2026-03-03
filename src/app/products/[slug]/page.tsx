@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { PaddleCheckoutButton } from "@/components/paddle/checkout-button";
 import { products as trialConfig } from "@/config/products";
 import { getSSRSession } from "@/lib/get-server-session";
 import { cookies } from "next/headers";
@@ -111,6 +112,13 @@ export default async function ProductPage({
     }
   }
 
+  const priceMap: Record<string, string | undefined> = {
+    "grammar-master": process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_GRAMMAR_YEARLY_USD,
+    "lease-ai": process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_LEASE_ONETIME_USD,
+  };
+  const checkoutPriceId = priceMap[params.slug];
+  const userId = (await getSSRSession()).user?.id;
+
   // Show gate if product requires trial and user doesn't have access
   if (requiresGating && accessStatus !== "trial_active" && accessStatus !== "paid") {
     return (
@@ -121,10 +129,19 @@ export default async function ProductPage({
         {accessStatus === "trial_expired" ? (
           <div className="mt-8 p-6 border rounded-lg bg-gray-50">
             <p className="text-lg font-semibold mb-2">试用已结束</p>
-            <p className="text-gray-600 mb-4">你的免费试用期已到期，升级后继续使用。</p>
-            <Button asChild variant="default" size="lg">
-              <Link href="/#products">查看方案</Link>
-            </Button>
+            <p className="text-gray-600 mb-4">你的免费试用期已到期，升级后继续使用全部功能。</p>
+            {checkoutPriceId ? (
+              <PaddleCheckoutButton
+                priceId={checkoutPriceId}
+                userId={userId}
+                variant="default"
+                className="w-full md:w-auto"
+              >
+                立即升级解锁
+              </PaddleCheckoutButton>
+            ) : (
+              <div className="text-sm text-gray-500">此产品付费方案即将开放，敬请期待。</div>
+            )}
           </div>
         ) : (
           <div className="mt-8 p-6 border rounded-lg bg-gray-50">
