@@ -7,7 +7,9 @@ import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { AuthOptions, DefaultSession } from "next-auth";
 import { Adapter } from "next-auth/adapters";
 import CredentialsProvider from "next-auth/providers/credentials";
+import EmailProvider from "next-auth/providers/email";
 import GoogleProvider from "next-auth/providers/google";
+import { Resend } from "resend";
 
  declare module "next-auth" {
   interface Session extends DefaultSession {
@@ -18,6 +20,34 @@ import GoogleProvider from "next-auth/providers/google";
 }
 
 const hasGoogleAuth = env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET;
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+async function sendVerificationRequest({
+  identifier: email,
+  url,
+}: {
+  identifier: string;
+  url: string;
+  baseUrl?: string;
+  token?: string;
+}) {
+  await resend.emails.send({
+    from: process.env.EMAIL_FROM ?? "noreply@tutorbox.cc",
+    to: email,
+    subject: "Sign in to Tutorbox",
+    html: `
+      <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto; padding: 24px;">
+        <h2 style="font-size: 24px; font-weight: bold; margin-bottom: 16px;">Sign in to Tutorbox</h2>
+        <p style="color: #555; margin-bottom: 24px;">Click the button below to sign in. This link expires in 24 hours.</p>
+        <a href="${url}" style="display: inline-block; background: #000; color: #fff; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold;">
+          Sign in
+        </a>
+        <p style="color: #999; font-size: 12px; margin-top: 24px;">If you did not request this email, you can safely ignore it.</p>
+      </div>
+    `,
+  });
+}
 
 const devEmailProvider = CredentialsProvider({
   id: "dev-email",
@@ -54,22 +84,29 @@ const devEmailProvider = CredentialsProvider({
   },
 });
 
-const providers = hasGoogleAuth
-  ? process.env.NODE_ENV === "production"
-    ? [
-        GoogleProvider({
-          clientId: env.GOOGLE_CLIENT_ID!,
-          clientSecret: env.GOOGLE_CLIENT_SECRET!,
-        }),
-      ]
-    : [
-        devEmailProvider,
-        GoogleProvider({
-          clientId: env.GOOGLE_CLIENT_ID!,
-          clientSecret: env.GOOGLE_CLIENT_SECRET!,
-        }),
-      ]
-  : [devEmailProvider];
+const providers = [
+  EmailProvider({
+    server: "",
+    from: process.env.EMAIL_FROM ?? "noreply@tutorbox.cc",
+    sendVerificationRequest,
+  }),
+  ...(hasGoogleAuth
+    ? process.env.NODE_ENV === "production"
+      ? [
+          GoogleProvider({
+            clientId: env.GOOGLE_CLIENT_ID!,
+            clientSecret: env.GOOGLE_CLIENT_SECRET!,
+          }),
+        ]
+      : [
+          devEmailProvider,
+          GoogleProvider({
+            clientId: env.GOOGLE_CLIENT_ID!,
+            clientSecret: env.GOOGLE_CLIENT_SECRET!,
+          }),
+        ]
+    : [devEmailProvider]),
+];
 
 export const authConfig = {
   adapter: DrizzleAdapter(db) as Adapter,
