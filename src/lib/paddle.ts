@@ -38,6 +38,7 @@ export async function getPaddle(): Promise<Paddle | null> {
 export async function openCheckout(options: {
   priceId: string;
   customerEmail?: string;
+  userId?: string;
 }) {
   const p = await getPaddle();
 
@@ -46,7 +47,7 @@ export async function openCheckout(options: {
     return;
   }
 
-  const { priceId, customerEmail } = options;
+  const { priceId, customerEmail, userId } = options;
 
   if (!priceId) {
     console.warn(
@@ -65,5 +66,6 @@ export async function openCheckout(options: {
       },
     ],
     customer: customerEmail ? { email: customerEmail } : undefined,
+    customData: userId ? { userId } : undefined,
   } as any);
 }

@@ -2,6 +2,7 @@
 
 import { CheckIcon } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
+import { useSession } from "next-auth/react";
 import { PaddleCheckoutButton } from "@/components/paddle/checkout-button";
 
 console.log(
@@ -15,6 +16,9 @@ export function PricingSection() {
   const t = useTranslations("pricing");
   const locale = useLocale();
   const isZh = locale === "zh";
+
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
 
   const grammarPriceId = isZh
     ? process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_GRAMMAR_YEARLY_CNY
@@ -59,6 +63,7 @@ export function PricingSection() {
             </ul>
             <PaddleCheckoutButton
               priceId={grammarPriceId}
+              userId={userId}
               className="w-full"
             >
               {t("products.grammarMaster.cta")}
@@ -87,6 +92,7 @@ export function PricingSection() {
             </ul>
             <PaddleCheckoutButton
               priceId={leasePriceId}
+              userId={userId}
               className="w-full"
             >
               {t("products.leaseAssistant.cta")}

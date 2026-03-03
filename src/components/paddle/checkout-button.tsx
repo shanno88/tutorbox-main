@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 
 interface PaddleCheckoutButtonProps {
   priceId?: string;
+  userId?: string;
   children: React.ReactNode;
   variant?: "default" | "outline" | "secondary" | "destructive" | "ghost" | "link";
   className?: string;
@@ -12,6 +13,7 @@ interface PaddleCheckoutButtonProps {
 
 export function PaddleCheckoutButton({
   priceId,
+  userId,
   children,
   variant = "default",
   className,
@@ -22,7 +24,7 @@ export function PaddleCheckoutButton({
       return;
     }
     console.log("[PaddleCheckoutButton] Using priceId", priceId);
-    await openCheckout({ priceId });
+    await openCheckout({ priceId, userId });
   };
 
   return (
