@@ -11,10 +11,26 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { FileSearch, PenTool, Video, ArrowRight, MessageCircle, Globe, MessageSquare, GitBranch, BookOpen, TrendingUp } from "lucide-react";
+import {
+  FileSearch, PenTool, Video, ArrowRight,
+  MessageCircle, Globe, MessageSquare,
+  GitBranch, BookOpen, TrendingUp,
+} from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
+// --- types ---
+type ProductStatus = "not_started" | "trial_active" | "trial_expired" | "paid" | "locked";
+
+interface ProductStatusResponse {
+  productKey: string;
+  status: ProductStatus;
+  canStartTrial: boolean;
+  trialEndsAt?: string | null;
+}
+
+// --- icon map ---
 const iconMap: Record<string, ReactNode> = {
   "file-search": <FileSearch className="w-8 h-8" />,
   "pen-tool": <PenTool className="w-8 h-8" />,
@@ -27,7 +43,67 @@ const iconMap: Record<string, ReactNode> = {
   "trending-up": <TrendingUp className="w-8 h-8" />,
 };
 
-function ProductCard({ product }: { product: Product }) {
+// --- trial button ---
+function TrialButton({
+  trialStatus,
+  productSlug,
+  onStartTrial,
+  starting,
+}: {
+  trialStatus: ProductStatusResponse | null;
+  productSlug: string;
+  onStartTrial: (key: string) => void;
+  starting: boolean;
+}) {
+  if (!trialStatus) return null;
+
+  switch (trialStatus.status) {
+    case "not_started":
+      return (
+        <Button
+          variant="default"
+          className="w-full mt-2"
+          disabled={starting}
+          onClick={() => onStartTrial(productSlug)}
+        >
+          {starting ? "开始中..." : "免费试用 7 天"}
+        </Button>
+      );
+    case "trial_active":
+      return (
+        <div className="w-full mt-2 text-center text-xs text-green-600 font-medium py-2 bg-green-50 rounded-md">
+          试用中 · 到期：{new Date(trialStatus.trialEndsAt!).toLocaleDateString("zh-CN")}
+        </div>
+      );
+    case "trial_expired":
+      return (
+        <div className="w-full mt-2 text-center text-xs text-gray-500 py-2 bg-gray-50 rounded-md">
+          试用已结束
+        </div>
+      );
+    case "paid":
+      return (
+        <div className="w-full mt-2 text-center text-xs text-blue-600 font-medium py-2 bg-blue-50 rounded-md">
+          ✓ 已购买
+        </div>
+      );
+    default:
+      return null;
+  }
+}
+
+// --- product card ---
+function ProductCard({
+  product,
+  trialStatus,
+  onStartTrial,
+  starting,
+}: {
+  product: Product;
+  trialStatus: ProductStatusResponse | null;
+  onStartTrial: (key: string) => void;
+  starting: boolean;
+}) {
   const t = useTranslations("products");
   const locale = useLocale();
   const isZh = locale === "zh";
@@ -70,7 +146,7 @@ function ProductCard({ product }: { product: Product }) {
           {isZh ? product.tagline : product.taglineCn}
         </p>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="flex flex-col gap-2">
         <Button asChild variant="outline" className="w-full group">
           <Link href={`/products/${product.slug}`}>
             {product.cta
@@ -81,13 +157,53 @@ function ProductCard({ product }: { product: Product }) {
             <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </Button>
+
+        {/* trial 状态按钮：只在有 trial 配置的产品上显示 */}
+        <TrialButton
+          trialStatus={trialStatus}
+          productSlug={product.slug}
+          onStartTrial={onStartTrial}
+          starting={starting}
+        />
       </CardFooter>
     </Card>
   );
 }
 
+// --- main section ---
 export function ProductsSection() {
   const t = useTranslations("products");
+  const [trialStatuses, setTrialStatuses] = useState<ProductStatusResponse[]>([]);
+  const [startingKey, setStartingKey] = useState<string | null>(null);
+
+  // 拉取当前用户的产品状态
+  useEffect(() => {
+    fetch("/api/me/products")
+      .then((r) => r.json())
+      .then((data: ProductStatusResponse[]) => {
+        if (Array.isArray(data)) setTrialStatuses(data);
+      })
+      .catch(() => {}); // 未登录时返回 []，静默处理
+  }, []);
+
+  // 开始试用
+  async function handleStartTrial(productKey: string) {
+    setStartingKey(productKey);
+    try {
+      const res = await fetch("/api/me/products/start-trial", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productKey }),
+      });
+      if (res.ok) {
+        // 刷新状态
+        const updated = await fetch("/api/me/products").then((r) => r.json());
+        if (Array.isArray(updated)) setTrialStatuses(updated);
+      }
+    } finally {
+      setStartingKey(null);
+    }
+  }
 
   return (
     <section id="products" className="bg-gray-50 dark:bg-gray-800/50 py-24">
@@ -102,9 +218,21 @@ export function ProductsSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {products.map((product) => (
-            <ProductCard key={product.slug} product={product} />
-          ))}
+          {products.map((product) => {
+            const trialStatus = trialStatuses.find(
+              (s) => s.productKey === product.slug
+            ) ?? null;
+
+            return (
+              <ProductCard
+                key={product.slug}
+                product={product}
+                trialStatus={trialStatus}
+                onStartTrial={handleStartTrial}
+                starting={startingKey === product.slug}
+              />
+            );
+          })}
         </div>
       </div>
     </section>
