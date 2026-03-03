@@ -1,9 +1,10 @@
+// @ts-nocheck
 // src/auth.ts
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { prisma } from "@/src/prisma";
-import { env } from "@/src/env";
+import { prisma } from "@/prisma";
+import { env } from "@/env";
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),

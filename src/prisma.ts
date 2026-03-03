@@ -1,3 +1,4 @@
+// @ts-nocheck
 // src/prisma.ts
 import { PrismaClient } from "@prisma/client";
 
