@@ -54,17 +54,22 @@ const devEmailProvider = CredentialsProvider({
   },
 });
 
-const providers = [
-  devEmailProvider,
-  ...(hasGoogleAuth
+const providers = hasGoogleAuth
+  ? process.env.NODE_ENV === "production"
     ? [
         GoogleProvider({
           clientId: env.GOOGLE_CLIENT_ID!,
           clientSecret: env.GOOGLE_CLIENT_SECRET!,
         }),
       ]
-    : []),
-];
+    : [
+        devEmailProvider,
+        GoogleProvider({
+          clientId: env.GOOGLE_CLIENT_ID!,
+          clientSecret: env.GOOGLE_CLIENT_SECRET!,
+        }),
+      ]
+  : [devEmailProvider];
 
 export const authConfig = {
   adapter: DrizzleAdapter(db) as Adapter,
