@@ -1,9 +1,7 @@
 // src/lib/auth.ts
-import { randomUUID } from "crypto";
-import { db } from "@/db";
+import { prisma } from "@/prisma";
 import { env } from "@/env";
-import { users } from "@/db/schema";
-import { DrizzleAdapter } from "@auth/drizzle-adapter";
+import { PrismaAdapter } from "@auth/prisma-adapter";
 import { AuthOptions, DefaultSession } from "next-auth";
 import { Adapter } from "next-auth/adapters";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -59,28 +57,13 @@ const devEmailProvider = CredentialsProvider({
     const email = credentials?.email;
     if (!email) return null;
 
-    // 查找已有用户
-    let user = await db.query.users.findFirst({
-      where: (u, { eq }) => eq(u.email, email),
+    const user = await prisma.user.upsert({
+      where: { email },
+      update: {},
+      create: { email },
     });
 
-    // 没有就创建
-    if (!user) {
-      const inserted = await db
-        .insert(users)
-        .values({ id: randomUUID(), email, name: email })
-        .returning();
-      user = inserted[0];
-    }
-
-    if (!user) return null;
-
-    return {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      image: user.image ?? null,
-    };
+    return user;
   },
 });
 
@@ -109,7 +92,7 @@ const providers = [
 ];
 
 export const authConfig = {
-  adapter: DrizzleAdapter(db) as Adapter,
+  adapter: PrismaAdapter(prisma) as Adapter,
   secret: env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
@@ -127,8 +110,8 @@ export const authConfig = {
       }
 
       // 后续请求从 DB 刷新
-      const dbUser = await db.query.users.findFirst({
-        where: (u, { eq }) => eq(u.email, token.email!),
+      const dbUser = await prisma.user.findUnique({
+        where: { email: token.email! },
       });
 
       if (!dbUser) return token; // 不抛错，直接返回原 token

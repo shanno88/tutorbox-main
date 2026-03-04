@@ -2,9 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authConfig } from "@/lib/auth";
-import { db } from "@/db";
-import { productGrants } from "@/db/schema";
-import { eq, and } from "drizzle-orm";
+import { prisma } from "@/prisma";
 import { products } from "@/config/products";
 
 export async function POST(req: NextRequest) {
@@ -23,18 +21,15 @@ export async function POST(req: NextRequest) {
   }
 
   // 检查是否已经有 trial（single trial model：只能试用一次）
-  const existing = await db
-    .select()
-    .from(productGrants)
-    .where(
-      and(
-        eq(productGrants.userId, userId),
-        eq(productGrants.productKey, productKey),
-        eq(productGrants.type, "trial")
-      )
-    );
+  const existing = await prisma.productGrant.findFirst({
+    where: {
+      userId,
+      productKey,
+      type: "trial",
+    },
+  });
 
-  if (existing.length > 0) {
+  if (existing) {
     return NextResponse.json({ error: "Trial already used" }, { status: 400 });
   }
 
@@ -43,13 +38,15 @@ export async function POST(req: NextRequest) {
   const trialDays = "trialDays" in product ? product.trialDays : 7;
   const trialEndsAt = new Date(now.getTime() + trialDays * 24 * 60 * 60 * 1000);
 
-  await db.insert(productGrants).values({
-    userId,
-    productKey,
-    type: "trial",
-    status: "active",
-    trialStartsAt: now,
-    trialEndsAt,
+  await prisma.productGrant.create({
+    data: {
+      userId,
+      productKey,
+      type: "trial",
+      status: "active",
+      trialStartsAt: now,
+      trialEndsAt,
+    },
   });
 
   return NextResponse.json({ success: true, trialEndsAt: trialEndsAt.toISOString() });

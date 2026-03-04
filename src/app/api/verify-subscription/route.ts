@@ -16,6 +16,10 @@ const PRICE_ID_TO_PLAN: Record<string, string> = {
 };
 
 export async function POST(req: Request) {
+  if (process.env.NODE_ENV !== "production") {
+    return NextResponse.json({ valid: false, error: "DISABLED_IN_DEV" }, { status: 200 });
+  }
+
   try {
     const { email, productSlug } = await req.json();
 

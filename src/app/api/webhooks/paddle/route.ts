@@ -6,6 +6,10 @@ import { productGrants, subscriptions } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
 
 export async function POST(req: Request) {
+  if (env.NODE_ENV !== "production") {
+    return new Response("OK", { status: 200 });
+  }
+
   if (!env.PADDLE_WEBHOOK_SECRET) {
     console.error("[webhooks/paddle] PADDLE_WEBHOOK_SECRET not configured");
     return new Response("Server configuration error", { status: 503 });

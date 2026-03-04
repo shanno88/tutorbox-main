@@ -10,15 +10,24 @@ declare global {
 
 let db: PostgresJsDatabase<typeof schema>;
 
-const databaseUrl = env.DATABASE_URL ?? "postgresql://postgres:example@localhost:5432/postgres";
-
 if (env.NODE_ENV === "production") {
+  const databaseUrl = env.DATABASE_URL;
+  if (!databaseUrl) {
+    throw new Error("DATABASE_URL is not set");
+  }
+
   db = drizzle(postgres(databaseUrl), { schema });
 } else {
-  if (!global.db) {
-    global.db = drizzle(postgres(databaseUrl), { schema });
-  }
-  db = global.db;
+  db = new Proxy(
+    {},
+    {
+      get() {
+        throw new Error(
+          "Drizzle/Postgres is disabled in development. Use Prisma + SQLite (DATABASE_URL=file:./dev.db) instead."
+        );
+      },
+    }
+  ) as unknown as PostgresJsDatabase<typeof schema>;
 }
 
 export { db };

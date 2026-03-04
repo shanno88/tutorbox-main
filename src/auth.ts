@@ -6,6 +6,25 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/prisma";
 import { env } from "@/env";
 
+const TRIAL_DAYS = 7;
+
+export async function onUserLogin(email: string) {
+  const user = await prisma.user.findUnique({ where: { email } });
+
+  if (!user) {
+    const now = new Date();
+    return await prisma.user.create({
+      data: {
+        email,
+        trialStartedAt: now,
+        plan: "TRIAL",
+      },
+    });
+  }
+
+  return user;
+}
+
 export const { auth, handlers, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   session: { strategy: "database" },

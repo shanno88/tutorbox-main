@@ -2,9 +2,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authConfig } from "@/lib/auth";
-import { db } from "@/db";
-import { productGrants } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { prisma } from "@/prisma";
 import { products } from "@/config/products";
 
 export type ProductStatus =
@@ -33,10 +31,9 @@ export async function GET() {
   const userId = session.user.id;
 
   // 拿该用户所有的 ProductGrant
-  const grants = await db
-    .select()
-    .from(productGrants)
-    .where(eq(productGrants.userId, userId));
+  const grants = await prisma.productGrant.findMany({
+    where: { userId },
+  });
 
   const now = new Date();
 
@@ -45,12 +42,12 @@ export async function GET() {
 
     // 找这个产品的 trial grant
     const trialGrant = grants.find(
-      (g) => g.productKey === productKey && g.type === "trial"
+      (g: any) => g.productKey === productKey && g.type === "trial"
     );
 
     // 找这个产品的 paid grant
     const paidGrant = grants.find(
-      (g) => g.productKey === productKey && g.type === "paid" && g.status === "active"
+      (g: any) => g.productKey === productKey && g.type === "paid" && g.status === "active"
     );
 
     // paid 优先

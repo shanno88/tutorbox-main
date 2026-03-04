@@ -5,7 +5,7 @@ export default defineConfig({
   schema: "./src/db/schema.ts",
   driver: "pg",
   dbCredentials: {
-    connectionString: env.DATABASE_URL ?? "postgresql://postgres:example@localhost:5432/postgres",
+    connectionString: env.DATABASE_URL!,
   },
   verbose: true,
   strict: true,
