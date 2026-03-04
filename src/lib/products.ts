@@ -9,7 +9,7 @@ export interface Product {
   icon: string;
   status: 'live' | 'beta' | 'coming-soon';
   features: { en: string; cn: string }[];
-  cta?: '立即体验' | '了解更多' | '申请接入' | '加入内测';
+  cta?: '立即体验' | '了解更多' | '申请接入' | '加入内测' | '立即开始 7 天免费试用';
 }
 
 export const products: Product[] = [
@@ -40,6 +40,7 @@ export const products: Product[] = [
     descriptionCn: '专为中文母语者设计的英文写作助手，不仅纠正语法错误，更能帮你写出地道自然的英文，提升邮件、论文、报告的专业度。',
     icon: 'pen-tool',
     status: 'live',
+    cta: '立即开始 7 天免费试用',
     features: [
       { en: 'Real-time grammar correction', cn: '实时语法纠正' },
       { en: 'Style suggestions for professional writing', cn: '专业写作风格建议' },

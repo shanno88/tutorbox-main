@@ -14,13 +14,13 @@ const products = {
     cta: '立即体验',
     url: 'https://app.tutorbox.cc/',
   },
-  'grammar-master': {
-    name: 'Grammar Master · 语法大师',
-    description: '英文写作助手，告别 Chinglish',
-    status: '已上线',
-    cta: '立即体验',
-    url: 'https://gm.tutorbox.cc',
-  },
+   'grammar-master': {
+      name: 'Grammar Master · 语法大师',
+      description: '英文写作助手，告别 Chinglish',
+      status: '可立即开始 7 天免费试用',
+      cta: '立即开始 7 天免费试用',
+      url: '/products/grammar-master',
+    },
   'cast-master': {
     name: 'Cast Master · 播感大师',
     description: '短视频创作者的 AI 助手',
@@ -123,8 +123,8 @@ export default async function ProductPage({
   if (requiresGating && accessStatus !== "trial_active" && accessStatus !== "paid") {
     return (
       <main className="mx-auto max-w-3xl px-4 py-12">
-        <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
-        <p className="text-lg mb-4">{product.description}</p>
+        <h1 className="text-3xl font-bold mb-8">{product.name}</h1>
+        <p className="text-lg mb-8">{product.description}</p>
 
         {accessStatus === "trial_expired" ? (
           <div className="mt-8 p-6 border rounded-lg bg-gray-50">
@@ -146,7 +146,7 @@ export default async function ProductPage({
         ) : (
           <div className="mt-8 p-6 border rounded-lg bg-gray-50">
             <p className="text-lg font-semibold mb-2">需要先开始试用</p>
-            <p className="text-gray-600 mb-4">
+            <p className="text-gray-600 mb-8">
               {accessStatus === "not_logged_in"
                 ? "登录后即可免费试用此产品。"
                 : "你还没有开始试用，回到首页开始免费试用。"}
@@ -163,15 +163,68 @@ export default async function ProductPage({
   }
 
   return (
-    <main className="mx-auto max-w-3xl px-4 py-12">
-      <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
-      <p className="text-lg mb-4">{product.description}</p>
-      <p className="mb-8">状态：{product.status}</p>
-      <Button asChild variant="default" size="lg" className="font-bold text-base mt-4">
-        <Link href={product.url} target="_blank" rel="noopener noreferrer">
-          {product.cta}
-        </Link>
-      </Button>
-    </main>
-  );
-}
+      <main className="mx-auto max-w-3xl px-4 py-12">
+        <h1 className="text-3xl font-bold mb-10">{product.name}</h1>
+        <p className="text-lg mb-10">{product.description}</p>
+        <p className="mb-10">状态：{product.status}</p>
+  
+        {/* Lease AI 一次性服务说明（中英文） */}
+        {params.slug === "lease-ai" && (
+          <section className="mb-8 space-y-4 text-sm text-gray-700">
+            <div>
+              <h2 className="text-lg font-medium mb-3">使用方式与价格</h2>
+              <p>
+                Lease AI 不是按月订阅的 SaaS，而是
+                <span className="font-semibold"> 一次性买断一份合同的审核服务</span>。
+              </p>
+              <p>
+                每次你上传一份新的美国租房合同，只在你确认提交审核时支付一次费用，
+                我们不会自动续费，也不会在后台默默扣款。
+              </p>
+              <p>
+                很适合刚到美国租房、或者偶尔签一份新租约的个人用户——
+                遇到新合同时再来用一次即可。
+              </p>
+              {/* 如果确定价格，可以解开下面这行并填入具体金额 */}
+              {/* <p>
+                每份合同只需 <span className="font-semibold">39 美元</span>，
+                就能在几分钟内看懂潜在风险条款，远低于一小时律师费的价格。
+              </p> */}
+            </div>
+  
+            <div className="pt-2 border-t border-gray-200">
+              <h2 className="text-lg font-medium mb-3">How it works & pricing</h2>
+              <p>
+                Lease AI is <span className="font-semibold">not a subscription</span>.
+                It’s a <span className="font-semibold">one‑time review for each lease you upload</span>.
+              </p>
+              <p>
+                You only pay when you decide to submit a lease for a full review –
+                there are no auto‑renewals and no surprise charges in the background.
+              </p>
+              <p>
+                It’s designed for individuals who only sign a new US lease once in a while:
+                just come back and use it again whenever you get a new contract.
+              </p>
+              {/* If you have a fixed price in USD, you can uncomment and edit this: */}
+              {/* <p>
+                Each lease review is only <span className="font-semibold">$39</span>,
+                which is far less than a single hour of a lawyer’s time.
+              </p> */}
+            </div>
+          </section>
+        )}
+  
+        <Button
+          asChild
+          variant="default"
+          size="lg"
+          className="font-bold text-base mt-4"
+        >
+          <Link href={product.url} target="_blank" rel="noopener noreferrer">
+            {params.slug === "lease-ai" ? "上传合同，开始审核" : product.cta}
+          </Link>
+        </Button>
+      </main>
+    );
+  }

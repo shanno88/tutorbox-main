@@ -117,9 +117,15 @@ export const authConfig = {
       if (!dbUser) return token; // 不抛错，直接返回原 token
 
       token.id = dbUser.id;
-      token.name = dbUser.name;
       token.email = dbUser.email;
-      token.picture = dbUser.image;
+
+      if ("name" in dbUser) {
+        token.name = (dbUser as any).name;
+      }
+
+      if ("image" in dbUser) {
+        token.picture = (dbUser as any).image;
+      }
       return token;
     },
     async session({ token, session }) {
