@@ -96,7 +96,7 @@ export default function GrammarMasterProductPage() {
         </p>
         <p className="mb-3">
           试用结束后，你可以一次性升级为语法大师 Pro 版，
-          <span className="font-semibold"> 199 元人民币（或 49 美元）终身使用当前版本</span>，无需额外订阅费用。
+          <span className="font-semibold"> 199 元人民币（或 49 美元）买断一年，一次付清</span>，无自动续费。
         </p>
 
         <button
