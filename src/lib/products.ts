@@ -51,13 +51,14 @@ export const products: Product[] = [
   {
     slug: 'cast-master',
     name: 'Cast Master',
-    nameCn: '播客大师',
+    nameCn: '播感大师',
     tagline: 'AI assistant for short-form video creators',
     taglineCn: '短视频创作者的 AI 助手',
     description: 'Coming soon: An AI assistant that helps short-form video creators plan, script, and optimize their content.',
     descriptionCn: '即将上线：专为短视频创作者打造的 AI 助手，帮助你规划选题、生成脚本、优化内容，让创作更高效。',
     icon: 'video',
-    status: 'coming-soon',
+    status: 'live',
+    cta: '立即开始 7 天免费试用',
     features: [
       { en: 'Content ideation & planning', cn: '内容创意与规划' },
       { en: 'Script generation', cn: '脚本生成' },

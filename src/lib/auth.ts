@@ -19,6 +19,8 @@ import { Resend } from "resend";
 
 const hasGoogleAuth = env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET;
 
+// TODO: To enable "Sign in with Google", set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET.
+
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 async function sendVerificationRequest({

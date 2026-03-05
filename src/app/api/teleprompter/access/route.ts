@@ -1,4 +1,4 @@
-// src/app/api/grammar/access/route.ts
+// src/app/api/teleprompter/access/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authConfig } from "@/lib/auth";
@@ -13,13 +13,12 @@ export async function GET(req: NextRequest) {
       {
         ok: false,
         code: "NOT_AUTHENTICATED",
-        message: "请先登录后再使用语法大师。",
+        message: "请先登录后再使用播感大师。",
       },
-      { status: 401 },
+      { status: 401 }
     );
   }
 
-  // 2. 查找用户
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
   });
@@ -31,24 +30,25 @@ export async function GET(req: NextRequest) {
         code: "USER_NOT_FOUND",
         message: "用户信息不存在，请重新登录。",
       },
-      { status: 404 },
+      { status: 404 }
     );
   }
 
-  // 3. 检查试用 / Pro 权限（首次调用会自动开启 7 天试用）
-  const trialStatus = await ensureTrialForApp({ userId: user.id, app: "grammar" });
+  const trialStatus = await ensureTrialForApp({ userId: user.id, app: "teleprompter" });
   if (!trialStatus.hasAccess) {
     return NextResponse.json(
       {
         ok: false,
         code: "TRIAL_EXPIRED",
-        message: "语法大师试用已结束，请升级 Pro 继续使用。",
+        message: "播感大师试用已结束，请升级 Pro 继续使用。",
         upgradeUrl: "/billing",
       },
-      { status: 403 },
+      { status: 403 }
     );
   }
 
-  // 4. 有权限，返回 OK
-  return NextResponse.json({ ok: true, code: "OK" }, { status: 200 });
+  return NextResponse.json(
+    { ok: true, code: "OK", entryUrl: "https://tl.tutorbox.cc/" },
+    { status: 200 }
+  );
 }

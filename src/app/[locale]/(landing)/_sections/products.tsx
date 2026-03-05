@@ -123,6 +123,50 @@ function ProductCard({
   const locale = useLocale();
   const isZh = locale === "zh";
 
+  const [castMasterChecking, setCastMasterChecking] = useState(false);
+
+  async function handleCastMasterAccessClick() {
+    if (castMasterChecking) return;
+
+    setCastMasterChecking(true);
+    try {
+      const res = await fetch("/api/teleprompter/access", { method: "GET" });
+      const data = (await res
+        .json()
+        .catch(() => null)) as
+        | { ok: true; code: "OK"; entryUrl?: string }
+        | { ok: false; code: string; message?: string; upgradeUrl?: string }
+        | null;
+
+      if (res.status === 200 && data && data.ok) {
+        window.location.href = data.entryUrl ?? "https://tl.tutorbox.cc/";
+        return;
+      }
+
+      if (
+        res.status === 401 &&
+        data &&
+        !data.ok &&
+        data.code === "NOT_AUTHENTICATED"
+      ) {
+        alert("请先登录后再使用播感大师。你可以返回首页通过邮箱登录。");
+        window.location.href = "https://tutorbox.cc/zh";
+        return;
+      }
+
+      if (data && !data.ok && data.message) {
+        alert(data.message);
+        return;
+      }
+
+      alert("暂时无法验证权限，请稍后重试。");
+    } catch {
+      alert("暂时无法验证权限，请稍后重试。");
+    } finally {
+      setCastMasterChecking(false);
+    }
+  }
+
   const statusLabels = {
     live: t("status.live"),
     beta: t("status.beta"),
@@ -168,18 +212,53 @@ function ProductCard({
         ) : null}
       </CardContent>
       <CardFooter className="flex flex-col gap-2">
-        <Button asChild variant="outline" className="w-full group">
-          <Link href={`/products/${product.slug}`}>
+        {product.slug === "cast-master" ? (
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full group"
+            onClick={handleCastMasterAccessClick}
+            disabled={castMasterChecking}
+          >
             {product.cta
               ? product.cta === "立即开始 7 天免费试用"
                 ? product.cta
-                : t(product.cta === "申请接入" ? "cta.applyIntegration" : product.cta === "加入内测" ? "cta.joinBeta" : product.cta === "了解更多" ? "cta.learnMore" : "cta.tryNow")
+                : t(
+                    product.cta === "申请接入"
+                      ? "cta.applyIntegration"
+                      : product.cta === "加入内测"
+                        ? "cta.joinBeta"
+                        : product.cta === "了解更多"
+                          ? "cta.learnMore"
+                          : "cta.tryNow"
+                  )
               : product.status === "coming-soon"
                 ? t("cta.learnMore")
                 : t("cta.tryNow")}
             <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </Link>
-        </Button>
+          </Button>
+        ) : (
+          <Button asChild variant="outline" className="w-full group">
+            <Link href={`/products/${product.slug}`}>
+              {product.cta
+                ? product.cta === "立即开始 7 天免费试用"
+                  ? product.cta
+                  : t(
+                      product.cta === "申请接入"
+                        ? "cta.applyIntegration"
+                        : product.cta === "加入内测"
+                          ? "cta.joinBeta"
+                          : product.cta === "了解更多"
+                            ? "cta.learnMore"
+                            : "cta.tryNow"
+                    )
+                : product.status === "coming-soon"
+                  ? t("cta.learnMore")
+                  : t("cta.tryNow")}
+              <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </Button>
+        )}
 
         {/* trial 状态按钮：只在有 trial 配置的产品上显示 */}
         <TrialButton

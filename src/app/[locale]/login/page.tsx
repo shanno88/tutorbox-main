@@ -1,13 +1,28 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { getProviders, signIn } from "next-auth/react";
+
+type ProviderMap = Awaited<ReturnType<typeof getProviders>>;
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
+  const [providers, setProviders] = useState<ProviderMap>(null);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const params = useParams<{ locale: string }>();
   const locale = params?.locale ?? "zh";
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const p = await getProviders();
+      if (!cancelled) setProviders(p);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -17,6 +32,20 @@ export default function LoginPage() {
       callbackUrl: `/${locale}`,
       redirect: true,
     });
+  }
+
+  async function handleGoogleSignIn() {
+    if (googleLoading) return;
+
+    setGoogleLoading(true);
+    try {
+      await signIn("google", {
+        callbackUrl: `/${locale}`,
+        redirect: true,
+      });
+    } finally {
+      setGoogleLoading(false);
+    }
   }
 
   return (
@@ -35,6 +64,19 @@ export default function LoginPage() {
           Login
         </button>
       </form>
+
+      {providers?.google ? (
+        <div style={{ marginTop: 16 }}>
+          <button
+            type="button"
+            onClick={handleGoogleSignIn}
+            disabled={googleLoading}
+            style={{ padding: "8px 16px" }}
+          >
+            {googleLoading ? "Signing in..." : "Sign in with Google"}
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 }

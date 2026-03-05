@@ -5,6 +5,8 @@ import { PaddleCheckoutButton } from "@/components/paddle/checkout-button";
 import { products as trialConfig } from "@/config/products";
 import { getSSRSession } from "@/lib/get-server-session";
 import { cookies } from "next/headers";
+import { CastMasterAccessCta } from "../_components/cast-master-access-cta";
+import { CastMasterLanding } from "../_components/cast-master-landing";
 
 const products = {
   'lease-ai': {
@@ -162,6 +164,10 @@ export default async function ProductPage({
     );
   }
 
+  if (params.slug === "cast-master") {
+    return <CastMasterLanding />;
+  }
+
   return (
     <main className="mx-auto max-w-3xl px-4 py-12">
       <h1 className="text-3xl font-bold mb-10">{product.name}</h1>
@@ -215,24 +221,32 @@ export default async function ProductPage({
         </section>
       )}
 
-      <Button
-        asChild
-        variant="default"
-        size="lg"
-        className="font-bold text-base mt-4"
-      >
-        <Link
-          href={
-            params.slug === "lease-ai" && !user
-              ? "/zh/login?redirect=/products/lease-ai"
-              : product.url
-          }
-          target={params.slug === "lease-ai" && !user ? undefined : "_blank"}
-          rel={params.slug === "lease-ai" && !user ? undefined : "noopener noreferrer"}
+      {params.slug === "cast-master" ? (
+        <CastMasterAccessCta />
+      ) : (
+        <Button
+          asChild
+          variant="default"
+          size="lg"
+          className="font-bold text-base mt-4"
         >
-          {params.slug === "lease-ai" ? "上传合同，开始审核" : product.cta}
-        </Link>
-      </Button>
+          <Link
+            href={
+              params.slug === "lease-ai" && !user
+                ? "/zh/login?redirect=/products/lease-ai"
+                : product.url
+            }
+            target={params.slug === "lease-ai" && !user ? undefined : "_blank"}
+            rel={
+              params.slug === "lease-ai" && !user
+                ? undefined
+                : "noopener noreferrer"
+            }
+          >
+            {params.slug === "lease-ai" ? "上传合同，开始审核" : product.cta}
+          </Link>
+        </Button>
+      )}
     </main>
   );
 }

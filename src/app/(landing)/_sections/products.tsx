@@ -48,8 +48,18 @@ function ProductCard({ product }: { product: Product }) {
       </CardContent>
       <CardFooter>
         <Button asChild variant="outline" className="w-full group">
-          <Link href={`/products/${product.slug}`}>
-            {product.cta ?? (product.status === 'coming-soon' ? '了解更多' : '立即体验')}
+          <Link
+            href={
+              product.slug === "cast-master"
+                ? "https://tl.tutorbox.cc/"
+                : `/products/${product.slug}`
+            }
+            target={product.slug === "cast-master" ? "_blank" : undefined}
+            rel={product.slug === "cast-master" ? "noopener noreferrer" : undefined}
+          >
+            {product.slug === "cast-master"
+              ? "立即开始 7 天免费试用"
+              : product.cta ?? (product.status === 'coming-soon' ? '了解更多' : '立即体验')}
             <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </Button>
