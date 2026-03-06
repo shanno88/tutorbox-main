@@ -110,7 +110,7 @@ export const productGrants = pgTable("product_grant", {
   userId:        text("userId").notNull().references(() => users.id, { onDelete: "cascade" }),
   productKey:    text("productKey").notNull(),   // "thinker-ai" | "flowforge" | "webpilot"
   type:          text("type").notNull(),          // "trial" | "paid" | "gift"
-  status:        text("status").notNull(),        // "active" | "expired"
+  status:        text("status").notNull().default("active"),        // "active" | "expired"
   trialStartsAt: timestamp("trialStartsAt"),
   trialEndsAt:   timestamp("trialEndsAt"),
   createdAt:     timestamp("createdAt").defaultNow().notNull(),

@@ -24,6 +24,7 @@ export function PricingSection() {
     ? process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_GRAMMAR_YEARLY_CNY
     : process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_GRAMMAR_YEARLY_USD;
   const leasePriceId = process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_LEASE_ONETIME_USD;
+  const prompterPriceId = process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_PROMPTER_YEARLY_CNY;
 
   console.log("GRAMMAR priceId", grammarPriceId);
   console.log("LEASE priceId", leasePriceId);
@@ -40,7 +41,7 @@ export function PricingSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-8 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 max-w-6xl mx-auto">
           <div className="flex flex-col p-6 text-center text-gray-900 bg-white border border-gray-100 rounded-lg shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
             <h3 className="mb-2 text-2xl font-semibold">{t("products.grammarMaster.name")}</h3>
             <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
@@ -67,6 +68,47 @@ export function PricingSection() {
               className="w-full"
             >
               {t("products.grammarMaster.cta")}
+            </PaddleCheckoutButton>
+          </div>
+
+          <div className="flex flex-col p-6 text-center text-gray-900 bg-amber-50 border border-amber-200 rounded-lg shadow dark:border-amber-900/40 xl:p-8 dark:bg-amber-950/20 dark:text-white">
+            <h3 className="mb-2 text-2xl font-semibold">AI Prompter</h3>
+            <p className="mb-2 text-sm text-amber-700/80 dark:text-amber-200/80">播感大师</p>
+            <p className="font-light text-amber-900/80 sm:text-lg dark:text-amber-100/80">
+              AI 提词器，短视频脚本一键生成
+            </p>
+            <div className="flex items-baseline justify-center my-8">
+              <span className="mr-2 text-5xl font-extrabold">¥39</span>
+              <span className="text-xl text-amber-900/60 dark:text-amber-100/60">一次性</span>
+            </div>
+            <ul role="list" className="mb-8 space-y-4 text-left">
+              <li className="flex items-center space-x-3">
+                <CheckIcon className="flex-shrink-0 w-5 h-5 text-amber-600" />
+                <span>AI 智能脚本生成（带货/课程/短视频）</span>
+              </li>
+              <li className="flex items-center space-x-3">
+                <CheckIcon className="flex-shrink-0 w-5 h-5 text-amber-600" />
+                <span>专业提词器滚动播放</span>
+              </li>
+              <li className="flex items-center space-x-3">
+                <CheckIcon className="flex-shrink-0 w-5 h-5 text-amber-600" />
+                <span>韵律标注 & 停顿提示</span>
+              </li>
+              <li className="flex items-center space-x-3">
+                <CheckIcon className="flex-shrink-0 w-5 h-5 text-amber-600" />
+                <span>违禁词智能检测</span>
+              </li>
+              <li className="flex items-center space-x-3">
+                <CheckIcon className="flex-shrink-0 w-5 h-5 text-amber-600" />
+                <span>导出 Word / SRT 字幕</span>
+              </li>
+            </ul>
+            <PaddleCheckoutButton
+              priceId={prompterPriceId}
+              userId={userId}
+              className="w-full bg-amber-500 hover:bg-amber-600 text-white"
+            >
+              获取播感大师
             </PaddleCheckoutButton>
           </div>
 

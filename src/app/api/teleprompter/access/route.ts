@@ -4,6 +4,8 @@ import { getServerSession } from "next-auth";
 import { authConfig } from "@/lib/auth";
 import { prisma } from "@/prisma";
 import { ensureTrialForApp } from "@/lib/access/ensureTrialForApp";
+import { env } from "@/env";
+import { and, eq, gt, inArray } from "drizzle-orm";
 
 export async function GET(req: NextRequest) {
   const session = await getServerSession(authConfig);
@@ -31,6 +33,61 @@ export async function GET(req: NextRequest) {
         message: "用户信息不存在，请重新登录。",
       },
       { status: 404 }
+    );
+  }
+
+  if (process.env.NODE_ENV === "production") {
+    const { db, productGrants, subscriptions } = await import("@/db");
+
+    const now = new Date();
+    const prompterPriceIds = [env.NEXT_PUBLIC_PADDLE_PRICE_ID_PROMPTER_YEARLY_CNY].filter(
+      Boolean
+    ) as string[];
+
+    const activeGrant = await db
+      .select({ id: productGrants.id })
+      .from(productGrants)
+      .where(
+        and(
+          eq(productGrants.userId, user.id),
+          eq(productGrants.productKey, "ai-prompter"),
+          eq(productGrants.type, "paid"),
+          eq(productGrants.status, "active")
+        )
+      )
+      .limit(1);
+
+    const activeSubscription = await db
+      .select({ userId: subscriptions.userId, paddlePriceId: subscriptions.paddlePriceId })
+      .from(subscriptions)
+      .where(
+        and(
+          eq(subscriptions.userId, user.id),
+          prompterPriceIds.length
+            ? inArray(subscriptions.paddlePriceId, prompterPriceIds)
+            : gt(subscriptions.currentPeriodEnd, new Date(0)),
+          gt(subscriptions.currentPeriodEnd, now)
+        )
+      )
+      .limit(1);
+
+    const hasValidSubscription = activeSubscription.length > 0;
+
+    if (!(activeGrant.length > 0 && hasValidSubscription)) {
+      return NextResponse.json(
+        {
+          ok: false,
+          code: "NO_ACCESS",
+          message: "播感大师订阅未生效或已到期，请升级后继续使用。",
+          upgradeUrl: "/billing",
+        },
+        { status: 403 }
+      );
+    }
+
+    return NextResponse.json(
+      { ok: true, code: "OK", entryUrl: "https://tl.tutorbox.cc/" },
+      { status: 200 }
     );
   }
 

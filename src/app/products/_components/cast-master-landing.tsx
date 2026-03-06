@@ -156,24 +156,6 @@ export function CastMasterLanding() {
           </div>
         )}
       </section>
-
-      <section className="border-t border-gray-100 bg-gray-50">
-        <div className="container mx-auto px-4 py-14 md:py-20">
-          <div className="mx-auto max-w-3xl rounded-2xl bg-white p-8 shadow-sm ring-1 ring-black/5 md:p-10">
-            <h2 className="text-2xl font-bold text-gray-900 md:text-3xl">
-              立即开始 7 天免费试用
-            </h2>
-            <p className="mt-3 text-gray-600">
-              体验完整功能，到期后按需选择套餐，随时可取消
-            </p>
-
-            <div className="mt-7">
-              <CastMasterAccessCta />
-              <p className="mt-3 text-sm text-gray-500">免费试用 7 天，无需信用卡</p>
-            </div>
-          </div>
-        </div>
-      </section>
     </main>
   );
 }
