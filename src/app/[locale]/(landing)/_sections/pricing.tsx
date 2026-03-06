@@ -52,7 +52,7 @@ export function PricingSection() {
             </p>
             <div className="flex items-baseline justify-center my-8">
               <span className="mr-2 text-5xl font-extrabold">{t("products.grammarMaster.price")}</span>
-              <span className="text-xl text-gray-500 dark:text-gray-400">{t("products.grammarMaster.period")}</span>
+              <span className="text-xl text-gray-500 dark:text-gray-400">{isZh ? "/年" : "/year"}</span>
             </div>
             <ul role="list" className="mb-8 space-y-4 text-left">
               {(isZh ? t.raw("products.grammarMaster.featuresCn") : t.raw("products.grammarMaster.features")).map((feature: string, index: number) => (
@@ -72,14 +72,14 @@ export function PricingSection() {
           </div>
 
           <div className="flex flex-col p-6 text-center text-gray-900 bg-amber-50 border border-amber-200 rounded-lg shadow dark:border-amber-900/40 xl:p-8 dark:bg-amber-950/20 dark:text-white">
-            <h3 className="mb-2 text-2xl font-semibold">AI Prompter</h3>
+            <h3 className="mb-2 text-2xl font-semibold">Cast Master</h3>
             <p className="mb-2 text-sm text-amber-700/80 dark:text-amber-200/80">播感大师</p>
             <p className="font-light text-amber-900/80 sm:text-lg dark:text-amber-100/80">
               AI 提词器，短视频脚本一键生成
             </p>
             <div className="flex items-baseline justify-center my-8">
-              <span className="mr-2 text-5xl font-extrabold">¥39</span>
-              <span className="text-xl text-amber-900/60 dark:text-amber-100/60">一次性</span>
+              <span className="mr-2 text-5xl font-extrabold">¥99</span>
+              <span className="text-xl text-amber-900/60 dark:text-amber-100/60">/年</span>
             </div>
             <ul role="list" className="mb-8 space-y-4 text-left">
               <li className="flex items-center space-x-3">

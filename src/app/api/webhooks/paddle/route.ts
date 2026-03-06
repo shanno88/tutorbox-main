@@ -61,6 +61,11 @@ export async function POST(req: Request) {
         env.NEXT_PUBLIC_PADDLE_PRICE_ID_PROMPTER_YEARLY_CNY,
       ].filter(Boolean);
 
+      const GRAMMAR_PRICE_IDS = [
+        "pri_01khwk19y0af40zae5fnysj5t3",
+        "pri_01kggqdgjrgyryb19xs3veb1js",
+      ];
+
       if (priceId && PROMPTER_PRICE_IDS.includes(priceId)) {
         const existing = await db
           .select()
@@ -89,6 +94,40 @@ export async function POST(req: Request) {
               and(
                 eq(productGrants.userId, userId),
                 eq(productGrants.productKey, "ai-prompter"),
+                eq(productGrants.type, "paid")
+              )
+            );
+        }
+      }
+
+      // 3. 语法大师年付订阅 → 同步写入 productGrants
+      if (priceId && GRAMMAR_PRICE_IDS.includes(priceId)) {
+        const existing = await db
+          .select()
+          .from(productGrants)
+          .where(
+            and(
+              eq(productGrants.userId, userId),
+              eq(productGrants.productKey, "grammar-master"),
+              eq(productGrants.type, "paid")
+            )
+          );
+
+        if (existing.length === 0) {
+          await db.insert(productGrants).values({
+            userId,
+            productKey: "grammar-master",
+            type: "paid",
+            status: "active",
+          });
+        } else {
+          await db
+            .update(productGrants)
+            .set({ status: "active" })
+            .where(
+              and(
+                eq(productGrants.userId, userId),
+                eq(productGrants.productKey, "grammar-master"),
                 eq(productGrants.type, "paid")
               )
             );
@@ -136,9 +175,6 @@ export async function POST(req: Request) {
     const priceId = transaction.items?.[0]?.price?.id;
 
     const priceToProduct: Record<string, string> = {
-      // 语法大师（两个 price id 对应同一产品）
-      "pri_01khwk19y0af40zae5fnysj5t3": "grammar-master",
-      "pri_01kggqdgjrgyryb19xs3veb1js": "grammar-master",
       // 美国租约
       "pri_01kgrhp2wtthebpgwmn8eh5ssy": "lease-ai",
     };
