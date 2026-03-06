@@ -1,6 +1,4 @@
-import { User } from '@prisma/client'
-
-export function hasProAccess(user: User, trialDays: number): boolean {
+export function hasProAccess(user: any, trialDays: number): boolean {
   const now = new Date()
 
   // Paid users always allowed
