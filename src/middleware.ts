@@ -17,13 +17,13 @@ export default function middleware(request: NextRequest) {
                   request.cookies.get('__Secure-next-auth.session-token');
     
     if (!token) {
-      // Redirect to login page for email magic link authentication (Google removed)
+      // Redirect to custom login page (not NextAuth default)
       const base =
         process.env.NEXTAUTH_URL ||
         `${request.nextUrl.protocol}//${request.nextUrl.host}`;
       
       try {
-        const signInUrl = new URL('/login', base);
+        const signInUrl = new URL('/en/login', base);
         signInUrl.searchParams.set('callbackUrl', request.url);
         return NextResponse.redirect(signInUrl);
       } catch {

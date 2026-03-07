@@ -89,6 +89,9 @@ export const authConfig = {
     strategy: "jwt",
   },
   providers,
+  pages: {
+    signIn: "/en/login",
+  },
   callbacks: {
     async jwt({ token, user }) {
       // 登录时 user 会传进来，直接用
