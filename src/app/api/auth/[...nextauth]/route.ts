@@ -7,8 +7,11 @@ const handler = NextAuth({
   callbacks: {
     ...authConfig.callbacks,
     async signIn({ user, account, profile, email, credentials }) {
-      if (account?.provider === "email" && user?.email) {
-        await onUserLogin(user.email);
+      if (user?.email) {
+        // Only email provider supported now (Google removed)
+        if (account?.provider === "email") {
+          await onUserLogin(user.email);
+        }
       }
 
       return true;

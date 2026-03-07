@@ -4,10 +4,12 @@ import { env } from "@/env";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { AuthOptions, DefaultSession } from "next-auth";
 import { Adapter } from "next-auth/adapters";
-import CredentialsProvider from "next-auth/providers/credentials";
 import EmailProvider from "next-auth/providers/email";
-import GoogleProvider from "next-auth/providers/google";
 import { Resend } from "resend";
+
+// Google OAuth removed - using email magic links only
+// import GoogleProvider from "next-auth/providers/google";
+// import CredentialsProvider from "next-auth/providers/credentials";
 
  declare module "next-auth" {
   interface Session extends DefaultSession {
@@ -17,9 +19,8 @@ import { Resend } from "resend";
   }
 }
 
-const hasGoogleAuth = env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET;
-
-// TODO: To enable "Sign in with Google", set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET.
+// Google OAuth removed - using email magic links via Resend only
+// const hasGoogleAuth = env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET;
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -49,6 +50,8 @@ async function sendVerificationRequest({
   });
 }
 
+// Dev email provider removed - using real email magic links only in all environments
+/*
 const devEmailProvider = CredentialsProvider({
   id: "dev-email",
   name: "Dev Email Login",
@@ -68,29 +71,15 @@ const devEmailProvider = CredentialsProvider({
     return user;
   },
 });
+*/
 
+// Simplified: Only email magic links via Resend
 const providers = [
   EmailProvider({
     server: "",
     from: process.env.EMAIL_FROM ?? "noreply@tutorbox.cc",
     sendVerificationRequest,
   }),
-  ...(hasGoogleAuth
-    ? process.env.NODE_ENV === "production"
-      ? [
-          GoogleProvider({
-            clientId: env.GOOGLE_CLIENT_ID!,
-            clientSecret: env.GOOGLE_CLIENT_SECRET!,
-          }),
-        ]
-      : [
-          devEmailProvider,
-          GoogleProvider({
-            clientId: env.GOOGLE_CLIENT_ID!,
-            clientSecret: env.GOOGLE_CLIENT_SECRET!,
-          }),
-        ]
-    : [devEmailProvider]),
 ];
 
 export const authConfig = {

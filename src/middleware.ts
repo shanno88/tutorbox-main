@@ -17,9 +17,19 @@ export default function middleware(request: NextRequest) {
                   request.cookies.get('__Secure-next-auth.session-token');
     
     if (!token) {
-      const signInUrl = new URL('/api/auth/signin/google', request.url);
-      signInUrl.searchParams.set('callbackUrl', request.url);
-      return NextResponse.redirect(signInUrl);
+      // Redirect to login page for email magic link authentication (Google removed)
+      const base =
+        process.env.NEXTAUTH_URL ||
+        `${request.nextUrl.protocol}//${request.nextUrl.host}`;
+      
+      try {
+        const signInUrl = new URL('/login', base);
+        signInUrl.searchParams.set('callbackUrl', request.url);
+        return NextResponse.redirect(signInUrl);
+      } catch {
+        // If URL construction fails, fall back to intlMiddleware
+        return intlMiddleware(request);
+      }
     }
   }
 
