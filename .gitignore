@@ -36,4 +36,5 @@ yarn-error.log*
 next-env.d.ts
 
 dev.db
-.env
+.env.env.production
+ecosystem.config.js
