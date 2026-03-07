@@ -5,8 +5,9 @@ export const env = createEnv({
   server: {
     DATABASE_URL: z.string().optional(),
     NODE_ENV: z.string().optional(),
-    GOOGLE_CLIENT_ID: z.string().min(1).optional(),
-    GOOGLE_CLIENT_SECRET: z.string().min(1).optional(),
+    // Google OAuth removed - no longer required
+    GOOGLE_CLIENT_ID: z.string().optional(),
+    GOOGLE_CLIENT_SECRET: z.string().optional(),
     NEXTAUTH_SECRET: z.string().min(1).optional(),
     PADDLE_API_KEY: z.string().min(1).optional(),
     PADDLE_WEBHOOK_SECRET: z.string().min(1).optional(),
@@ -26,8 +27,8 @@ export const env = createEnv({
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
     DATABASE_URL: process.env.DATABASE_URL,
-    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
-    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID ?? "",
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET ?? "",
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET ?? "dev-nextauth-secret",
     PADDLE_API_KEY: process.env.PADDLE_API_KEY,
     PADDLE_WEBHOOK_SECRET: process.env.PADDLE_WEBHOOK_SECRET,
