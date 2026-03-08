@@ -38,3 +38,6 @@ next-env.d.ts
 dev.db
 .env.env.production
 ecosystem.config.js
+ecosystem.config.js
+.env.production
+.env.local
