@@ -165,7 +165,13 @@ export default async function ProductPage({
   }
 
   if (params.slug === "cast-master") {
-    return <CastMasterLanding />;
+    // Cast Master with trial guard
+    const { TrialGuard } = await import("@/components/trial-guard");
+    return (
+      <TrialGuard product="castmaster">
+        <CastMasterLanding />
+      </TrialGuard>
+    );
   }
 
   return (

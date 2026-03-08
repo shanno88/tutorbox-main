@@ -92,6 +92,17 @@ export const authConfig = {
   pages: {
     signIn: "/en/login",
   },
+  events: {
+    async createUser({ user }) {
+      // Auto-start 7-day trial for new users
+      if (user.id) {
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { trialStartedAt: new Date() },
+        });
+      }
+    },
+  },
   callbacks: {
     async jwt({ token, user }) {
       // 登录时 user 会传进来，直接用
