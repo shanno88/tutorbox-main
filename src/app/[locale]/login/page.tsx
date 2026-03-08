@@ -78,11 +78,11 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <div className="space-y-2 border-t pt-4">
-          <p className="text-xs text-muted-foreground leading-relaxed">
+        <div className="space-y-3 border-t pt-4 mt-4">
+          <p className="text-base text-muted-foreground leading-relaxed">
             <strong>English:</strong> Enter your email and we will send you a one-time sign-in link. Click the link in your inbox to access your Tutorbox account — no password needed.
           </p>
-          <p className="text-xs text-muted-foreground leading-relaxed">
+          <p className="text-base text-muted-foreground leading-relaxed">
             <strong>中文：</strong>输入邮箱，我们会发送一封包含一次性登录链接的邮件。点击邮件中的链接即可登录，无需密码。
           </p>
         </div>
