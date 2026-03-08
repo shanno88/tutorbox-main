@@ -2,7 +2,7 @@ import { headers } from "next/headers";
 import { env } from "@/env";
 import { verifyPaddleWebhook } from "@/lib/paddle-server";
 import { db } from "@/db";
-import { productGrants, subscriptions } from "@/db/schema";
+import { productGrants } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
 
 export async function POST(req: Request) {
@@ -29,32 +29,31 @@ export async function POST(req: Request) {
   // ─── 订阅类产品（播感大师年付）─────────────────────────────
   if (type === "subscription.activated" || type === "subscription.updated") {
     const sub = event.data;
-    const customerId = sub.customer_id;
     const subscriptionId = sub.id;
     const priceId = sub.items?.[0]?.price?.id;
-    const currentPeriodEnd = sub.current_billing_period?.ends_at;
     const userId = sub.custom_data?.userId;
 
     if (userId) {
+      // Subscriptions table removed - using productGrants only
       // 1. 写入 subscriptions 表（原有逻辑保留）
-      await db
-        .insert(subscriptions)
-        .values({
-          userId,
-          paddleSubscriptionId: subscriptionId,
-          paddleCustomerId: customerId,
-          paddlePriceId: priceId,
-          currentPeriodEnd: new Date(currentPeriodEnd),
-        })
-        .onConflictDoUpdate({
-          target: subscriptions.userId,
-          set: {
-            paddleSubscriptionId: subscriptionId,
-            paddleCustomerId: customerId,
-            paddlePriceId: priceId,
-            currentPeriodEnd: new Date(currentPeriodEnd),
-          },
-        });
+      // await db
+      //   .insert(subscriptions)
+      //   .values({
+      //     userId,
+      //     paddleSubscriptionId: subscriptionId,
+      //     paddleCustomerId: customerId,
+      //     paddlePriceId: priceId,
+      //     currentPeriodEnd: new Date(currentPeriodEnd),
+      //   })
+      //   .onConflictDoUpdate({
+      //     target: subscriptions.userId,
+      //     set: {
+      //       paddleSubscriptionId: subscriptionId,
+      //       paddleCustomerId: customerId,
+      //       paddlePriceId: priceId,
+      //       currentPeriodEnd: new Date(currentPeriodEnd),
+      //     },
+      //   });
 
       // 2. 播感大师订阅 → 同步写入 productGrants
       const PROMPTER_PRICE_IDS = [
@@ -143,10 +142,11 @@ export async function POST(req: Request) {
     const priceId = sub.items?.[0]?.price?.id;
 
     if (userId) {
+      // Subscriptions table removed - using productGrants only
       // 原有逻辑：删 subscriptions 表
-      await db
-        .delete(subscriptions)
-        .where(eq(subscriptions.userId, userId));
+      // await db
+      //   .delete(subscriptions)
+      //   .where(eq(subscriptions.userId, userId));
 
       // 播感大师：标记 productGrants 为 inactive（不删，保留记录）
       const PROMPTER_PRICE_IDS = [

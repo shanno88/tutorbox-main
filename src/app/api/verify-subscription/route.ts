@@ -16,6 +16,14 @@ const PRICE_ID_TO_PLAN: Record<string, string> = {
 };
 
 export async function POST(req: Request) {
+  // Subscriptions table removed - this endpoint is disabled
+  // Use productGrants and trial system instead
+  return NextResponse.json(
+    { valid: false, error: "SUBSCRIPTIONS_DISABLED" },
+    { status: 501 }
+  );
+
+  /* ORIGINAL CODE - DISABLED BECAUSE SUBSCRIPTIONS TABLE DOESN'T EXIST
   if (process.env.NODE_ENV !== "production") {
     return NextResponse.json({ valid: false, error: "DISABLED_IN_DEV" }, { status: 200 });
   }
@@ -72,4 +80,5 @@ export async function POST(req: Request) {
     console.error("verify-subscription error:", error);
     return NextResponse.json({ valid: false }, { status: 500 });
   }
+  */
 }

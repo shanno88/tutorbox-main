@@ -37,12 +37,9 @@ export async function GET(req: NextRequest) {
   }
 
   if (process.env.NODE_ENV === "production") {
-    const { db, productGrants, subscriptions } = await import("@/db");
+    const { db, productGrants } = await import("@/db");
 
     const now = new Date();
-    const prompterPriceIds = [env.NEXT_PUBLIC_PADDLE_PRICE_ID_PROMPTER_YEARLY_CNY].filter(
-      Boolean
-    ) as string[];
 
     const activeGrant = await db
       .select({ id: productGrants.id })
@@ -57,23 +54,23 @@ export async function GET(req: NextRequest) {
       )
       .limit(1);
 
-    const activeSubscription = await db
-      .select({ userId: subscriptions.userId, paddlePriceId: subscriptions.paddlePriceId })
-      .from(subscriptions)
-      .where(
-        and(
-          eq(subscriptions.userId, user.id),
-          prompterPriceIds.length
-            ? inArray(subscriptions.paddlePriceId, prompterPriceIds)
-            : gt(subscriptions.currentPeriodEnd, new Date(0)),
-          gt(subscriptions.currentPeriodEnd, now)
-        )
-      )
-      .limit(1);
+    // Subscriptions table removed - using productGrants only
+    // const activeSubscription = await db
+    //   .select({ userId: subscriptions.userId, paddlePriceId: subscriptions.paddlePriceId })
+    //   .from(subscriptions)
+    //   .where(
+    //     and(
+    //       eq(subscriptions.userId, user.id),
+    //       prompterPriceIds.length
+    //         ? inArray(subscriptions.paddlePriceId, prompterPriceIds)
+    //         : gt(subscriptions.currentPeriodEnd, new Date(0)),
+    //       gt(subscriptions.currentPeriodEnd, now)
+    //     )
+    //   )
+    //   .limit(1);
 
-    const hasValidSubscription = activeSubscription.length > 0;
-
-    if (!(activeGrant.length > 0 && hasValidSubscription)) {
+    // Check only productGrants (no subscriptions table)
+    if (activeGrant.length === 0) {
       return NextResponse.json(
         {
           ok: false,
