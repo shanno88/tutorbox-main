@@ -7,8 +7,8 @@ type AccessStatus = "idle" | "loading" | "expired" | "unauthenticated";
 
 function TrialExpiredNotice() {
   return (
-    <div className="mx-auto mt-6 max-w-xl rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-      <h2 className="text-xl font-semibold mb-2">语法大师试用已结束</h2>
+    <div className="mx-auto mt-6 mb-6 max-w-xl rounded-xl border border-red-200 bg-red-50 p-6 shadow-sm">
+      <h2 className="text-xl font-semibold mb-2 text-red-900">语法大师试用已结束</h2>
       <p className="text-sm text-gray-700 mb-3">
         你的 7 天免费试用已经用完。升级为语法大师 Pro 版后，你可以继续无限次使用语法大师的所有功能。
       </p>
@@ -20,7 +20,7 @@ function TrialExpiredNotice() {
       </ul>
       <div className="flex gap-3 mb-3">
         <a
-          href="/billing"
+          href="/zh#grammar-master-pricing"
           className="inline-flex items-center justify-center rounded-md bg-black px-4 py-2 text-sm font-medium text-white"
         >
           立即升级 Pro
@@ -28,14 +28,14 @@ function TrialExpiredNotice() {
         <button
           type="button"
           onClick={() => (window.location.href = "/zh")}
-          className="text-sm text-gray-500 underline underline-offset-4"
+          className="text-sm text-gray-500 underline underline-offset-4 hover:text-gray-700"
         >
           稍后再说
         </button>
       </div>
       <p className="text-xs text-gray-500">
         升级确认和发票会发送到你的邮箱。如果几分钟内没看到，请检查垃圾邮箱或广告邮件，并将{" "}
-        <span className="font-mono">noreply@tutorbox.cc</span> 加入联系人或标记为“非垃圾邮件”。
+        <span className="font-mono">noreply@tutorbox.cc</span> 加入联系人或标记为"非垃圾邮件"。
       </p>
     </div>
   );
@@ -85,6 +85,11 @@ export default function GrammarMasterProductPage() {
         你可以输入任何自己写的英文句子，让语法大师自动分析句子结构并讲解每一部分的作用。
       </p>
 
+      {status === "expired" && <TrialExpiredNotice />}
+
+      {/* 试用与价格 + 按钮放在更靠上位置 */}
+      {status === "expired" && <TrialExpiredNotice />}
+
       {/* 试用与价格 + 按钮放在更靠上位置 */}
       <section className="mb-6 text-sm text-gray-700">
         <h2 className="text-lg font-medium mb-2">试用与价格</h2>
@@ -120,7 +125,7 @@ export default function GrammarMasterProductPage() {
         <p className="mt-3 text-xs text-gray-500">
           登录链接和支付确认会发送到你的邮箱。如果几分钟内没有看到，请检查
           <span className="font-semibold">垃圾邮箱</span>或推广邮件，
-          并将 <span className="font-mono">noreply@tutorbox.cc</span> 加入联系人或标记为“非垃圾邮件”。
+          并将 <span className="font-mono">noreply@tutorbox.cc</span> 加入联系人或标记为"非垃圾邮件"。
         </p>
       </section>
 
@@ -177,14 +182,10 @@ export default function GrammarMasterProductPage() {
           >
             <img
               src="/grammar-gaokao.png"
-              alt="语法大师高考句典功能示例"
-              className="w-full max-h-[260px] rounded-lg border border-gray-200 shadow-sm object-contain bg-white cursor-zoom-in"
-            />
-          </button>
-        </div>
       </section>
 
-      {status === "expired" && <TrialExpiredNotice />}
+      {/* 图片放大预览层 */}
+      </section>
 
       {/* 图片放大预览层 */}
       {statusImage && (

@@ -1,10 +1,11 @@
 // src/app/products/grammar-master/layout.tsx
-import { TrialGuard } from "@/components/trial-guard";
+// Layout removed - using AnonymousTrialGuard directly in page.tsx instead
+// This allows anonymous users to access the page without authentication
 
 export default function GrammarMasterLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <TrialGuard product="grammar">{children}</TrialGuard>;
+  return <>{children}</>;
 }

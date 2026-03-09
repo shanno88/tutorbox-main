@@ -204,12 +204,6 @@ function ProductCard({
         <p className="text-sm text-gray-500 dark:text-gray-500">
           {isZh ? product.tagline : product.taglineCn}
         </p>
-
-        {isZh && product.slug === "grammar-master" ? (
-          <p className="mt-2 text-xs text-red-500">
-            注册后可立即开始 7 天免费试用，试用期内不限次数使用语法大师全部功能。
-          </p>
-        ) : null}
       </CardContent>
       <CardFooter className="flex flex-col gap-2">
         {product.slug === "cast-master" ? (
@@ -221,17 +215,17 @@ function ProductCard({
             disabled={castMasterChecking}
           >
             {product.cta
-              ? product.cta === "立即开始 7 天免费试用"
-                ? product.cta
-                : t(
-                    product.cta === "申请接入"
-                      ? "cta.applyIntegration"
-                      : product.cta === "加入内测"
-                        ? "cta.joinBeta"
-                        : product.cta === "了解更多"
-                          ? "cta.learnMore"
+              ? t(
+                  product.cta === "申请接入"
+                    ? "cta.applyIntegration"
+                    : product.cta === "加入内测"
+                      ? "cta.joinBeta"
+                      : product.cta === "了解更多"
+                        ? "cta.learnMore"
+                        : product.cta === "开始使用"
+                          ? "cta.tryNow"
                           : "cta.tryNow"
-                  )
+                )
               : product.status === "coming-soon"
                 ? t("cta.learnMore")
                 : t("cta.tryNow")}
@@ -241,17 +235,17 @@ function ProductCard({
           <Button asChild variant="outline" className="w-full group">
             <Link href={`/products/${product.slug}`}>
               {product.cta
-                ? product.cta === "立即开始 7 天免费试用"
-                  ? product.cta
-                  : t(
-                      product.cta === "申请接入"
-                        ? "cta.applyIntegration"
-                        : product.cta === "加入内测"
-                          ? "cta.joinBeta"
-                          : product.cta === "了解更多"
-                            ? "cta.learnMore"
+                ? t(
+                    product.cta === "申请接入"
+                      ? "cta.applyIntegration"
+                      : product.cta === "加入内测"
+                        ? "cta.joinBeta"
+                        : product.cta === "了解更多"
+                          ? "cta.learnMore"
+                          : product.cta === "开始使用"
+                            ? "cta.tryNow"
                             : "cta.tryNow"
-                    )
+                  )
                 : product.status === "coming-soon"
                   ? t("cta.learnMore")
                   : t("cta.tryNow")}

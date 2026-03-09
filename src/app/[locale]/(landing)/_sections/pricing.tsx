@@ -42,7 +42,7 @@ export function PricingSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 max-w-6xl mx-auto">
-          <div className="flex flex-col p-6 text-center text-gray-900 bg-white border border-gray-100 rounded-lg shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
+          <div id="grammar-master-pricing" className="flex flex-col p-6 text-center text-gray-900 bg-white border border-gray-100 rounded-lg shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
             <h3 className="mb-2 text-2xl font-semibold">{t("products.grammarMaster.name")}</h3>
             <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
               {t("products.grammarMaster.nameCn")}

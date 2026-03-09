@@ -39,43 +39,56 @@ export async function Header() {
           <Links />
         </div>
 
-        <div className="flex justify-between gap-4">
-          <Unsubscribed>
-            <PaddleUpgradeButton />
-          </Unsubscribed>
+        <div className="flex items-center gap-2">
+          {/* Left side: Utility controls */}
+          <div className="flex items-center gap-2 mr-2">
+            <Unsubscribed>
+              <PaddleUpgradeButton />
+            </Unsubscribed>
 
-          <FeedbackButton />
+            <FeedbackButton />
 
-          <ModeToggle />
+            <ModeToggle />
 
-          <LocaleSwitcher />
+            <LocaleSwitcher />
+          </div>
 
-          <SignedIn>
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Avatar>
-                  <AvatarImage src={user?.image || undefined} />
-                  <AvatarFallback>{t("avatarFallback")}</AvatarFallback>
-                </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem>
-                  <Link
-                    href="/api/auth/signout?callbackUrl=/"
-                    className="flex gap-2 items-center"
-                  >
-                    <LogOut className="w-4 h-4" /> {t("signOut")}
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </SignedIn>
+          {/* Right side: Account controls - visually separated */}
+          <div className="flex items-center gap-2 pl-2 border-l border-border">
+            <SignedIn>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="gap-2">
+                    <Avatar className="h-6 w-6">
+                      <AvatarImage src={user?.image || undefined} />
+                      <AvatarFallback className="text-xs">
+                        {user?.email?.charAt(0).toUpperCase() || "U"}
+                      </AvatarFallback>
+                    </Avatar>
+                    <span className="hidden sm:inline text-sm max-w-[120px] truncate">
+                      {user?.email}
+                    </span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem asChild>
+                    <Link
+                      href="/api/auth/signout?callbackUrl=/"
+                      className="flex gap-2 items-center cursor-pointer"
+                    >
+                      <LogOut className="w-4 h-4" /> {t("signOut")}
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </SignedIn>
 
-          <SignedOut>
-            <Button asChild>
-              <Link href="/api/auth/signin">{t("signIn")}</Link>
-            </Button>
-          </SignedOut>
+            <SignedOut>
+              <Button asChild size="sm">
+                <Link href="/en/login">{t("signIn")}</Link>
+              </Button>
+            </SignedOut>
+          </div>
         </div>
       </div>
     </div>

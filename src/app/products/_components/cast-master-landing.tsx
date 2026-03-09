@@ -65,7 +65,7 @@ export function CastMasterLanding() {
         <div className="container mx-auto px-4 py-14 md:py-20">
           <div className="max-w-3xl">
             <div className="inline-flex items-center rounded-full bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-700 ring-1 ring-emerald-100">
-              已上线 · 7 天免费试用
+              已上线 · 新版试用系统
             </div>
 
             <h1 className="mt-5 text-4xl font-bold tracking-tight text-gray-900 md:text-5xl">

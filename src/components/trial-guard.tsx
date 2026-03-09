@@ -19,9 +19,10 @@ export async function TrialGuard({ product, children }: TrialGuardProps) {
   // Check user access for this product
   const accessResult = await checkUserAccess(session.user.id, product);
 
-  // If access denied, redirect to pricing page
+  // If access denied, redirect to product-specific page
   if (!accessResult.access) {
-    redirect("/en/pricing");
+    // Redirect to the product page where they can see pricing/upgrade options
+    redirect(`/products/${product === "grammar" ? "grammar-master" : "cast-master"}`);
   }
 
   // If trial access, show banner
