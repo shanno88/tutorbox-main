@@ -42,7 +42,7 @@ export const externalLinks: ExternalLink[] = [
     id: "grammar_master_trial",
     label: "Grammar Master 7-day trial",
     labelCn: "语法大师 7 天试用",
-    url: "https://tutorbox.cc/products/grammar-master",
+    url: "https://tutorbox.cc/zh/grammar-master",
     description: "Grammar Master trial page - internal product page",
     productSlug: "grammar-master",
     checkMethod: "HEAD",
