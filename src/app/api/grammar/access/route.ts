@@ -77,7 +77,7 @@ export async function GET(req: NextRequest) {
 
     // User is authenticated - check account trial
     const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
+      where: { email: session.user.email ?? undefined },
     });
 
     if (!user) {

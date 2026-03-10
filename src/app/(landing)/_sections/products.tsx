@@ -5,7 +5,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { FileSearch, PenTool, Video, ArrowRight, MessageCircle, Globe, MessageSquare, GitBranch, BookOpen, TrendingUp } from "lucide-react";
-import { ExternalLinkButton } from "@/components/external-link-button";
 
 const iconMap: Record<string, React.ReactNode> = {
   'file-search': <FileSearch className="w-8 h-8" />,
@@ -50,24 +49,17 @@ function ProductCard({ product }: { product: Product }) {
         <p className="text-sm text-gray-500 dark:text-gray-500">{product.tagline}</p>
       </CardContent>
       <CardFooter>
-        {product.slug === "cast-master" ? (
-          <ExternalLinkButton
-            linkId="cast_master_trial"
-            url="https://tl.tutorbox.cc/"
-            variant="outline"
-            className="w-full group"
-          >
-            开始使用
+        <Button asChild variant="outline" className="w-full group">
+          <Link href={
+            product.slug === 'lease-ai' ? '/en/lease-ai' :
+            product.slug === 'grammar-master' ? '/zh/grammar-master' :
+            product.slug === 'cast-master' ? '/zh/cast-master' :
+            `/products/${product.slug}`
+          }>
+            {product.cta ?? (product.status === 'coming-soon' ? '了解更多' : '立即体验')}
             <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </ExternalLinkButton>
-        ) : (
-          <Button asChild variant="outline" className="w-full group">
-            <Link href={`/products/${product.slug}`}>
-              {product.cta ?? (product.status === 'coming-soon' ? '了解更多' : '立即体验')}
-              <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </Button>
-        )}
+          </Link>
+        </Button>
       </CardFooter>
     </Card>
   );

@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { PaddleCheckoutButton } from "@/components/paddle/checkout-button";
@@ -9,13 +9,7 @@ import { CastMasterAccessCta } from "../_components/cast-master-access-cta";
 import { CastMasterLanding } from "../_components/cast-master-landing";
 
 const products = {
-  'lease-ai': {
-    name: 'Lease AI Review · 美国租房合同审核',
-    description: '美国租房合同智能审核，30秒读懂陷阱条款',
-    status: '已上线',
-    cta: '立即体验',
-    url: 'https://app.tutorbox.cc/',
-  },
+
    'grammar-master': {
       name: 'Grammar Master · 语法大师',
       description: '英文写作助手，告别 Chinglish',

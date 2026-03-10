@@ -59,7 +59,7 @@ export async function verifyTrialState(token: string): Promise<AnonymousTrialSta
       typeof payload.expiryTimestamp === "number" &&
       typeof payload.hasSeenExpiredModal === "boolean"
     ) {
-      return payload as AnonymousTrialState;
+      return payload as unknown as AnonymousTrialState;
     }
     
     return null;
