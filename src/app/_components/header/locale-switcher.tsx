@@ -1,8 +1,16 @@
 "use client";
 
+import { Globe } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLocale } from "next-intl";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 
 export function LocaleSwitcher() {
   const locale = useLocale();
@@ -15,29 +23,38 @@ export function LocaleSwitcher() {
     return segments.join("/");
   };
 
+  const currentLanguage = locale === "zh" ? "中文" : "English";
+
   return (
-    <div className="flex items-center gap-1 text-sm font-medium">
-      <Link
-        href={getLocalePath("zh")}
-        className={
-          locale === "zh"
-            ? "text-primary font-semibold"
-            : "text-gray-500 hover:text-gray-900 dark:hover:text-white"
-        }
-      >
-        中文
-      </Link>
-      <span className="text-gray-300 dark:text-gray-600">|</span>
-      <Link
-        href={getLocalePath("en")}
-        className={
-          locale === "en"
-            ? "text-primary font-semibold"
-            : "text-gray-500 hover:text-gray-900 dark:hover:text-white"
-        }
-      >
-        EN
-      </Link>
-    </div>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="sm" className="gap-2">
+          <Globe className="h-4 w-4" />
+          <span className="hidden sm:inline">{currentLanguage}</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem asChild>
+          <Link
+            href={getLocalePath("en")}
+            className={`w-full cursor-pointer ${
+              locale === "en" ? "font-semibold bg-accent" : ""
+            }`}
+          >
+            English
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link
+            href={getLocalePath("zh")}
+            className={`w-full cursor-pointer ${
+              locale === "zh" ? "font-semibold bg-accent" : ""
+            }`}
+          >
+            中文
+          </Link>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

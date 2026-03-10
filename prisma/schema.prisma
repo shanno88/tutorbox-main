@@ -22,7 +22,12 @@ model User {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  // NEW: trial fields
+  // Account trial fields (3-day trial per user)
+  trialStart    DateTime?
+  trialEnd      DateTime?
+  hasUsedTrial  Boolean  @default(false)
+
+  // Legacy field - kept for backward compatibility
   trialStartedAt DateTime?
   plan           String?  // 'TRIAL' | 'PRO' | 'EXPIRED' | 'FREE'
 
@@ -79,5 +84,20 @@ model ProductGrant {
   trialStartsAt DateTime?
   trialEndsAt   DateTime?
   createdAt     DateTime @default(now())
+}
+
+// --- External link health monitoring ---
+
+model ExternalLinkHealth {
+  id                String   @id @default(cuid())
+  linkId            String   @unique // matches id from external-links.ts config
+  url               String
+  status            String   // "unknown" | "ok" | "unavailable"
+  lastCheckedAt     DateTime @default(now())
+  lastStatusCode    Int?
+  consecutiveFailures Int    @default(0)
+  lastError         String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 }
 

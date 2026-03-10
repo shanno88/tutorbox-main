@@ -22,7 +22,6 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
-// --- types ---
 type ProductStatus = "not_started" | "trial_active" | "trial_expired" | "paid" | "locked";
 
 interface ProductStatusResponse {
@@ -32,7 +31,6 @@ interface ProductStatusResponse {
   trialEndsAt?: string | null;
 }
 
-// --- icon map ---
 const iconMap: Record<string, ReactNode> = {
   "file-search": <FileSearch className="w-8 h-8" />,
   "pen-tool": <PenTool className="w-8 h-8" />,
@@ -45,7 +43,6 @@ const iconMap: Record<string, ReactNode> = {
   "trending-up": <TrendingUp className="w-8 h-8" />,
 };
 
-// --- trial button ---
 function TrialButton({
   trialStatus,
   productSlug,
@@ -107,7 +104,6 @@ function TrialButton({
   }
 }
 
-// --- product card ---
 function ProductCard({
   product,
   trialStatus,
@@ -122,50 +118,6 @@ function ProductCard({
   const t = useTranslations("products");
   const locale = useLocale();
   const isZh = locale === "zh";
-
-  const [castMasterChecking, setCastMasterChecking] = useState(false);
-
-  async function handleCastMasterAccessClick() {
-    if (castMasterChecking) return;
-
-    setCastMasterChecking(true);
-    try {
-      const res = await fetch("/api/teleprompter/access", { method: "GET" });
-      const data = (await res
-        .json()
-        .catch(() => null)) as
-        | { ok: true; code: "OK"; entryUrl?: string }
-        | { ok: false; code: string; message?: string; upgradeUrl?: string }
-        | null;
-
-      if (res.status === 200 && data && data.ok) {
-        window.location.href = data.entryUrl ?? "https://tl.tutorbox.cc/";
-        return;
-      }
-
-      if (
-        res.status === 401 &&
-        data &&
-        !data.ok &&
-        data.code === "NOT_AUTHENTICATED"
-      ) {
-        alert("请先登录后再使用播感大师。你可以返回首页通过邮箱登录。");
-        window.location.href = "https://tutorbox.cc/zh";
-        return;
-      }
-
-      if (data && !data.ok && data.message) {
-        alert(data.message);
-        return;
-      }
-
-      alert("暂时无法验证权限，请稍后重试。");
-    } catch {
-      alert("暂时无法验证权限，请稍后重试。");
-    } finally {
-      setCastMasterChecking(false);
-    }
-  }
 
   const statusLabels = {
     live: t("status.live"),
@@ -204,63 +156,32 @@ function ProductCard({
         <p className="text-sm text-gray-500 dark:text-gray-500">
           {isZh ? product.tagline : product.taglineCn}
         </p>
-
-        {isZh && product.slug === "grammar-master" ? (
-          <p className="mt-2 text-xs text-red-500">
-            注册后可立即开始 7 天免费试用，试用期内不限次数使用语法大师全部功能。
-          </p>
-        ) : null}
       </CardContent>
       <CardFooter className="flex flex-col gap-2">
-        {product.slug === "cast-master" ? (
-          <Button
-            type="button"
-            variant="outline"
-            className="w-full group"
-            onClick={handleCastMasterAccessClick}
-            disabled={castMasterChecking}
-          >
+        <Button asChild variant="outline" className="w-full group">
+          <Link href={
+            product.slug === "lease-ai" ? `/${locale}/lease-ai` :
+            product.slug === "grammar-master" ? `/${locale}/grammar-master` :
+            product.slug === "cast-master" ? `/${locale}/cast-master` :
+            `/products/${product.slug}`
+          }>
             {product.cta
-              ? product.cta === "立即开始 7 天免费试用"
-                ? product.cta
-                : t(
-                    product.cta === "申请接入"
-                      ? "cta.applyIntegration"
-                      : product.cta === "加入内测"
-                        ? "cta.joinBeta"
-                        : product.cta === "了解更多"
-                          ? "cta.learnMore"
-                          : "cta.tryNow"
-                  )
+              ? t(
+                  product.cta === "申请接入"
+                    ? "cta.applyIntegration"
+                    : product.cta === "加入内测"
+                      ? "cta.joinBeta"
+                      : product.cta === "了解更多"
+                        ? "cta.learnMore"
+                        : "cta.tryNow"
+                )
               : product.status === "coming-soon"
                 ? t("cta.learnMore")
                 : t("cta.tryNow")}
             <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </Button>
-        ) : (
-          <Button asChild variant="outline" className="w-full group">
-            <Link href={`/products/${product.slug}`}>
-              {product.cta
-                ? product.cta === "立即开始 7 天免费试用"
-                  ? product.cta
-                  : t(
-                      product.cta === "申请接入"
-                        ? "cta.applyIntegration"
-                        : product.cta === "加入内测"
-                          ? "cta.joinBeta"
-                          : product.cta === "了解更多"
-                            ? "cta.learnMore"
-                            : "cta.tryNow"
-                    )
-                : product.status === "coming-soon"
-                  ? t("cta.learnMore")
-                  : t("cta.tryNow")}
-              <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </Button>
-        )}
+          </Link>
+        </Button>
 
-        {/* trial 状态按钮：只在有 trial 配置的产品上显示 */}
         <TrialButton
           trialStatus={trialStatus}
           productSlug={product.slug}
@@ -272,7 +193,6 @@ function ProductCard({
   );
 }
 
-// --- main section ---
 export function ProductsSection() {
   const t = useTranslations("products");
   const [trialStatuses, setTrialStatuses] = useState<ProductStatusResponse[]>([]);
@@ -282,17 +202,15 @@ export function ProductsSection() {
   const { data: session } = useSession();
   const isLoggedIn = !!session?.user;
 
-  // 拉取当前用户的产品状态
   useEffect(() => {
     fetch("/api/me/products")
       .then((r) => r.json())
       .then((data: ProductStatusResponse[]) => {
         if (Array.isArray(data)) setTrialStatuses(data);
       })
-      .catch(() => {}); // 未登录时返回 []，静默处理
+      .catch(() => {});
   }, []);
 
-  // 开始试用
   async function handleStartTrial(productKey: string) {
     if (!isLoggedIn) {
       window.location.href = `/${locale}/login`;
@@ -306,7 +224,6 @@ export function ProductsSection() {
         body: JSON.stringify({ productKey }),
       });
       if (res.ok) {
-        // 刷新状态
         const updated = await fetch("/api/me/products").then((r) => r.json());
         if (Array.isArray(updated)) setTrialStatuses(updated);
       }

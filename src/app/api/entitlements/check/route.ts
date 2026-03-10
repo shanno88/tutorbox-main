@@ -1,0 +1,45 @@
+import { NextResponse } from 'next/server';
+
+export async function POST(req: Request) {
+  try {
+    console.log('[ENTITLEMENTS] incoming request');
+    const { email, product } = await req.json();
+    console.log('[ENTITLEMENTS] request data:', { email, product });
+
+    if (!email || !product) {
+      return NextResponse.json(
+        { error: 'email and product are required', allowed: false },
+        { status: 400 },
+      );
+    }
+
+    console.log('[ENTITLEMENTS] proxying to paddle.tutorbox.cc');
+    const res = await fetch(
+      'https://paddle.tutorbox.cc/api/entitlements/check',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, product }),
+      },
+    );
+    console.log('[ENTITLEMENTS] proxy response status:', res.status);
+
+    if (!res.ok) {
+      console.error('proxy error status:', res.status);
+      return NextResponse.json(
+        { error: 'upstream_error', allowed: false },
+        { status: 500 },
+      );
+    }
+
+    const data = await res.json();
+
+    return NextResponse.json(data);
+  } catch (e) {
+    console.error('proxy entitlements/check error:', e);
+    return NextResponse.json(
+      { error: 'invalid_request', allowed: false },
+      { status: 400 },
+    );
+  }
+}

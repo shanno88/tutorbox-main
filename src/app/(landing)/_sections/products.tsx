@@ -1,8 +1,11 @@
+"use client";
+
 import { products, Product } from "@/lib/products";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { FileSearch, PenTool, Video, ArrowRight, MessageCircle, Globe, MessageSquare, GitBranch, BookOpen, TrendingUp } from "lucide-react";
+import { ExternalLinkButton } from "@/components/external-link-button";
 
 const iconMap: Record<string, React.ReactNode> = {
   'file-search': <FileSearch className="w-8 h-8" />,
@@ -47,22 +50,24 @@ function ProductCard({ product }: { product: Product }) {
         <p className="text-sm text-gray-500 dark:text-gray-500">{product.tagline}</p>
       </CardContent>
       <CardFooter>
-        <Button asChild variant="outline" className="w-full group">
-          <Link
-            href={
-              product.slug === "cast-master"
-                ? "https://tl.tutorbox.cc/"
-                : `/products/${product.slug}`
-            }
-            target={product.slug === "cast-master" ? "_blank" : undefined}
-            rel={product.slug === "cast-master" ? "noopener noreferrer" : undefined}
+        {product.slug === "cast-master" ? (
+          <ExternalLinkButton
+            linkId="cast_master_trial"
+            url="https://tl.tutorbox.cc/"
+            variant="outline"
+            className="w-full group"
           >
-            {product.slug === "cast-master"
-              ? "立即开始 7 天免费试用"
-              : product.cta ?? (product.status === 'coming-soon' ? '了解更多' : '立即体验')}
+            开始使用
             <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </Link>
-        </Button>
+          </ExternalLinkButton>
+        ) : (
+          <Button asChild variant="outline" className="w-full group">
+            <Link href={`/products/${product.slug}`}>
+              {product.cta ?? (product.status === 'coming-soon' ? '了解更多' : '立即体验')}
+              <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );
