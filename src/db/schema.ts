@@ -11,39 +11,12 @@ import {
   uuid,
   unique,
   time,
+  bigserial,
+  index,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccount } from "@auth/core/adapters";
 import { sql } from "drizzle-orm";
-//import { pgTable, serial, text, integer, timestamp } from 'drizzle-orm/pg-core';
 
-export const plans = pgTable('plans', {
-  id: serial('id').primaryKey(),
-  slug: text('slug').notNull().unique(),      // 例如 'grammar-master-yearly'
-  name: text('name').notNull(),
-  rateLimitPerMin: integer('rate_limit_per_min').notNull().default(60),
-  quotaPerMonth: integer('quota_per_month').notNull().default(100000),
-  createdAt: timestamp('created_at', { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-});
-
-export const apiKeys = pgTable('api_keys', {
-  id: serial('id').primaryKey(),
-  userId: text('user_id')                     // 看你 User 表的主键类型，如果是 text 就用 text
-    .notNull()
-    .references(() => users.id, { onDelete: 'cascade' }),
-  planId: integer('plan_id')
-    .notNull()
-    .references(() => plans.id, { onDelete: 'restrict' }),
-  keyHash: text('key_hash').notNull().unique(),
-  status: text('status').notNull().default('active'), // 'active' | 'revoked'
-  expiresAt: timestamp('expires_at', { withTimezone: true }),
-  createdAt: timestamp('created_at', { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-});
-// 已有的 users 导入保持不变
-// import { users } from './schema';
 /**
  * NEXT-AUTH TABLES
  */
@@ -131,20 +104,47 @@ export const subscriptions = pgTable("subscriptions", {
 
 export type Todo = typeof todos.$inferSelect;
 
-// src/db/schema.ts （末尾追加）
-//import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
-
 export const productGrants = pgTable("product_grant", {
-  id:            text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
-  userId:        text("userId").notNull().references(() => users.id, { onDelete: "cascade" }),
-  productKey:    text("productKey").notNull(),   // "thinker-ai" | "flowforge" | "webpilot"
-  type:          text("type").notNull(),          // "trial" | "paid" | "gift"
-  status:        text("status").notNull().default("active"),        // "active" | "expired"
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  productKey: text("productKey").notNull(), // "thinker-ai" | "flowforge" | "webpilot"
+  type: text("type").notNull(), // "trial" | "paid" | "gift"
+  status: text("status").notNull().default("active"), // "active" | "expired"
   trialStartsAt: timestamp("trialStartsAt"),
-  trialEndsAt:   timestamp("trialEndsAt"),
-  createdAt:     timestamp("createdAt").defaultNow().notNull(),
+  trialEndsAt: timestamp("trialEndsAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
+export const plans = pgTable("plans", {
+  id: serial("id").primaryKey(),
+  slug: text("slug").notNull().unique(), // 例如 'grammar-master-yearly'
+  name: text("name").notNull(),
+  rateLimitPerMin: integer("rate_limit_per_min").notNull().default(60),
+  quotaPerMonth: integer("quota_per_month").notNull().default(100000),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});
+
+export const apiKeys = pgTable("api_keys", {
+  id: serial("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  planId: integer("plan_id")
+    .notNull()
+    .references(() => plans.id, { onDelete: "restrict" }),
+  keyHash: text("key_hash").notNull().unique(),
+  status: text("status").notNull().default("active"), // 'active' | 'revoked'
+  expiresAt: timestamp("expires_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});
 
 export const apiUsage = pgTable(
   "api_usage",
@@ -171,7 +171,77 @@ export const apiUsage = pgTable(
       table.userId,
       table.apiKeyId,
       table.year,
-      table.month
+      table.month,
     ),
-  })
+  }),
+);
+
+/**
+ * LIMIT EVENTS LOG TABLE
+ */
+
+export const limitEvents = pgTable(
+  "limit_events",
+  {
+    id: bigserial("id", { mode: "bigint" }).primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    apiKeyId: integer("api_key_id")
+      .notNull()
+      .references(() => apiKeys.id, { onDelete: "cascade" }),
+    planSlug: text("plan_slug").notNull(),
+    eventType: text("event_type").notNull(), // 'rate_limited' | 'quota_exceeded'
+    httpStatus: integer("http_status").notNull(), // 429 / 403
+    requestPath: text("request_path"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => ({
+    createdAtIdx: index("idx_limit_events_created_at").on(table.createdAt),
+    planCreatedIdx: index("idx_limit_events_plan_created").on(
+      table.planSlug,
+      table.createdAt,
+    ),
+    userCreatedIdx: index("idx_limit_events_user_created").on(
+      table.userId,
+      table.createdAt,
+    ),
+  }),
+);
+
+/**
+ * WEBHOOK DEAD-LETTER TABLE
+ *
+ * Stores webhook events that could not be processed successfully.
+ * Used for debugging, replay, and compliance auditing.
+ */
+export const webhookDeadLetters = pgTable(
+  "webhook_dead_letters",
+  {
+    id: bigserial("id", { mode: "bigint" }).primaryKey(),
+    provider: text("provider").notNull(), // 'paddle', 'dodo', etc.
+    eventType: text("event_type").notNull(), // 'subscription.activated', etc.
+    eventId: text("event_id"), // Provider's event ID if available
+    rawPayload: text("raw_payload").notNull(), // Full webhook payload as JSON
+    failureReason: text("failure_reason").notNull(), // Why it failed
+    failureDetails: text("failure_details"), // Additional error details
+    status: text("status").notNull().default("pending"), // 'pending' | 'resolved' | 'ignored'
+    resolvedAt: timestamp("resolved_at", { withTimezone: true }),
+    resolvedBy: text("resolved_by"), // Admin user who resolved it
+    resolutionNotes: text("resolution_notes"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => ({
+    providerIdx: index("idx_webhook_dead_letters_provider").on(table.provider),
+    statusIdx: index("idx_webhook_dead_letters_status").on(table.status),
+    createdAtIdx: index("idx_webhook_dead_letters_created_at").on(table.createdAt),
+    providerStatusIdx: index("idx_webhook_dead_letters_provider_status").on(
+      table.provider,
+      table.status,
+    ),
+  }),
 );

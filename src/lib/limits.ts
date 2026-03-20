@@ -1,9 +1,10 @@
-// src/lib/limits.ts
+// src/lib/limit.ts
 import type { Redis } from "ioredis";
 import { getRedis } from "./redis";
 import { db } from "@/db";
 import { apiUsage } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
+import { logLimitEvent } from "@/db/limit-logging";
 
 export type PlanLimits = {
   rateLimitPerMin: number;
@@ -17,7 +18,6 @@ export type LimitEnforceResult = {
   remainingQuota?: number;
 };
 
-// Rate limit: per-minute counter in Redis
 function buildRateLimitKey(apiKeyHash: string) {
   return `rate_limit:${apiKeyHash}`;
 }
@@ -55,20 +55,19 @@ export async function checkRateLimit(params: {
 // Monthly quota: Postgres usage + upsert
 type CheckAndConsumeQuotaParams = {
   userId: string;
-  apiKeyId: string;
+  apiKeyId: number;
   quotaPerMonth: number;
   cost: number;
   now?: Date;
 };
 
 export async function checkAndConsumeQuota(
-  params: CheckAndConsumeQuotaParams
+  params: CheckAndConsumeQuotaParams,
 ): Promise<{ allowed: boolean; remainingQuota?: number }> {
   const now = params.now ?? new Date();
   const year = now.getUTCFullYear();
   const month = now.getUTCMonth() + 1;
 
-  // First, check current usage
   const existing = await db
     .select()
     .from(apiUsage)
@@ -77,15 +76,14 @@ export async function checkAndConsumeQuota(
         eq(apiUsage.userId, params.userId),
         eq(apiUsage.apiKeyId, params.apiKeyId),
         eq(apiUsage.year, year),
-        eq(apiUsage.month, month)
-      )
+        eq(apiUsage.month, month),
+      ),
     )
     .limit(1);
 
   const currentUsed = existing[0]?.used ?? 0;
   const newUsed = currentUsed + params.cost;
 
-  // Check if quota would be exceeded
   if (newUsed > params.quotaPerMonth) {
     return {
       allowed: false,
@@ -93,9 +91,7 @@ export async function checkAndConsumeQuota(
     };
   }
 
-  // Upsert: insert or update
   if (existing.length === 0) {
-    // Insert new record
     await db.insert(apiUsage).values({
       userId: params.userId,
       apiKeyId: params.apiKeyId,
@@ -104,7 +100,6 @@ export async function checkAndConsumeQuota(
       used: params.cost,
     });
   } else {
-    // Update existing record
     await db
       .update(apiUsage)
       .set({
@@ -116,8 +111,8 @@ export async function checkAndConsumeQuota(
           eq(apiUsage.userId, params.userId),
           eq(apiUsage.apiKeyId, params.apiKeyId),
           eq(apiUsage.year, year),
-          eq(apiUsage.month, month)
-        )
+          eq(apiUsage.month, month),
+        ),
       );
   }
 
@@ -131,16 +126,18 @@ export async function checkAndConsumeQuota(
 
 // Top-level: enforceLimits
 type EnforceLimitsParams = {
-  apiKeyId: string;
+  apiKeyId: number;
   apiKeyHash: string;
   userId: string;
   planLimits: PlanLimits;
+  planSlug: string;
+  requestPath: string;
   cost?: number;
   redis?: Redis;
 };
 
 export async function enforceLimits(
-  params: EnforceLimitsParams
+  params: EnforceLimitsParams,
 ): Promise<LimitEnforceResult> {
   const cost = params.cost ?? 1;
   const { rateLimitPerMin, quotaPerMonth } = params.planLimits;
@@ -152,6 +149,16 @@ export async function enforceLimits(
   });
 
   if (!rl.allowed) {
+    // 记录 429
+    await logLimitEvent({
+      userId: params.userId,
+      apiKeyId: params.apiKeyId,
+      planSlug: params.planSlug,
+      eventType: "rate_limited",
+      httpStatus: 429,
+      requestPath: params.requestPath,
+    });
+
     return {
       ok: false,
       code: "RATE_LIMITED",
@@ -167,6 +174,16 @@ export async function enforceLimits(
   });
 
   if (!quota.allowed) {
+    // 记录 403
+    await logLimitEvent({
+      userId: params.userId,
+      apiKeyId: params.apiKeyId,
+      planSlug: params.planSlug,
+      eventType: "quota_exceeded",
+      httpStatus: 403,
+      requestPath: params.requestPath,
+    });
+
     return {
       ok: false,
       code: "QUOTA_EXCEEDED",

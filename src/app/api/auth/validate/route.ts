@@ -82,6 +82,8 @@ export async function POST(req: Request) {
     apiKeyHash: hashed,
     userId: record.userId,
     planLimits,
+    planSlug: record.planSlug,
+    requestPath: "/api/auth/validate",
     // 先固定每次调用算 1
     cost: 1,
   });
