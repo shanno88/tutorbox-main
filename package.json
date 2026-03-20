@@ -11,7 +11,8 @@
     "db:studio": "drizzle-kit studio",
     "check:external-links": "tsx scripts/check-external-links.ts",
     "init:external-links": "tsx scripts/init-external-link-health.ts",
-    "prebuild": "npm run check:external-links"
+    "prebuild": "npm run check:external-links",
+	"limit:stats": "tsx scripts/print-limit-stats.ts"
   },
   "dependencies": {
     "@auth/core": "^0.34.3",
