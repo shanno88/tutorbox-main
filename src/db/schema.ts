@@ -14,7 +14,36 @@ import {
 } from "drizzle-orm/pg-core";
 import type { AdapterAccount } from "@auth/core/adapters";
 import { sql } from "drizzle-orm";
+//import { pgTable, serial, text, integer, timestamp } from 'drizzle-orm/pg-core';
 
+export const plans = pgTable('plans', {
+  id: serial('id').primaryKey(),
+  slug: text('slug').notNull().unique(),      // 例如 'grammar-master-yearly'
+  name: text('name').notNull(),
+  rateLimitPerMin: integer('rate_limit_per_min').notNull().default(60),
+  quotaPerMonth: integer('quota_per_month').notNull().default(100000),
+  createdAt: timestamp('created_at', { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});
+
+export const apiKeys = pgTable('api_keys', {
+  id: serial('id').primaryKey(),
+  userId: text('user_id')                     // 看你 User 表的主键类型，如果是 text 就用 text
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  planId: integer('plan_id')
+    .notNull()
+    .references(() => plans.id, { onDelete: 'restrict' }),
+  keyHash: text('key_hash').notNull().unique(),
+  status: text('status').notNull().default('active'), // 'active' | 'revoked'
+  expiresAt: timestamp('expires_at', { withTimezone: true }),
+  createdAt: timestamp('created_at', { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});
+// 已有的 users 导入保持不变
+// import { users } from './schema';
 /**
  * NEXT-AUTH TABLES
  */
@@ -116,3 +145,33 @@ export const productGrants = pgTable("product_grant", {
   createdAt:     timestamp("createdAt").defaultNow().notNull(),
 });
 
+
+export const apiUsage = pgTable(
+  "api_usage",
+  {
+    id: serial("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    apiKeyId: integer("api_key_id")
+      .notNull()
+      .references(() => apiKeys.id, { onDelete: "cascade" }),
+    year: integer("year").notNull(),
+    month: integer("month").notNull(),
+    used: integer("used").notNull().default(0),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => ({
+    uniqueKey: unique("api_usage_unique_key").on(
+      table.userId,
+      table.apiKeyId,
+      table.year,
+      table.month
+    ),
+  })
+);

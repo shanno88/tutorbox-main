@@ -121,20 +121,13 @@ export default function LeaseAIPage() {
             </p>
             <div className="space-y-3">
               <button
-                onClick={handleStartTrial}
-                disabled={isLoading}
-                className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
-              >
-                {isLoading ? (isZh ? "处理中..." : "Processing...") : (isZh ? "免费试用" : "Start Trial")}
-              </button>
-              <button
                 onClick={handleBuy}
                 disabled={isLoading}
                 className="w-full px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
               >
-                {isZh ? "立即购买" : "Buy Now"}
+                {isLoading ? (isZh ? "处理中..." : "Processing...") : (isZh ? "立即购买" : "Buy Now")}
               </button>
-            </div>
+             </div>
             {error && (
               <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded text-red-700 text-sm">
                 {error}
@@ -183,7 +176,7 @@ export default function LeaseAIPage() {
           <h3 className="text-xl font-semibold mb-2">
             {isZh ? "价格" : "Pricing"}
           </h3>
-          <p className="text-3xl font-bold">$49 USD</p>
+          <p className="text-3xl font-bold">$9.9 USD</p>
           <p className="text-sm text-muted-foreground mt-2">
             {isZh ? "无限次合同审核，一次付清，无自动续费" : "Unlimited lease contract reviews · one-time payment"}
           </p>

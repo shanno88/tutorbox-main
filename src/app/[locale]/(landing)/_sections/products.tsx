@@ -233,17 +233,8 @@ export function ProductsSection() {
   }
 
   return (
-    <section id="products" className="bg-gray-50 dark:bg-gray-800/50 py-24">
+    <section id="products" className="bg-gray-50 dark:bg-gray-800/50 py-6">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 dark:text-white">
-            {t("sectionTitle")}
-          </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            {t("sectionDescription")}
-          </p>
-        </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {products.map((product) => {
             const trialStatus = trialStatuses.find(

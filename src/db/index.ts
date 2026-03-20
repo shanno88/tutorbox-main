@@ -1,4 +1,3 @@
-import { env } from "@/env";
 import * as schema from "./schema";
 import { PostgresJsDatabase, drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
@@ -10,24 +9,18 @@ declare global {
 
 let db: PostgresJsDatabase<typeof schema>;
 
-if (env.NODE_ENV === "production") {
-  const databaseUrl = env.DATABASE_URL;
-  if (!databaseUrl) {
-    throw new Error("DATABASE_URL is not set");
-  }
+if (!global.db) {
+  // 先写死连接串，后面再改回 env
+  const databaseUrl =
+    "postgresql://postgres:lW730208@localhost:5432/tutorbox_auth_dev";
 
-  db = drizzle(postgres(databaseUrl), { schema });
+  console.log("DB URL hardcoded:", databaseUrl);
+
+  const client = postgres(databaseUrl);
+  db = drizzle(client, { schema });
+  global.db = db;
 } else {
-  db = new Proxy(
-    {},
-    {
-      get() {
-        throw new Error(
-          "Drizzle/Postgres is disabled in development. Use Prisma + SQLite (DATABASE_URL=file:./dev.db) instead."
-        );
-      },
-    }
-  ) as unknown as PostgresJsDatabase<typeof schema>;
+  db = global.db;
 }
 
 export { db };

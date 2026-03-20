@@ -5,6 +5,8 @@ import { db } from "@/db";
 import { productGrants } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
 
+const EN_CARDS_PRICE_ID = env.NEXT_PUBLIC_PADDLE_PRICE_ID_EN_CARDS;
+
 export async function POST(req: Request) {
   if (env.NODE_ENV !== "production") {
     return new Response("OK", { status: 200 });
@@ -177,7 +179,10 @@ export async function POST(req: Request) {
     const priceToProduct: Record<string, string> = {
       // 美国租约
       "pri_01kgrhp2wtthebpgwmn8eh5ssy": "lease-ai",
-    };
+    // 英语卡片（一次性解锁）
+    [EN_CARDS_PRICE_ID]: "en-cards",
+  };
+
 
     const productKey = priceId ? priceToProduct[priceId] : undefined;
 
