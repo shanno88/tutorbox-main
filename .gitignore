@@ -54,3 +54,5 @@ node_modules/
 __pycache__/
 *.pyc
 
+license-server/licenses.db
+
