@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "brand": {
     "name": "Shanno",
@@ -248,3 +249,164 @@
     "upgradeNow": "Subscribe to keep your apps running"
   }
 }
+=======
+{
+  "brand": {
+    "name": "Shanno",
+    "studio": "Studio"
+  },
+  "nav": {
+    "products": "Products",
+    "about": "About",
+    "settings": "Settings",
+    "signOut": "Sign Out",
+    "signIn": "Sign In"
+  },
+  "hero": {
+    "title": "Shanno <span>·</span> 独立 AI 产品工作室",
+    "subtitle": "AI tools built for global users",
+    "description": "A one-person studio building practical AI tools for global users. Every product starts from real-world needs, helping you cut costs, save effort, and free up time to create greater value.",
+    "cta": {
+      "getStarted": "View Pricing"
+    }
+  },
+  "pricing": {
+    "headline": "Simple, transparent pricing",
+    "subhead": "Choose the tool that fits your needs. Pay only for what you use.",
+    "products": {
+      "grammarMaster": {
+        "name": "Grammar Master",
+        "nameCn": "语法大师",
+        "tagline": "English writing assistant for non-native speakers",
+        "taglineCn": "英文写作助手，告别 Chinglish",
+        "price": "¥199",
+        "period": "one-time",
+        "cta": "Get Grammar Master",
+        "features": [
+          "Real-time grammar correction",
+          "Style suggestions for professional writing",
+          "Chinglish pattern detection",
+          "Context-aware improvements"
+        ],
+        "featuresCn": [
+          "实时语法纠正",
+          "专业写作风格建议",
+          "中式英语检测",
+          "语境优化建议"
+        ]
+      },
+      "leaseAssistant": {
+        "name": "US Lease Assistant",
+        "nameCn": "美国租房合同审核",
+        "tagline": "AI-powered US lease review in 30 seconds",
+        "taglineCn": "美国租房合同智能审核，30秒读懂陷阱条款",
+        "price": "$9.90",
+        "period": "per review",
+        "cta": "Get Lease Assistant",
+        "features": [
+          "Upload lease PDF for instant analysis",
+          "Identify hidden fees & unfair clauses",
+          "Negotiation suggestions included",
+          "Bilingual support (EN/CN)"
+        ],
+        "featuresCn": [
+          "上传合同 PDF 即刻分析",
+          "识别隐藏费用与不公平条款",
+          "提供谈判修改建议",
+          "中英双语支持"
+        ]
+      }
+    }
+  },
+  "products": {
+    "sectionTitle": "Product Portfolio",
+    "sectionDescription": "Every product stems from real pain points, using AI to reduce information gaps and living costs",
+    "status": {
+      "live": "Live",
+      "beta": "Beta",
+      "comingSoon": "Coming Soon"
+    },
+    "cta": {
+      "learnMore": "Learn More",
+      "tryNow": "Try Now",
+      "applyIntegration": "Apply for Access",
+      "joinBeta": "Join Beta"
+    },
+    "leaseAi": {
+      "name": "Lease AI Review",
+      "nameCn": "US Lease Review",
+      "tagline": "AI-powered US lease review in 30 seconds",
+      "taglineCn": "Smart US lease review, understand trap clauses in 30 seconds"
+    },
+    "grammarMaster": {
+      "name": "Grammar Master",
+      "nameCn": "Grammar Master",
+      "tagline": "English writing assistant for non-native speakers",
+      "taglineCn": "English writing assistant, say goodbye to Chinglish"
+    },
+    "castMaster": {
+      "name": "Cast Master",
+      "nameCn": "Podcast Master",
+      "tagline": "AI assistant for short-form video creators",
+      "taglineCn": "AI assistant for short video creators"
+    }
+  },
+  "about": {
+    "title": "About Shanno",
+    "intro": "In the AI era, your biggest risk is wasted time and a slowly shrinking income.",
+    "story": "Shanno builds small, practical AI tools that boost your speed and efficiency, so you can actually get results that matter.",
+    "builtWith": "Built with ❤️ by Shanno · Powered by AI",
+    "email": "shanno@tutorbox.cc"
+  },
+  "footer": {
+    "products": "Products",
+    "contact": "Contact",
+    "legal": "Legal",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "refundPolicy": "Refund Policy"
+  },
+  "reserved": {
+    "brand": "Shanno Studio",
+    "copyright": "© 2024 Shanno Studio. All Rights Reserved. Built with"
+  },
+  "header": {
+    "brand": "Shanno Studio",
+    "avatarFallback": "CN",
+    "settings": "Settings",
+    "signOut": "Sign Out",
+    "signIn": "Sign In"
+  },
+  "feedback": {
+    "title": "Feedback",
+    "description": "We value your feedback. How can we improve your experience?",
+    "cancel": "Cancel",
+    "toast": {
+      "submittedTitle": "Feedback submitted",
+      "submittedDescription": "Thank you for your feedback"
+    },
+    "validation": {
+      "nameRequired": "Name is required",
+      "feedbackRequired": "Feedback is required"
+    },
+    "form": {
+      "nameLabel": "Your name",
+      "namePlaceholder": "Jane Doe",
+      "feedbackLabel": "Your feedback",
+      "feedbackPlaceholder": "Tell us how we can improve our product",
+      "sending": "Sending feedback...",
+      "submit": "Send feedback"
+    }
+  },
+  "modeToggle": {
+    "toggleTheme": "Toggle theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "language": {
+    "en": "EN",
+    "zh": "中文"
+  }
+}
+>>>>>>> origin/main

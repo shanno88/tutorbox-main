@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import {
   timestamp,
   pgTable,
@@ -245,3 +246,123 @@ export const webhookDeadLetters = pgTable(
     ),
   }),
 );
+=======
+import {
+  timestamp,
+  pgTable,
+  text,
+  serial,
+  varchar,
+  primaryKey,
+  integer,
+  date,
+  boolean,
+  uuid,
+  unique,
+  time,
+} from "drizzle-orm/pg-core";
+import type { AdapterAccount } from "@auth/core/adapters";
+import { sql } from "drizzle-orm";
+
+/**
+ * NEXT-AUTH TABLES
+ */
+export const users = pgTable("user", {
+  id: text("id").notNull().primaryKey(),
+  name: text("name"),
+  email: text("email").notNull(),
+  emailVerified: timestamp("emailVerified", { mode: "date" }),
+  image: text("image"),
+});
+
+export const accounts = pgTable(
+  "account",
+  {
+    userId: text("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    type: text("type").$type<AdapterAccount["type"]>().notNull(),
+    provider: text("provider").notNull(),
+    providerAccountId: text("providerAccountId").notNull(),
+    refresh_token: text("refresh_token"),
+    access_token: text("access_token"),
+    expires_at: integer("expires_at"),
+    token_type: text("token_type"),
+    scope: text("scope"),
+    id_token: text("id_token"),
+    session_state: text("session_state"),
+  },
+  (account) => ({
+    primaryKey: [account.provider, account.providerAccountId],
+  })
+);
+
+export const sessions = pgTable("session", {
+  sessionToken: text("sessionToken").notNull().primaryKey(),
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  expires: timestamp("expires", { mode: "date" }).notNull(),
+});
+
+export const verificationTokens = pgTable(
+  "verificationToken",
+  {
+    identifier: text("identifier").notNull(),
+    token: text("token").notNull(),
+    expires: timestamp("expires", { mode: "date" }).notNull(),
+  },
+  (vt) => ({
+    primaryKey: [vt.identifier, vt.token],
+  })
+);
+
+/**
+ * APP SPECIFIC TABLES
+ */
+
+export const todos = pgTable("todo", {
+  id: uuid("id")
+    .notNull()
+    .primaryKey()
+    .default(sql`gen_random_uuid()`),
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  text: varchar("text").notNull(),
+  isCompleted: boolean("isCompleted").notNull().default(false),
+  createdAt: time("createdAt")
+    .notNull()
+    .default(sql`now()`),
+});
+
+export const subscriptions = pgTable("subscriptions", {
+  userId: text("userId")
+    .notNull()
+    .primaryKey()
+    .references(() => users.id, { onDelete: "cascade" }),
+  paddleSubscriptionId: text("paddleSubscriptionId").notNull(),
+  paddleCustomerId: text("paddleCustomerId").notNull(),
+  paddlePriceId: text("paddlePriceId").notNull(),
+  currentPeriodEnd: timestamp("currentPeriodEnd", {
+    mode: "date",
+  }).notNull(),
+});
+
+export type Todo = typeof todos.$inferSelect;
+
+// src/db/schema.ts （末尾追加）
+//import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
+
+export const productGrants = pgTable("product_grant", {
+  id:            text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+  userId:        text("userId").notNull().references(() => users.id, { onDelete: "cascade" }),
+  productKey:    text("productKey").notNull(),   // "thinker-ai" | "flowforge" | "webpilot"
+  type:          text("type").notNull(),          // "trial" | "paid" | "gift"
+  status:        text("status").notNull().default("active"),        // "active" | "expired"
+  trialStartsAt: timestamp("trialStartsAt"),
+  trialEndsAt:   timestamp("trialEndsAt"),
+  createdAt:     timestamp("createdAt").defaultNow().notNull(),
+});
+
+>>>>>>> origin/main

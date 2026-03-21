@@ -75,7 +75,11 @@ export default function LeaseAIPage() {
         {/* 标题区 */}
         <div className="text-center mb-12">
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4">
+<<<<<<< HEAD
             {isZh ? "Lease AI Review · 租房合同审核" : "Lease AI Review"}
+=======
+            Lease AI Review
+>>>>>>> origin/main
           </h1>
           <p className="text-lg sm:text-xl text-muted-foreground mb-1">
             {isZh ? "美国租房合同智能审核" : "Smart US Lease Contract Review"}
@@ -133,6 +137,15 @@ export default function LeaseAIPage() {
                 {error}
               </div>
             )}
+<<<<<<< HEAD
+=======
+
+            <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-xs space-y-1">
+              <p className="text-yellow-800 font-bold">⚠️ 注意事项：</p>
+              <p className="text-yellow-700">📧 登录邮件可能进入垃圾箱，请检查垃圾邮件文件夹</p>
+              <p className="text-yellow-700">💳 支付页面请将国家改为「中国」才能看到微信支付选项</p>
+            </div>
+>>>>>>> origin/main
             <p className="text-xs text-muted-foreground mt-6">
               {!session?.user
                 ? (isZh ? "登录后即可开始使用" : "Sign in to get started")

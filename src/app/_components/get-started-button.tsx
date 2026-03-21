@@ -12,7 +12,7 @@ export function GetStartedButton() {
       onClick={() => {
         trackEvent("user clicked get started");
         // Redirect to login page instead of direct Google sign-in
-        router.push("/login");
+        router.push(`/${window.location.pathname.split("/")[1] || "zh"}/login`);
       }}
     >
       Login to Get Started

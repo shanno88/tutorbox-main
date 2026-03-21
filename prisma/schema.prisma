@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
@@ -101,3 +102,108 @@ model ExternalLinkHealth {
   updatedAt         DateTime @updatedAt
 }
 
+=======
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// --- Auth core models ---
+
+model User {
+  id            String   @id @default(cuid())
+  email         String?  @unique
+  emailVerified DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Account trial fields (3-day trial per user)
+  trialStart    DateTime?
+  trialEnd      DateTime?
+  hasUsedTrial  Boolean  @default(false)
+
+  // Legacy field - kept for backward compatibility
+  trialStartedAt DateTime?
+  plan           String?  // 'TRIAL' | 'PRO' | 'EXPIRED' | 'FREE'
+
+  sessions      Session[]
+  accounts      Account[]
+  productGrants ProductGrant[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? //@db.Text
+  access_token      String? //@db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? //@db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// --- Business: product trials / access ---
+
+model ProductGrant {
+  id            String   @id @default(cuid())
+  user          User     @relation(fields: [userId], references: [id])
+  userId        String
+  productKey    String   // e.g. "thinker-ai", "flowforge"
+  type          String   // "trial" | "paid" | "gift"
+  status        String   // "active" | "expired"
+  trialStartsAt DateTime?
+  trialEndsAt   DateTime?
+  createdAt     DateTime @default(now())
+}
+
+// --- External link health monitoring ---
+
+model ExternalLinkHealth {
+  id                String   @id @default(cuid())
+  linkId            String   @unique // matches id from external-links.ts config
+  url               String
+  status            String   // "unknown" | "ok" | "unavailable"
+  lastCheckedAt     DateTime @default(now())
+  lastStatusCode    Int?
+  consecutiveFailures Int    @default(0)
+  lastError         String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+>>>>>>> origin/main
