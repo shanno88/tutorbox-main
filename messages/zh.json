@@ -43,6 +43,42 @@
           "语境优化建议"
         ]
       },
+      "castMaster": {
+        "name": "Cast Master",
+        "nameCn": "播感大师",
+        "tagline": "AI assistant for short-form video creators",
+        "taglineCn": "AI 提词器，短视频脚本一键生成",
+        "price": "¥99",
+        "period": "/年",
+        "cta": "获取播感大师",
+        "features": [
+          "AI-powered script generation (e-commerce, courses, short videos)",
+          "Professional teleprompter with scrolling playback",
+          "Rhythm annotation & pause hints",
+          "Prohibited word detection",
+          "Export to Word / SRT subtitles"
+        ],
+        "featuresCn": [
+          "AI 智能脚本生成（带货/课程/短视频）",
+          "专业提词器滚动播放",
+          "韵律标注 & 停顿提示",
+          "违禁词智能检测",
+          "导出 Word / SRT 字幕"
+        ],
+	  "features": [
+	    "短视频脚本生成与优化",
+	    "多平台内容格式适配",
+	    "标题、封面文案一键生成",
+	    "内容复用与剪辑建议"
+	   ],
+	  "featuresCn": [
+	    "短视频脚本生成与优化",
+	    "多平台内容格式适配",
+	    "标题、封面文案一键生成",
+	    "内容复用与剪辑建议"
+	  ]
+	
+      },
       "leaseAssistant": {
         "name": "US Lease Assistant",
         "nameCn": "美国租房合同审核",
@@ -68,7 +104,8 @@
   },
   "products": {
     "sectionTitle": "产品矩阵",
-    "sectionDescription": "每一个产品都源于真实痛点，用 AI 降低信息差和生活成本",
+    "sectionDescription": "从具体应用，到试用判断大脑，再到全球支付工具，一站打通\"卖出去 + 收得到 + 控好权限\"的闭环。",
+    "sectionHeadline": "把一个小产品，变成能赚钱的产品",
     "status": {
       "live": "已上线",
       "beta": "测试中",
@@ -79,6 +116,27 @@
       "tryNow": "立即体验",
       "applyIntegration": "申请接入",
       "joinBeta": "加入内测"
+    },
+    "enCards": {
+      "name": "EN Cards · 英语记忆卡片",
+      "tagline": "英语语法大招谁懂啊！",
+      "description": "这些最难记的语法点，都被做成了好玩又好记的语法卡。围绕中国各大城市生活场景做例句，先白嫖体验 20 张，喜欢再一次性解锁完整 100 张。",
+      "status": "一次性解锁 · 19.9元",
+      "cta": "进入产品"
+    },
+    "trialJudgment": {
+      "name": "试用判断台",
+      "tagline": "鉴权 / 分层体验",
+      "description": "判断网站访客是免费、试用还是付费用户的大脑，为每一次访问自动匹配对应的功能与体验。帮你无代码区分不同用户层级，控制可用功能、额度和提示文案，让升级路径清晰又不打扰。",
+      "status": "早鸟体验 · 即将开放",
+      "cta": "敬请期待"
+    },
+    "paddlePayment": {
+      "name": "Paddle 支付工具",
+      "tagline": "虚拟产品支付",
+      "description": "Paddle 虚拟产品支付管家，面向全球市场的一站式支付工具，支持订阅、一次性购买和多币种结算，你只管卖虚拟产品，收款和对账交给它。集成体验对标 Stripe，在欧美开发者群体中知名度仅次于 Stripe，是出海虚拟产品的主力收款通道之一。",
+      "status": "Dev Toolkit · Coming soon",
+      "cta": "敬请期待"
     },
     "leaseAi": {
       "name": "Lease AI Review",
@@ -155,5 +213,39 @@
   "language": {
     "en": "EN",
     "zh": "中文"
+  },
+  "billing": {
+    "pageTitle": "订阅与账单",
+    "currentPlan": "当前套餐",
+    "noSubscription": "你还没有激活任何订阅。",
+    "nextBillingDate": "下次扣费日期",
+    "manageOnStripe": "在 Stripe 中管理订阅",
+    "status": {
+      "active": "已激活",
+      "trialing": "试用中",
+      "canceled": "已取消",
+      "past_due": "逾期未支付"
+    },
+    "actions": {
+      "upgrade": "升级套餐",
+      "downgrade": "降级套餐",
+      "cancel": "取消订阅"
+    }
+  },
+  "license": {
+    "appLimitTitle": "当前套餐的应用数量上限",
+    "appUsage": "已使用 {used} / {limit} 个应用名额",
+    "appLimitReached": "你已用完当前套餐可用的应用数量。",
+    "appLimitHardBlocked": "当前套餐无法再创建新应用，如需继续使用请升级套餐。",
+    "upgradeCta": "升级套餐，解锁更多应用名额",
+    "includedFeatures": "该套餐包含的功能"
+  },
+  "trial": {
+    "bannerTitle": "试用期进行中",
+    "timeLeft": "剩余时间：{minutes} 分钟",
+    "expiredTitle": "试用已结束",
+    "expiredDescription": "试用结束后，新学生将无法开始学习，请开通订阅以继续使用。",
+    "startNow": "开始试用",
+    "upgradeNow": "开通订阅，继续使用应用"
   }
 }

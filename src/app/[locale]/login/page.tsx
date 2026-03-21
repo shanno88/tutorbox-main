@@ -1,21 +1,37 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
+  const [rememberEmail, setRememberEmail] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
   const params = useParams<{ locale: string }>();
   const locale = params?.locale ?? "zh";
+
+  // Load remembered email on mount
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("tutorbox_remembered_email");
+    if (savedEmail) {
+      setEmail(savedEmail);
+    }
+  }, []);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setIsLoading(true);
 
     try {
+      // Save email if remember checkbox is checked
+      if (rememberEmail) {
+        localStorage.setItem("tutorbox_remembered_email", email.trim());
+      } else {
+        localStorage.removeItem("tutorbox_remembered_email");
+      }
+
       // Use email magic link provider
       await signIn("email", {
         email: email.trim(),
@@ -68,6 +84,17 @@ export default function LoginPage() {
               className="w-full rounded-md border border-input bg-background px-4 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             />
           </div>
+
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={rememberEmail}
+              onChange={(e) => setRememberEmail(e.target.checked)}
+              disabled={isLoading}
+              className="h-4 w-4 rounded border border-input cursor-pointer disabled:opacity-50"
+            />
+            <span className="text-sm text-muted-foreground">Remember my email</span>
+          </label>
 
           <button
             type="submit"

@@ -72,43 +72,31 @@ export function PricingSection() {
           </div>
 
           <div className="flex flex-col p-6 text-center text-gray-900 bg-amber-50 border border-amber-200 rounded-lg shadow dark:border-amber-900/40 xl:p-8 dark:bg-amber-950/20 dark:text-white">
-            <h3 className="mb-2 text-2xl font-semibold">Cast Master</h3>
-            <p className="mb-2 text-sm text-amber-700/80 dark:text-amber-200/80">播感大师</p>
+            <h3 className="mb-2 text-2xl font-semibold">{t("products.castMaster.name")}</h3>
+            <p className="mb-2 text-sm text-amber-700/80 dark:text-amber-200/80">
+              {t("products.castMaster.nameCn")}
+            </p>
             <p className="font-light text-amber-900/80 sm:text-lg dark:text-amber-100/80">
-              AI 提词器，短视频脚本一键生成
+              {isZh ? t("products.castMaster.taglineCn") : t("products.castMaster.tagline")}
             </p>
             <div className="flex items-baseline justify-center my-8">
-              <span className="mr-2 text-5xl font-extrabold">¥99</span>
-              <span className="text-xl text-amber-900/60 dark:text-amber-100/60">/年</span>
+              <span className="mr-2 text-5xl font-extrabold">{t("products.castMaster.price")}</span>
+              <span className="text-xl text-amber-900/60 dark:text-amber-100/60">{t("products.castMaster.period")}</span>
             </div>
             <ul role="list" className="mb-8 space-y-4 text-left">
-              <li className="flex items-center space-x-3">
-                <CheckIcon className="flex-shrink-0 w-5 h-5 text-amber-600" />
-                <span>AI 智能脚本生成（带货/课程/短视频）</span>
-              </li>
-              <li className="flex items-center space-x-3">
-                <CheckIcon className="flex-shrink-0 w-5 h-5 text-amber-600" />
-                <span>专业提词器滚动播放</span>
-              </li>
-              <li className="flex items-center space-x-3">
-                <CheckIcon className="flex-shrink-0 w-5 h-5 text-amber-600" />
-                <span>韵律标注 & 停顿提示</span>
-              </li>
-              <li className="flex items-center space-x-3">
-                <CheckIcon className="flex-shrink-0 w-5 h-5 text-amber-600" />
-                <span>违禁词智能检测</span>
-              </li>
-              <li className="flex items-center space-x-3">
-                <CheckIcon className="flex-shrink-0 w-5 h-5 text-amber-600" />
-                <span>导出 Word / SRT 字幕</span>
-              </li>
+              {(isZh ? t.raw("products.castMaster.featuresCn") : t.raw("products.castMaster.features")).map((feature: string, index: number) => (
+                <li key={index} className="flex items-center space-x-3">
+                  <CheckIcon className="flex-shrink-0 w-5 h-5 text-amber-600" />
+                  <span>{feature}</span>
+                </li>
+              ))}
             </ul>
             <PaddleCheckoutButton
               priceId={prompterPriceId}
               userId={userId}
               className="w-full bg-amber-500 hover:bg-amber-600 text-white"
             >
-              获取播感大师
+              {t("products.castMaster.cta")}
             </PaddleCheckoutButton>
           </div>
 

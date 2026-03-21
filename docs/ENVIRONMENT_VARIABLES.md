@@ -16,6 +16,13 @@ NEXTAUTH_SECRET=your-secret-key-here
 # Email provider for magic links
 EMAIL_FROM=noreply@tutorbox.cc
 RESEND_API_KEY=re_your_resend_api_key
+
+# Session duration configuration (optional, defaults to 14 days)
+# Set to number of seconds. Examples:
+# 7 days: 604800
+# 14 days: 1209600 (default)
+# 30 days: 2592000
+NEXTAUTH_SESSION_MAX_AGE=1209600
 ```
 
 ### Database
@@ -68,6 +75,19 @@ NEXT_PUBLIC_PADDLE_PRICE_ID_PROMPTER_YEARLY_CNY=
 ```bash
 # Duration of anonymous trial in minutes (optional, defaults to 30)
 NEXT_PUBLIC_ANONYMOUS_TRIAL_MINUTES=30
+```
+
+### Session & Login Management
+
+```bash
+# Session duration in seconds (optional, defaults to 14 days = 1209600 seconds)
+# This controls how long users stay logged in after signing in
+# Common values:
+#   7 days:  604800
+#   14 days: 1209600 (default - recommended for regular users)
+#   30 days: 2592000
+# Note: Changing this requires redeployment
+NEXTAUTH_SESSION_MAX_AGE=1209600
 ```
 
 ### Other Optional Variables
@@ -170,6 +190,22 @@ The app uses `@t3-oss/env-nextjs` for environment variable validation with the f
 **Expected Behavior**: This is normal in development. The app will show "定价即将开放" (Pricing coming soon) instead of checkout buttons.
 
 **Solution**: Set the appropriate `NEXT_PUBLIC_PADDLE_PRICE_ID_*` variables when ready to accept payments.
+
+### Users Getting Logged Out Unexpectedly
+
+**Cause**: Session cookie is not persistent or `NEXTAUTH_SECRET` was changed.
+
+**Solution**:
+1. Verify `NEXTAUTH_SESSION_MAX_AGE` is set to at least 604800 (7 days)
+2. Check that `NEXTAUTH_SECRET` hasn't been rotated (changing it invalidates all sessions)
+3. Clear browser cookies and try logging in again
+4. If issue persists, check server logs for JWT validation errors
+
+**Note**: If you must rotate `NEXTAUTH_SECRET`:
+- All existing sessions will be invalidated
+- All users will need to re-login once
+- This is unavoidable for security reasons
+- Document the rotation in deployment notes
 
 ## Adding New Environment Variables
 

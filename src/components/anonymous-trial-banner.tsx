@@ -2,6 +2,7 @@
 
 import { Clock, X } from "lucide-react";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 
 interface AnonymousTrialBannerProps {
@@ -15,23 +16,12 @@ export function AnonymousTrialBanner({
   onSignUp,
   locale = "en",
 }: AnonymousTrialBannerProps) {
+  const t = useTranslations("trial");
   const [isDismissed, setIsDismissed] = useState(false);
 
   if (isDismissed) return null;
 
   const isUrgent = minutesRemaining <= 5;
-
-  const content = locale === "zh" ? {
-    title: "匿名试用",
-    remaining: `剩余 ${minutesRemaining} 分钟`,
-    message: "注册后获得 3 天完整试用",
-    cta: "立即注册",
-  } : {
-    title: "Anonymous Trial",
-    remaining: `${minutesRemaining} min remaining`,
-    message: "Sign up for 3-day full trial",
-    cta: "Sign Up",
-  };
 
   return (
     <div
@@ -49,14 +39,11 @@ export function AnonymousTrialBanner({
             }`}
           />
           <div className="flex items-center gap-2 flex-wrap text-sm">
-            <span className="font-semibold">{content.title}:</span>
+            <span className="font-semibold">{t("bannerTitle")}:</span>
             <span
               className={isUrgent ? "text-orange-700 font-semibold" : "text-blue-700"}
             >
-              {content.remaining}
-            </span>
-            <span className="text-muted-foreground hidden sm:inline">
-              · {content.message}
+              {t("timeLeft", { minutes: minutesRemaining })}
             </span>
           </div>
         </div>
@@ -69,7 +56,7 @@ export function AnonymousTrialBanner({
               variant={isUrgent ? "default" : "outline"}
               className="text-xs"
             >
-              {content.cta}
+              {t("upgradeNow")}
             </Button>
           )}
           <button

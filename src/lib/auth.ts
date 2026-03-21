@@ -87,6 +87,7 @@ export const authConfig = {
   secret: env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
+    maxAge: 14 * 24 * 60 * 60, // 14 days - persistent login for regular users
   },
   providers,
   pages: {

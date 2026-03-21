@@ -75,7 +75,7 @@ export default function LeaseAIPage() {
         {/* 标题区 */}
         <div className="text-center mb-12">
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4">
-            Lease AI Review
+            {isZh ? "Lease AI Review · 租房合同审核" : "Lease AI Review"}
           </h1>
           <p className="text-lg sm:text-xl text-muted-foreground mb-1">
             {isZh ? "美国租房合同智能审核" : "Smart US Lease Contract Review"}

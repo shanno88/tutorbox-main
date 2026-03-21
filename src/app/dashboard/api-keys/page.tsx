@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Card } from "@/components/ui/card";
 import { RotateButton } from "./rotate-button";
 
@@ -28,6 +29,7 @@ export default function ApiKeysPage() {
   const [data, setData] = useState<ApiKeysData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const tLicense = useTranslations("license");
 
   const fetchApiKeys = async () => {
     setLoading(true);
@@ -143,11 +145,7 @@ export default function ApiKeysPage() {
                   {key.monthlyQuota && (
                     <div className="mb-4">
                       <div className="flex items-center justify-between mb-2">
-                        <p className="text-sm text-gray-600">Monthly Usage</p>
-                        <p className="text-sm font-medium text-gray-700">
-                          {(key.currentMonthUsage || 0).toLocaleString()} /{" "}
-                          {key.monthlyQuota.toLocaleString()}
-                        </p>
+                        <p className="text-sm text-gray-600">{tLicense("appUsage", { used: key.currentMonthUsage || 0, limit: key.monthlyQuota })}</p>
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-2">
                         <div

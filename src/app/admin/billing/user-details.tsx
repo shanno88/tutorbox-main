@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Card } from "@/components/ui/card";
 import { ApiKeyActions } from "./api-key-actions";
 
@@ -47,6 +48,7 @@ export function UserDetails({ userId }: UserDetailsProps) {
   } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const tLicense = useTranslations("license");
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -257,11 +259,7 @@ export function UserDetails({ userId }: UserDetailsProps) {
                   {key.monthlyQuota && (
                     <div className="mb-4">
                       <div className="flex items-center justify-between mb-2">
-                        <p className="text-sm text-gray-600">Monthly Usage</p>
-                        <p className="text-sm font-medium text-gray-700">
-                          {(key.currentMonthUsage || 0).toLocaleString()} /{" "}
-                          {key.monthlyQuota.toLocaleString()}
-                        </p>
+                        <p className="text-sm text-gray-600">{tLicense("appUsage", { used: key.currentMonthUsage || 0, limit: key.monthlyQuota })}</p>
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-2">
                         <div

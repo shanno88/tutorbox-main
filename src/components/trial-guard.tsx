@@ -1,5 +1,7 @@
-// src/components/trial-guard.tsx
+"use client";
+
 import { redirect } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { getSSRSession } from "@/lib/get-server-session";
 import { checkUserAccess, type Product } from "@/lib/access";
 
@@ -40,14 +42,13 @@ export async function TrialGuard({ product, children }: TrialGuardProps) {
 }
 
 function TrialBanner({ daysLeft }: { daysLeft: number }) {
+  const t = useTranslations("trial");
+
   return (
     <div className="bg-amber-50 border-b border-amber-200 px-4 py-3">
       <div className="max-w-7xl mx-auto">
         <p className="text-sm text-amber-900">
-          <span className="font-medium">English:</span> You have {daysLeft} day
-          {daysLeft !== 1 ? "s" : ""} left in your free trial.
-          <br />
-          <span className="font-medium">中文：</span>您的免费试用还剩 {daysLeft} 天。
+          <span className="font-medium">{t("bannerTitle")}:</span> {t("timeLeft", { minutes: daysLeft })}
         </p>
       </div>
     </div>

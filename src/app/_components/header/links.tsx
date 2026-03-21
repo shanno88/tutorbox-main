@@ -3,32 +3,29 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { usePathname, useParams } from "next/navigation";
-import { getLiveApps, getAppRoute } from "@/config/apps";
+import { useTranslations } from "next-intl";
 
 export function Links() {
   const path = usePathname();
   const params = useParams();
   const locale = (params.locale as string) || "en";
+  const t = useTranslations("nav");
 
-  // Only show app links on homepage
+  // Only show nav links on homepage
   if (path !== "/" && !path.startsWith(`/${locale}`)) {
     return null;
   }
 
-  const liveApps = getLiveApps();
-
   return (
     <div className="flex gap-2">
-      {liveApps.map((app) => (
-        <Button key={app.slug} variant={"link"} asChild>
-          <Link href={getAppRoute(app.slug, locale)}>
-            {locale === "zh" ? app.nameCn : app.name}
-          </Link>
-        </Button>
-      ))}
+      <Button variant={"link"} asChild>
+        <Link href={`/${locale}#products`}>
+          {locale === "zh" ? "产品" : "Products"}
+        </Link>
+      </Button>
 
       <Button variant={"link"} asChild>
-        <Link href="#about">
+        <Link href={`/${locale}#about`}>
           {locale === "zh" ? "关于" : "About"}
         </Link>
       </Button>

@@ -1,3 +1,14 @@
+# Updated Billing Page – Complete File Content
+
+**File**: `src/app/dashboard/billing/page.tsx`  
+**Status**: ✅ Updated with i18n  
+**TypeScript Errors**: 0
+
+---
+
+## Complete File Content
+
+```typescript
 "use client";
 
 import { useEffect, useState } from "react";
@@ -159,3 +170,121 @@ export default function BillingPage() {
     </div>
   );
 }
+```
+
+---
+
+## Key Changes Summary
+
+### 1. Import Added (Line 3)
+```typescript
+import { useTranslations } from "next-intl";
+```
+
+### 2. Hook Initialized (Line 24)
+```typescript
+const t = useTranslations("billing");
+```
+
+### 3. Strings Replaced
+
+#### Page Title (Lines 51, 62, 75)
+```typescript
+// Before: <h1 className="text-3xl font-bold mb-8">Billing</h1>
+// After:
+<h1 className="text-3xl font-bold mb-8">{t("pageTitle")}</h1>
+```
+
+#### No Subscription Message (Line 81)
+```typescript
+// Before: <p className="text-gray-600 mb-4">You don't have an active subscription yet.</p>
+// After:
+<p className="text-gray-600 mb-4">{t("noSubscription")}</p>
+```
+
+#### Current Plan Label (Line 91)
+```typescript
+// Before: <p className="text-sm text-gray-600 mb-2">Current Plan</p>
+// After:
+<p className="text-sm text-gray-600 mb-2">{t("currentPlan")}</p>
+```
+
+#### Next Billing Date Label (Line 108)
+```typescript
+// Before: <p className="text-sm text-gray-600 mb-2">Next Billing Date</p>
+// After:
+<p className="text-sm text-gray-600 mb-2">{t("nextBillingDate")}</p>
+```
+
+#### Status Label (Line 103)
+```typescript
+// Before: {subscription.status.charAt(0).toUpperCase() + subscription.status.slice(1)}
+// After:
+{t(`status.${subscription.status}`)}
+```
+
+---
+
+## Translations Mapping
+
+### English (en.json)
+| Key | Value |
+|-----|-------|
+| `billing.pageTitle` | "Billing & Subscription" |
+| `billing.noSubscription` | "You don't have an active subscription yet." |
+| `billing.currentPlan` | "Current plan" |
+| `billing.nextBillingDate` | "Next billing date" |
+| `billing.status.active` | "Active" |
+| `billing.status.trialing` | "Trial" |
+| `billing.status.canceled` | "Canceled" |
+| `billing.status.past_due` | "Past due" |
+
+### Chinese (zh.json)
+| Key | Value |
+|-----|-------|
+| `billing.pageTitle` | "订阅与账单" |
+| `billing.noSubscription` | "你还没有激活任何订阅。" |
+| `billing.currentPlan` | "当前套餐" |
+| `billing.nextBillingDate` | "下次扣费日期" |
+| `billing.status.active` | "已激活" |
+| `billing.status.trialing` | "试用中" |
+| `billing.status.canceled` | "已取消" |
+| `billing.status.past_due` | "逾期未支付" |
+
+---
+
+## Verification
+
+✅ **TypeScript**: No errors  
+✅ **Imports**: Correct  
+✅ **Hook**: Properly initialized  
+✅ **Strings**: All user-facing strings replaced  
+✅ **Dynamic Keys**: Status labels use dynamic key construction  
+✅ **Fallbacks**: Maintains existing fallback behavior  
+
+---
+
+## Testing Instructions
+
+1. **English Version**:
+   - Navigate to `/en/dashboard/billing`
+   - Verify page title shows "Billing & Subscription"
+   - Verify status shows "Active", "Trial", "Canceled", or "Past due"
+
+2. **Chinese Version**:
+   - Navigate to `/zh/dashboard/billing`
+   - Verify page title shows "订阅与账单"
+   - Verify status shows "已激活", "试用中", "已取消", or "逾期未支付"
+
+3. **No Subscription State**:
+   - Create test user without subscription
+   - Verify message shows correct translation
+
+---
+
+## Next Steps
+
+Apply the same pattern to:
+- [ ] `src/app/dashboard/api-keys/page.tsx` – Add `license` namespace
+- [ ] `src/app/admin/billing/page.tsx` – Add `billing` namespace
+- [ ] Other billing components – Add appropriate namespaces
