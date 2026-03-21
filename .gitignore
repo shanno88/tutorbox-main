@@ -41,3 +41,16 @@ ecosystem.config.js
 ecosystem.config.js
 .env.production
 .env.local
+
+# dependencies
+node_modules/
+.next/
+
+# env files
+.env.local
+.env.*.local
+
+# Python stuff
+__pycache__/
+*.pyc
+

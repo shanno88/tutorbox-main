@@ -19,8 +19,9 @@ import { eq } from "drizzle-orm";
 import { checkAdminAuth } from "@/lib/admin-auth";
 import { logInfo, logError } from "@/lib/billing/logger";
 import { maskApiKey, formatDate } from "@/lib/billing/admin-helpers";
+import { withAdminLicense } from "@/lib/license";
 
-export async function POST(req: Request) {
+async function handlePost(req: Request) {
   // ADMIN ONLY: Check admin auth
   if (!checkAdminAuth()) {
     logError("admin:billing:api-key:revoke", "Unauthorized access attempt");
@@ -97,3 +98,5 @@ export async function POST(req: Request) {
     return new Response("Failed to revoke API key", { status: 500 });
   }
 }
+
+export const POST = withAdminLicense(handlePost);

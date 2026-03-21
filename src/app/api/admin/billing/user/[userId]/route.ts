@@ -8,6 +8,7 @@ import {
   getProductKeyFromPaddlePriceId,
   getPlanDetailsBySlug,
 } from "@/lib/billing/priceMaps";
+import { withAdminLicense } from "@/lib/license";
 
 /**
  * ADMIN ONLY: Get user's billing details
@@ -26,7 +27,7 @@ import {
  *   apiKeys: [...]
  * }
  */
-export async function GET(
+async function handleGet(
   req: Request,
   { params }: { params: { userId: string } }
 ) {
@@ -183,3 +184,5 @@ export async function GET(
     );
   }
 }
+
+export const GET = withAdminLicense(handleGet);

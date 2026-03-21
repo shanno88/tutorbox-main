@@ -21,8 +21,9 @@ import { checkAdminAuth } from "@/lib/admin-auth";
 import { logInfo, logError } from "@/lib/billing/logger";
 import { maskApiKey } from "@/lib/billing/admin-helpers";
 import { generateApiKey, hashApiKey } from "@/lib/billing/apiKeyGenerator";
+import { withAdminLicense } from "@/lib/license";
 
-export async function POST(req: Request) {
+async function handlePost(req: Request) {
   // ADMIN ONLY: Check admin auth
   if (!checkAdminAuth()) {
     logError("admin:billing:api-key:rotate", "Unauthorized access attempt");
@@ -108,3 +109,5 @@ export async function POST(req: Request) {
     return new Response("Failed to rotate API key", { status: 500 });
   }
 }
+
+export const POST = withAdminLicense(handlePost);

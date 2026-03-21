@@ -4,6 +4,7 @@ import { ilike, or } from "drizzle-orm";
 import { checkAdminAuth } from "@/lib/admin-auth";
 import { logInfo, logError } from "@/lib/billing/logger";
 import { looksLikeEmail } from "@/lib/billing/admin-helpers";
+import { withAdminLicense } from "@/lib/license";
 
 /**
  * ADMIN ONLY: Search users by email or userId
@@ -16,7 +17,7 @@ import { looksLikeEmail } from "@/lib/billing/admin-helpers";
  *
  * Response: { users: [{ id, email, name, createdAt }] }
  */
-export async function GET(req: Request) {
+async function handleGet(req: Request) {
   // ADMIN ONLY: Check admin auth
   if (!checkAdminAuth()) {
     logError("admin:billing:search", "Unauthorized access attempt");
@@ -72,3 +73,5 @@ export async function GET(req: Request) {
     );
   }
 }
+
+export const GET = withAdminLicense(handleGet);
