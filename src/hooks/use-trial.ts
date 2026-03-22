@@ -30,11 +30,10 @@ export function useTrial(productKey: string): UseTrialResult {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fastApiUrl = process.env.NEXT_PUBLIC_FASTAPI_URL || "http://localhost:8000";
-
-  // Fetch trial status from FastAPI
+  // Fetch trial status from Next.js API Route
   const fetchTrialStatus = useCallback(async () => {
     if (!session?.user?.id) {
+      console.warn("[useTrial] Session not loaded or user.id missing", { session });
       setIsLoading(false);
       return;
     }
@@ -43,16 +42,22 @@ export function useTrial(productKey: string): UseTrialResult {
       setIsLoading(true);
       setError(null);
 
+      console.log("[useTrial] Fetching trial status", {
+        productKey,
+        url: `/api/trial/status/${productKey}`,
+      });
+
       const response = await fetch(
-        `${fastApiUrl}/trial/status/${productKey}`,
+        `/api/trial/status/${productKey}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${session.user.id}`, // Simplified for now
           },
         }
       );
+
+      console.log("[useTrial] Response status:", response.status);
 
       if (response.ok) {
         const data = await response.json();
@@ -61,7 +66,8 @@ export function useTrial(productKey: string): UseTrialResult {
         // No trial found, that's okay
         setTrialStatus(null);
       } else {
-        setError(`Failed to fetch trial status: ${response.statusText}`);
+        const errorData = await response.json();
+        setError(errorData.detail || `Failed to fetch trial status: ${response.statusText}`);
       }
     } catch (err) {
       console.error("[useTrial] Failed to fetch trial status:", err);
@@ -69,7 +75,7 @@ export function useTrial(productKey: string): UseTrialResult {
     } finally {
       setIsLoading(false);
     }
-  }, [session?.user?.id, productKey, fastApiUrl]);
+  }, [session?.user?.id, productKey]);
 
   // Initial load
   useEffect(() => {
@@ -78,9 +84,10 @@ export function useTrial(productKey: string): UseTrialResult {
     }
   }, [sessionStatus, fetchTrialStatus]);
 
-  // Start trial
+  // Start trial via Next.js API Route
   const startTrial = useCallback(async () => {
     if (!session?.user?.id) {
+      console.warn("[useTrial] Session not loaded or user.id missing", { session });
       setError("User not authenticated");
       return;
     }
@@ -89,16 +96,22 @@ export function useTrial(productKey: string): UseTrialResult {
       setIsLoading(true);
       setError(null);
 
-      const response = await fetch(`${fastApiUrl}/trial/start`, {
+      console.log("[useTrial] Starting trial", {
+        productKey,
+        url: `/api/trial/start`,
+      });
+
+      const response = await fetch(`/api/trial/start`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${session.user.id}`, // Simplified for now
         },
         body: JSON.stringify({
           product_key: productKey,
         }),
       });
+
+      console.log("[useTrial] Response status:", response.status);
 
       if (response.ok) {
         const data = await response.json();
@@ -113,7 +126,7 @@ export function useTrial(productKey: string): UseTrialResult {
     } finally {
       setIsLoading(false);
     }
-  }, [session?.user?.id, productKey, fastApiUrl]);
+  }, [session?.user?.id, productKey]);
 
   // Computed values
   const daysRemaining = trialStatus?.days_remaining ?? 0;

@@ -8,7 +8,7 @@ import { useLocale } from "next-intl";
 import { useTrial } from "@/hooks/use-trial";
 
 export default function GrammarMasterPage() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
   const locale = useLocale();
   const trial = useTrial("grammar-master");
@@ -19,6 +19,18 @@ export default function GrammarMasterPage() {
   const [error, setError] = useState<string | null>(null);
 
   const handleStartTrial = async () => {
+    // Only redirect to login if truly unauthenticated
+    if (status === "unauthenticated") {
+      router.push(`/${locale}/login?redirect=/${locale}/grammar-master`);
+      return;
+    }
+
+    // Wait during loading, don't do anything
+    if (status !== "authenticated") {
+      return;
+    }
+
+    // Extra safety check
     if (!session?.user?.id || !session?.user?.email) {
       router.push(`/${locale}/login?redirect=/${locale}/grammar-master`);
       return;
@@ -39,6 +51,18 @@ export default function GrammarMasterPage() {
   };
 
   const handleBuy = async () => {
+    // Only redirect to login if truly unauthenticated
+    if (status === "unauthenticated") {
+      router.push(`/${locale}/login?redirect=/${locale}/grammar-master`);
+      return;
+    }
+
+    // Wait during loading, don't do anything
+    if (status !== "authenticated") {
+      return;
+    }
+
+    // Extra safety check
     if (!session?.user?.id) {
       router.push(`/${locale}/login?redirect=/${locale}/grammar-master`);
       return;
@@ -98,10 +122,14 @@ export default function GrammarMasterPage() {
             <div className="space-y-3">
               <button
                 onClick={handleStartTrial}
-                disabled={isLoading}
+                disabled={isLoading || status === "loading"}
                 className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
               >
-                {isLoading
+                {status === "loading"
+                  ? isZh
+                    ? "加载中..."
+                    : "Loading..."
+                  : isLoading
                   ? isZh
                     ? "处理中..."
                     : "Processing..."
@@ -112,7 +140,7 @@ export default function GrammarMasterPage() {
 
               <button
                 onClick={handleBuy}
-                disabled={isLoading}
+                disabled={isLoading || status === "loading"}
                 className="w-full px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
               >
                 {isZh ? "立即购买 Pro 版" : "Buy Pro version"}
@@ -140,7 +168,11 @@ export default function GrammarMasterPage() {
             )}
 
             <p className="text-xs text-muted-foreground mt-6">
-              {!session?.user
+              {status === "loading"
+                ? isZh
+                  ? "加载中..."
+                  : "Loading..."
+                : status === "unauthenticated"
                 ? isZh
                   ? "登录后开始使用"
                   : "Sign in to get started"

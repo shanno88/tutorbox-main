@@ -9,8 +9,9 @@ class UserCreate(BaseModel):
 
 
 class UserOut(BaseModel):
-    id: int
+    id: str
     email: EmailStr
+    name: Optional[str] = None
     created_at: datetime
 
     class Config:
@@ -37,7 +38,7 @@ class PlanOut(PlanBase):
 
 class SubscriptionOut(BaseModel):
     id: int
-    user_id: int
+    user_id: str
     plan_id: int
     status: str
     paddle_subscription_id: Optional[str] = None
@@ -56,7 +57,7 @@ class TrialCreate(BaseModel):
 
 class TrialOut(BaseModel):
     id: int
-    user_id: int
+    user_id: str
     product_key: str
     started_at: datetime
     ended_at: Optional[datetime] = None

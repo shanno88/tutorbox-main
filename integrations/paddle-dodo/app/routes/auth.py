@@ -4,9 +4,10 @@ import hashlib
 from datetime import datetime, timedelta
 import jwt
 from pydantic import BaseModel
+from typing import Optional
 
 from app import models, schemas
-from app.deps import get_db_session
+from app.deps import get_db_session, get_current_user, get_current_user_or_upsert
 from app.config import settings
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -109,3 +110,34 @@ def login(login_in: LoginRequest, db: Session = Depends(get_db_session)):
         "access_token": access_token,
         "token_type": "bearer",
     }
+
+
+class UpsertUserRequest(BaseModel):
+    """Upsert user from JWT payload"""
+    email: str
+    name: Optional[str] = None
+
+
+@router.post("/upsert-user", response_model=schemas.UserOut)
+def upsert_user(
+    user: models.User = Depends(get_current_user_or_upsert),
+):
+    """
+    Upsert user from JWT token.
+    
+    This endpoint is called by external auth systems (e.g., NextAuth) to sync users.
+    It uses JWT authentication (same as other protected endpoints).
+    
+    The JWT payload must contain:
+    - sub: user_id (string)
+    - email: user email
+    - name: user name (optional)
+    
+    If user exists: updates email and name fields
+    If user doesn't exist: creates new user record
+    
+    Returns the current user object.
+    """
+    # User is already fetched and validated by get_current_user_or_upsert dependency
+    # Just return the user object
+    return user

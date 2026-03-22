@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -13,11 +14,11 @@ class Settings(BaseSettings):
 
     paddle_env: str = "sandbox"
     paddle_api_key: str
-    paddle_vendor_id: str | None = None
-    paddle_webhook_secret: str | None = None
+    paddle_vendor_id: Optional[str] = None
+    paddle_webhook_secret: Optional[str] = None
 
-    paddle_price_id_basic: str | None = None
-    paddle_price_id_pro: str | None = None
+    paddle_price_id_basic: Optional[str] = None
+    paddle_price_id_pro: Optional[str] = None
 
     # 试用配置
     trial_days: int = 7
