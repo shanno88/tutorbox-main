@@ -39,6 +39,14 @@ export default function RootLayout({
 }>) {
   return (
     <html suppressHydrationWarning>
+      <head>
+        {/* PageAgent Script - Alibaba's AI Assistant */}
+        <script
+          src="https://cdn.jsdelivr.net/npm/@alibaba/page-agent@latest/dist/page-agent.min.js"
+          async
+          defer
+        />
+      </head>
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
