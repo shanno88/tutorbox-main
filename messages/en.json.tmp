@@ -12,7 +12,7 @@
     "signIn": "Sign In"
   },
   "hero": {
-    "title": "Shanno <span>·</span> Indie AI Product Studio",
+    "title": "Shanno <span>路</span> Indie AI Product Studio",
     "subtitle": "AI tools built for global users",
     "description": "A one-person studio building practical AI tools for global users. Every product starts from real-world needs, helping you cut costs, save effort, and free up time to create greater value.",
     "cta": {
@@ -25,10 +25,10 @@
     "products": {
       "grammarMaster": {
         "name": "Grammar Master",
-        "nameCn": "语法大师",
+        "nameCn": "璇硶澶у笀",
         "tagline": "English writing assistant for non-native speakers",
-        "taglineCn": "英文写作助手，告别 Chinglish",
-        "price": "¥199",
+        "taglineCn": "鑻辨枃鍐欎綔鍔╂墜锛屽憡鍒?Chinglish",
+        "price": "楼199",
         "period": "one-time",
         "cta": "Get Grammar Master",
         "features": [
@@ -38,18 +38,18 @@
           "Context-aware improvements"
         ],
         "featuresCn": [
-          "实时语法纠正",
-          "专业写作风格建议",
-          "中式英语检测",
-          "语境优化建议"
+          "瀹炴椂璇硶绾犳",
+          "涓撲笟鍐欎綔椋庢牸寤鸿",
+          "涓紡鑻辫妫€娴?,
+          "璇浼樺寲寤鸿"
         ]
       },
       "castMaster": {
         "name": "Cast Master",
-        "nameCn": "播感大师",
+        "nameCn": "鎾劅澶у笀",
         "tagline": "AI assistant for short-form video creators",
-        "taglineCn": "AI 提词器，短视频脚本一键生成",
-        "price": "¥99",
+        "taglineCn": "AI 鎻愯瘝鍣紝鐭棰戣剼鏈竴閿敓鎴?,
+        "price": "楼99",
         "period": "/year",
         "cta": "Get Cast Master",
         "features": [
@@ -60,11 +60,11 @@
           "Export to Word / SRT subtitles"
         ],
         "featuresCn": [
-          "AI 智能脚本生成（带货/课程/短视频）",
-          "专业提词器滚动播放",
-          "韵律标注 & 停顿提示",
-          "违禁词智能检测",
-          "导出 Word / SRT 字幕"
+          "AI 鏅鸿兘鑴氭湰鐢熸垚锛堝甫璐?璇剧▼/鐭棰戯級",
+          "涓撲笟鎻愯瘝鍣ㄦ粴鍔ㄦ挱鏀?,
+          "闊靛緥鏍囨敞 & 鍋滈】鎻愮ず",
+          "杩濈璇嶆櫤鑳芥娴?,
+          "瀵煎嚭 Word / SRT 瀛楀箷"
         ],
 	  "features": [
 	    "Generate and refine short-form video scripts",
@@ -73,17 +73,17 @@
 	    "Suggestions for content repurposing and clipping"
 	  ],
 	  "featuresCn": [
-	    "生成和优化短视频脚本",
-	    "适配多平台内容格式",
-	    "一键生成标题和封面文案灵感",
-	    "给出内容复用与剪辑建议"
+	    "鐢熸垚鍜屼紭鍖栫煭瑙嗛鑴氭湰",
+	    "閫傞厤澶氬钩鍙板唴瀹规牸寮?,
+	    "涓€閿敓鎴愭爣棰樺拰灏侀潰鏂囨鐏垫劅",
+	    "缁欏嚭鍐呭澶嶇敤涓庡壀杈戝缓璁?
 	  ]
       },
       "leaseAssistant": {
         "name": "US Lease Assistant",
-        "nameCn": "美国租房合同审核",
+        "nameCn": "缇庡浗绉熸埧鍚堝悓瀹℃牳",
         "tagline": "AI-powered US lease review in 30 seconds",
-        "taglineCn": "美国租房合同智能审核，30秒读懂陷阱条款",
+        "taglineCn": "缇庡浗绉熸埧鍚堝悓鏅鸿兘瀹℃牳锛?0绉掕鎳傞櫡闃辨潯娆?,
         "price": "$9.90",
         "period": "per review",
         "cta": "Get Lease Assistant",
@@ -94,17 +94,17 @@
           "Bilingual support (EN/CN)"
         ],
         "featuresCn": [
-          "上传合同 PDF 即刻分析",
-          "识别隐藏费用与不公平条款",
-          "提供谈判修改建议",
-          "中英双语支持"
+          "涓婁紶鍚堝悓 PDF 鍗冲埢鍒嗘瀽",
+          "璇嗗埆闅愯棌璐圭敤涓庝笉鍏钩鏉℃",
+          "鎻愪緵璋堝垽淇敼寤鸿",
+          "涓嫳鍙岃鏀寔"
         ]
       }
     }
   },
   "products": {
     "sectionTitle": "Product lineup",
-    "sectionDescription": "From concrete apps to a trial decision engine and global payment tools, one stack to go from “built” to “paid”.",
+    "sectionDescription": "From concrete apps to a trial decision engine and global payment tools, one stack to go from 鈥渂uilt鈥?to 鈥減aid鈥?",
     "sectionHeadline": "Turn a small product into one that makes money",
     "status": {
       "live": "Live",
@@ -118,24 +118,24 @@
       "joinBeta": "Join beta"
     },
     "enCards": {
-      "name": "EN Cards · English memory decks",
+      "name": "EN Cards 路 English memory decks",
       "tagline": "Who really remembers grammar hacks?",
       "description": "The hardest grammar points are turned into fun, memorable cards. Examples are based on real-life scenes in major Chinese cities. Try 20 cards for free, then unlock the full 100-card deck with a one-time purchase.",
-      "status": "One-time unlock · ¥19.9",
+      "status": "One-time unlock 路 楼19.9",
       "cta": "Open product"
     },
     "trialJudgment": {
       "name": "Trial Decision Engine",
       "tagline": "Auth & tiered experience",
       "description": "The brain that decides whether a visitor is free, on trial, or paying, and automatically matches the right features and experience on every visit. Segment users without touching code, control features, quotas, and upgrade prompts so the path to paid feels clear, not pushy.",
-      "status": "Early access · Coming soon",
+      "status": "Early access 路 Coming soon",
       "cta": "Stay tuned"
     },
     "paddlePayment": {
       "name": "Paddle Payment Toolkit",
       "tagline": "Digital product payments",
       "description": "A payment butler for your digital products. Handle subscriptions, one-off purchases, and multi-currency checkout for a global audience while you focus on building. Stripe-level DX and one of the go-to payment rails for indie builders going global.",
-      "status": "Dev Toolkit · Coming soon",
+      "status": "Dev Toolkit 路 Coming soon",
       "cta": "Stay tuned"
     },
     "leaseAi": {
@@ -161,7 +161,7 @@
     "title": "About Shanno",
     "intro": "In the AI era, your biggest risks are wasted time and a slowly shrinking income.",
     "story": "Shanno builds small, practical AI tools that boost your speed and efficiency, so you can actually get results that matter.",
-    "builtWith": "Built with ❤️ by Shanno · Powered by AI",
+    "builtWith": "Built with 鉂わ笍 by Shanno 路 Powered by AI",
     "email": "shanno@tutorbox.cc"
   },
   "footer": {
@@ -174,7 +174,7 @@
   },
   "reserved": {
     "brand": "Shanno Studio",
-    "copyright": "© 2024 Shanno Studio. All rights reserved. Built with"
+    "copyright": "漏 2024 Shanno Studio. All rights reserved. Built with"
   },
   "header": {
     "brand": "Shanno Studio",
@@ -212,7 +212,7 @@
   },
   "language": {
     "en": "EN",
-    "zh": "中文"
+    "zh": "涓枃"
   },
   "billing": {
     "pageTitle": "Billing & subscription",
@@ -249,3 +249,165 @@
     "upgradeNow": "Subscribe to keep your apps running"
   }
 }
+=======
+{
+  "brand": {
+    "name": "Shanno",
+    "studio": "Studio"
+  },
+  "nav": {
+    "products": "Products",
+    "about": "About",
+    "settings": "Settings",
+    "signOut": "Sign Out",
+    "signIn": "Sign In"
+  },
+  "hero": {
+    "title": "Shanno <span>路</span> 鐙珛 AI 浜у搧宸ヤ綔瀹?,
+    "subtitle": "AI tools built for global users",
+    "description": "A one-person studio building practical AI tools for global users. Every product starts from real-world needs, helping you cut costs, save effort, and free up time to create greater value.",
+    "cta": {
+      "getStarted": "View Pricing"
+    }
+  },
+  "pricing": {
+    "headline": "Simple, transparent pricing",
+    "subhead": "Choose the tool that fits your needs. Pay only for what you use.",
+    "products": {
+      "grammarMaster": {
+        "name": "Grammar Master",
+        "nameCn": "璇硶澶у笀",
+        "tagline": "English writing assistant for non-native speakers",
+        "taglineCn": "鑻辨枃鍐欎綔鍔╂墜锛屽憡鍒?Chinglish",
+        "price": "楼199",
+        "period": "one-time",
+        "cta": "Get Grammar Master",
+        "features": [
+          "Real-time grammar correction",
+          "Style suggestions for professional writing",
+          "Chinglish pattern detection",
+          "Context-aware improvements"
+        ],
+        "featuresCn": [
+          "瀹炴椂璇硶绾犳",
+          "涓撲笟鍐欎綔椋庢牸寤鸿",
+          "涓紡鑻辫妫€娴?,
+          "璇浼樺寲寤鸿"
+        ]
+      },
+      "leaseAssistant": {
+        "name": "US Lease Assistant",
+        "nameCn": "缇庡浗绉熸埧鍚堝悓瀹℃牳",
+        "tagline": "AI-powered US lease review in 30 seconds",
+        "taglineCn": "缇庡浗绉熸埧鍚堝悓鏅鸿兘瀹℃牳锛?0绉掕鎳傞櫡闃辨潯娆?,
+        "price": "$9.90",
+        "period": "per review",
+        "cta": "Get Lease Assistant",
+        "features": [
+          "Upload lease PDF for instant analysis",
+          "Identify hidden fees & unfair clauses",
+          "Negotiation suggestions included",
+          "Bilingual support (EN/CN)"
+        ],
+        "featuresCn": [
+          "涓婁紶鍚堝悓 PDF 鍗冲埢鍒嗘瀽",
+          "璇嗗埆闅愯棌璐圭敤涓庝笉鍏钩鏉℃",
+          "鎻愪緵璋堝垽淇敼寤鸿",
+          "涓嫳鍙岃鏀寔"
+        ]
+      }
+    }
+  },
+  "products": {
+    "sectionTitle": "Product Portfolio",
+    "sectionDescription": "Every product stems from real pain points, using AI to reduce information gaps and living costs",
+    "status": {
+      "live": "Live",
+      "beta": "Beta",
+      "comingSoon": "Coming Soon"
+    },
+    "cta": {
+      "learnMore": "Learn More",
+      "tryNow": "Try Now",
+      "applyIntegration": "Apply for Access",
+      "joinBeta": "Join Beta"
+    },
+    "leaseAi": {
+      "name": "Lease AI Review",
+      "nameCn": "US Lease Review",
+      "tagline": "AI-powered US lease review in 30 seconds",
+      "taglineCn": "Smart US lease review, understand trap clauses in 30 seconds"
+    },
+    "grammarMaster": {
+      "name": "Grammar Master",
+      "nameCn": "Grammar Master",
+      "tagline": "English writing assistant for non-native speakers",
+      "taglineCn": "English writing assistant, say goodbye to Chinglish"
+    },
+    "castMaster": {
+      "name": "Cast Master",
+      "nameCn": "Podcast Master",
+      "tagline": "AI assistant for short-form video creators",
+      "taglineCn": "AI assistant for short video creators"
+    }
+  },
+  "about": {
+    "title": "About Shanno",
+    "intro": "In the AI era, your biggest risk is wasted time and a slowly shrinking income.",
+    "story": "Shanno builds small, practical AI tools that boost your speed and efficiency, so you can actually get results that matter.",
+    "builtWith": "Built with 鉂わ笍 by Shanno 路 Powered by AI",
+    "email": "shanno@tutorbox.cc"
+  },
+  "footer": {
+    "products": "Products",
+    "contact": "Contact",
+    "legal": "Legal",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "refundPolicy": "Refund Policy"
+  },
+  "reserved": {
+    "brand": "Shanno Studio",
+    "copyright": "漏 2024 Shanno Studio. All Rights Reserved. Built with"
+  },
+  "header": {
+    "brand": "Shanno Studio",
+    "avatarFallback": "CN",
+    "settings": "Settings",
+    "signOut": "Sign Out",
+    "signIn": "Sign In"
+  },
+  "feedback": {
+    "title": "Feedback",
+    "description": "We value your feedback. How can we improve your experience?",
+    "cancel": "Cancel",
+    "toast": {
+      "submittedTitle": "Feedback submitted",
+      "submittedDescription": "Thank you for your feedback"
+    },
+    "validation": {
+      "nameRequired": "Name is required",
+      "feedbackRequired": "Feedback is required"
+    },
+    "form": {
+      "nameLabel": "Your name",
+      "namePlaceholder": "Jane Doe",
+      "feedbackLabel": "Your feedback",
+      "feedbackPlaceholder": "Tell us how we can improve our product",
+      "sending": "Sending feedback...",
+      "submit": "Send feedback"
+    }
+  },
+  "modeToggle": {
+    "toggleTheme": "Toggle theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "language": {
+    "en": "EN",
+    "zh": "涓枃"
+  }
+}
+>>>>>>> origin/main
+

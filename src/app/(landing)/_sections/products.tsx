@@ -107,7 +107,7 @@ function ProductCard({ product }: { product: Product }) {
             <Link
               href={
                 product.slug === "lease-ai"
-                  ? "/en/lease-ai"
+                  ? "/en/lease-ai" // NOTE: Root landing page has no locale context; default locale is 'en'. lease-ai now has dedicated [locale]/lease-ai page; this is legacy/compatibility behavior.
                   : product.slug === "grammar-master"
                   ? "/zh/grammar-master"
                   : product.slug === "cast-master"

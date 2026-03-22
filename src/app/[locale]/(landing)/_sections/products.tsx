@@ -119,6 +119,34 @@ function ProductCard({
   const locale = useLocale();
   const isZh = locale === "zh";
 
+  // Custom status text for Lab concept products
+  const labProductStatuses: Record<string, { en: string; cn: string }> = {
+    "thinker-ai": {
+      en: "Shanno Lab concept project · Launch date not yet determined",
+      cn: "Shanno Lab 概念项目 · 上线时间待定",
+    },
+    "webpilot": {
+      en: "Lab concept project · No concrete development schedule yet",
+      cn: "Lab 概念项目 · 暂无具体开发排期",
+    },
+    "chatport": {
+      en: "Exploratory direction · Currently a placeholder in the product lineup",
+      cn: "实验方向 · 目前仅为产品线路占位",
+    },
+    "flowforge": {
+      en: "Shanno Lab concept project · Not available for use yet",
+      cn: "Shanno Lab 概念项目 · 尚未开放使用",
+    },
+    "notemind": {
+      en: "Experimental project · No launch timeline yet",
+      cn: "实验项目 · 尚无上线时间表",
+    },
+    "polymarket-bot": {
+      en: "High-risk domain research · No public product plans",
+      cn: "高风险领域研究 · 暂无对外产品计划",
+    },
+  };
+
   const statusLabels = {
     live: t("status.live"),
     beta: t("status.beta"),
@@ -131,6 +159,13 @@ function ProductCard({
     "coming-soon": "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300",
   };
 
+  // Determine status text to display
+  const statusText = labProductStatuses[product.slug]
+    ? isZh
+      ? labProductStatuses[product.slug].cn
+      : labProductStatuses[product.slug].en
+    : statusLabels[product.status];
+
   const Icon = iconMap[product.icon] || <FileSearch className="w-8 h-8" />;
 
   return (
@@ -141,7 +176,7 @@ function ProductCard({
             {Icon}
           </div>
           <span className={`px-2 py-1 text-xs font-medium rounded-full ${statusClasses[product.status]}`}>
-            {statusLabels[product.status]}
+            {statusText}
           </span>
         </div>
         <CardTitle className="mt-4">{product.name}</CardTitle>
@@ -158,29 +193,31 @@ function ProductCard({
         </p>
       </CardContent>
       <CardFooter className="flex flex-col gap-2">
-        <Button asChild variant="outline" className="w-full group">
-          <Link href={
-            product.slug === "lease-ai" ? `/${locale}/lease-ai` :
-            product.slug === "grammar-master" ? `/${locale}/grammar-master` :
-            product.slug === "cast-master" ? `/${locale}/cast-master` :
-            `/products/${product.slug}`
-          }>
-            {product.cta
-              ? t(
-                  product.cta === "申请接入"
-                    ? "cta.applyIntegration"
-                    : product.cta === "加入内测"
-                      ? "cta.joinBeta"
-                      : product.cta === "了解更多"
-                        ? "cta.learnMore"
-                        : "cta.tryNow"
-                )
-              : product.status === "coming-soon"
-                ? t("cta.learnMore")
-                : t("cta.tryNow")}
-            <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </Link>
-        </Button>
+        {product.cta !== undefined && (
+          <Button asChild variant="outline" className="w-full group">
+            <Link href={
+              product.slug === "lease-ai" ? `/${locale}/lease-ai` :
+              product.slug === "grammar-master" ? `/${locale}/grammar-master` :
+              product.slug === "cast-master" ? `/${locale}/cast-master` :
+              `/products/${product.slug}`
+            }>
+              {product.cta
+                ? t(
+                    product.cta === "申请接入"
+                      ? "cta.applyIntegration"
+                      : product.cta === "加入内测"
+                        ? "cta.joinBeta"
+                        : product.cta === "了解更多"
+                          ? "cta.learnMore"
+                          : "cta.tryNow"
+                  )
+                : product.status === "coming-soon"
+                  ? t("cta.learnMore")
+                  : t("cta.tryNow")}
+              <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </Button>
+        )}
 
         <TrialButton
           trialStatus={trialStatus}

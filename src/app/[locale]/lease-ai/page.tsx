@@ -103,7 +103,7 @@ export default function LeaseAIPage() {
         {/* 标题区 */}
         <div className="text-center mb-12">
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4">
-            {isZh ? "Lease AI Review · 租房合同审核" : "Lease AI Review"}
+            {isZh ? "Lease AI Review · 租房合同审核" : "Lease AI Review · Smart US Lease Review"}
           </h1>
           <p className="text-lg sm:text-xl text-muted-foreground mb-1">
             {isZh ? "美国租房合同智能审核" : "Smart US Lease Contract Review"}
@@ -111,46 +111,63 @@ export default function LeaseAIPage() {
           <p className="text-base text-muted-foreground">
             {isZh
               ? "30 秒读懂合同陷阱，保护你的租房权益"
-              : "Understand lease traps in 30 seconds"}
+              : "Understand lease traps in 30 seconds and protect your rental rights"}
           </p>
+
+        {/* 功能介绍 - 英文版本 */}
+        {!isZh && (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12 text-center">
+            <div className="bg-card border rounded-lg p-6">
+              <div className="text-2xl mb-2">⚡</div>
+              <h4 className="font-semibold mb-1">30-Second Analysis</h4>
+              <p className="text-sm text-muted-foreground">
+                AI scans all clauses and flags risks instantly
+              </p>
+            </div>
+            <div className="bg-card border rounded-lg p-6">
+              <div className="text-2xl mb-2">🛡️</div>
+              <h4 className="font-semibold mb-1">Trap Detection</h4>
+              <p className="text-sm text-muted-foreground">
+                Spot hidden fees, unfair clauses & penalties
+              </p>
+            </div>
+            <div className="bg-card border rounded-lg p-6">
+              <div className="text-2xl mb-2">💬</div>
+              <h4 className="font-semibold mb-1">Bilingual Support</h4>
+              <p className="text-sm text-muted-foreground">
+                Understand English leases in plain Chinese, no legal background required
+              </p>
+            </div>
+          </div>
+        )}
         </div>
 
-        {/* 功能介绍 */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12 text-center">
-          <div className="bg-card border rounded-lg p-6">
-            <div className="text-2xl mb-2">⚡</div>
-            <h4 className="font-semibold mb-1">
-              {isZh ? "30 秒极速分析" : "30-Second Analysis"}
-            </h4>
-            <p className="text-sm text-muted-foreground">
-              {isZh
-                ? "AI 快速扫描全部条款，识别潜在风险"
-                : "AI scans all clauses and flags risks instantly"}
-            </p>
+        {/* 功能介绍 - 中文版本 */}
+        {isZh && (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12 text-center">
+            <div className="bg-card border rounded-lg p-6">
+              <div className="text-2xl mb-2">⚡</div>
+              <h4 className="font-semibold mb-1">30 秒极速分析</h4>
+              <p className="text-sm text-muted-foreground">
+                AI 快速扫描全部条款，识别潜在风险
+              </p>
+            </div>
+            <div className="bg-card border rounded-lg p-6">
+              <div className="text-2xl mb-2">🛡️</div>
+              <h4 className="font-semibold mb-1">陷阱条款识别</h4>
+              <p className="text-sm text-muted-foreground">
+                识别隐藏费用、不公平条款和违约风险
+              </p>
+            </div>
+            <div className="bg-card border rounded-lg p-6">
+              <div className="text-2xl mb-2">💬</div>
+              <h4 className="font-semibold mb-1">中英双语解释</h4>
+              <p className="text-sm text-muted-foreground">
+                用中文读懂英文合同，无需法律背景
+              </p>
+            </div>
           </div>
-          <div className="bg-card border rounded-lg p-6">
-            <div className="text-2xl mb-2">🛡️</div>
-            <h4 className="font-semibold mb-1">
-              {isZh ? "陷阱条款识别" : "Trap Detection"}
-            </h4>
-            <p className="text-sm text-muted-foreground">
-              {isZh
-                ? "识别隐藏费用、不公平条款和违约风险"
-                : "Spot hidden fees, unfair clauses & penalties"}
-            </p>
-          </div>
-          <div className="bg-card border rounded-lg p-6">
-            <div className="text-2xl mb-2">💬</div>
-            <h4 className="font-semibold mb-1">
-              {isZh ? "中英双语解释" : "Bilingual Support"}
-            </h4>
-            <p className="text-sm text-muted-foreground">
-              {isZh
-                ? "用中文读懂英文合同，无需法律背景"
-                : "Understand English leases in plain Chinese"}
-            </p>
-          </div>
-        </div>
+        )}
 
         {/* 操作卡片 */}
         <div className="flex flex-col justify-center">
@@ -159,7 +176,7 @@ export default function LeaseAIPage() {
               {isZh ? "立即开始" : "Get Started"}
             </h3>
             <p className="text-muted-foreground mb-6">
-              {isZh ? "上传合同，开始智能审核" : "Start analyzing your lease contracts today"}
+              {isZh ? "上传合同，开始智能审核" : "Upload your lease contract and start the smart review"}
             </p>
             <div className="space-y-3">
               <button
@@ -259,7 +276,7 @@ export default function LeaseAIPage() {
           <p className="text-sm text-muted-foreground mt-2">
             {isZh
               ? "无限次合同审核，一次付清，无自动续费"
-              : "Unlimited lease contract reviews · one-time payment"}
+              : "Unlimited lease contract reviews · one-time payment · no auto-renewal"}
           </p>
         </div>
       </div>

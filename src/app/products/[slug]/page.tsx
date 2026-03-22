@@ -1,4 +1,4 @@
-import { notFound, redirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { PaddleCheckoutButton } from "@/components/paddle/checkout-button";
@@ -8,6 +8,8 @@ import { cookies } from "next/headers";
 import { CastMasterAccessCta } from "../_components/cast-master-access-cta";
 import { CastMasterLanding } from "../_components/cast-master-landing";
 
+// LEGACY: lease-ai has been moved to [locale]/lease-ai route and no longer uses this dynamic page.
+// This products object is kept for backward compatibility with other products.
 const products = {
 
    'grammar-master': {
@@ -110,7 +112,6 @@ export default async function ProductPage({
 
   const priceMap: Record<string, string | undefined> = {
     "grammar-master": process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_GRAMMAR_YEARLY_USD,
-    "lease-ai": process.env.NEXT_PUBLIC_PADDLE_PRICE_ID_LEASE_ONETIME_USD,
   };
   const checkoutPriceId = priceMap[params.slug];
   const userId = user?.id;
@@ -174,53 +175,6 @@ export default async function ProductPage({
       <p className="text-lg mb-10">{product.description}</p>
       <p className="mb-10">状态：{product.status}</p>
 
-      {/* Lease AI 一次性服务说明（中英文） */}
-      {params.slug === "lease-ai" && (
-        <section className="mb-8 space-y-4 text-sm text-gray-700">
-          <div>
-            <h2 className="text-lg font-medium mb-3">使用方式与价格</h2>
-            <p>
-              Lease AI 不是按月订阅的 SaaS，而是
-              <span className="font-semibold"> 一次性买断一份合同的审核服务</span>。
-            </p>
-            <p>
-              每次你上传一份新的美国租房合同，只在你确认提交审核时支付一次费用，
-              我们不会自动续费，也不会在后台默默扣款。
-            </p>
-            <p>
-              很适合刚到美国租房、或者偶尔签一份新租约的个人用户——
-              遇到新合同时再来用一次即可。
-            </p>
-            {/* 如果确定价格，可以解开下面这行并填入具体金额 */}
-            {/* <p>
-              每份合同只需 <span className="font-semibold">39 美元</span>，
-              就能在几分钟内看懂潜在风险条款，远低于一小时律师费的价格。
-            </p> */}
-          </div>
-
-          <div className="pt-2 border-t border-gray-200">
-            <h2 className="text-lg font-medium mb-3">How it works & pricing</h2>
-            <p>
-              Lease AI is <span className="font-semibold">not a subscription</span>.
-              It’s a <span className="font-semibold">one‑time review for each lease you upload</span>.
-            </p>
-            <p>
-              You only pay when you decide to submit a lease for a full review –
-              there are no auto‑renewals and no surprise charges in the background.
-            </p>
-            <p>
-              It’s designed for individuals who only sign a new US lease once in a while:
-              just come back and use it again whenever you get a new contract.
-            </p>
-            {/* If you have a fixed price in USD, you can uncomment and edit this: */}
-            {/* <p>
-              Each lease review is only <span className="font-semibold">$39</span>,
-              which is far less than a single hour of a lawyer’s time.
-            </p> */}
-          </div>
-        </section>
-      )}
-
       {params.slug === "cast-master" ? (
         <CastMasterAccessCta />
       ) : (
@@ -230,20 +184,8 @@ export default async function ProductPage({
           size="lg"
           className="font-bold text-base mt-4"
         >
-          <Link
-            href={
-              params.slug === "lease-ai" && !user
-                ? "/zh/login?redirect=/products/lease-ai"
-                : product.url
-            }
-            target={params.slug === "lease-ai" && !user ? undefined : "_blank"}
-            rel={
-              params.slug === "lease-ai" && !user
-                ? undefined
-                : "noopener noreferrer"
-            }
-          >
-            {params.slug === "lease-ai" ? "上传合同，开始审核" : product.cta}
+          <Link href={product.url} target="_blank" rel="noopener noreferrer">
+            {product.cta}
           </Link>
         </Button>
       )}

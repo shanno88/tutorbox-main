@@ -5,11 +5,13 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { openCheckout } from "@/lib/paddle";
 import { useLocale } from "next-intl";
+import { useTrial } from "@/hooks/use-trial";
 
 export default function GrammarMasterPage() {
   const { data: session } = useSession();
   const router = useRouter();
   const locale = useLocale();
+  const trial = useTrial("grammar-master");
 
   const isZh = locale === "zh";
 
@@ -26,47 +28,11 @@ export default function GrammarMasterPage() {
     setError(null);
 
     try {
-      const authTrialUrl =
-        process.env.NEXT_PUBLIC_AUTH_TRIAL_URL || "http://localhost:3002";
-
-      const response = await fetch(
-        `${authTrialUrl}/api/me/products/start-trial`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            productKey: "grammar-master",
-            userEmail: session.user.email,
-          }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        const errorCode = data?.error;
-
-        if (errorCode === "TRIAL_NOT_ENABLED") {
-          // 试用没开，直接走购买
-          await handleBuy();
-          return;
-        }
-
-        if (errorCode === "TRIAL_ALREADY_USED") {
-          // 已经用过试用，直接带去 App
-          window.location.href = "https://tutorbox.cc/app/grammar/";
-          return;
-        }
-
-        setError("Failed to start trial. Please try again.");
-        return;
-      }
-
-      // 试用开始成功，跳到 Grammar Master
-      window.location.href = "https://tutorbox.cc/app/grammar/";
+      await trial.startTrial();
+      // Trial started successfully, page will show remaining days
     } catch (err) {
       console.error("Failed to start trial:", err);
-      setError("An error occurred. Please try again.");
+      setError("Failed to start trial. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -153,9 +119,23 @@ export default function GrammarMasterPage() {
               </button>
             </div>
 
+            {trial.isTrialActive && (
+              <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-700">
+                {isZh
+                  ? `✓ 试用中，剩余 ${trial.daysRemaining} 天`
+                  : `✓ Trial active, ${trial.daysRemaining} days remaining`}
+              </div>
+            )}
+
             {error && (
               <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded text-red-700 text-sm">
                 {error}
+              </div>
+            )}
+
+            {trial.error && (
+              <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded text-red-700 text-sm">
+                {trial.error}
               </div>
             )}
 
