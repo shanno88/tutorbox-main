@@ -19,6 +19,9 @@ class Settings(BaseSettings):
     paddle_price_id_basic: str | None = None
     paddle_price_id_pro: str | None = None
 
+    # 试用配置
+    trial_days: int = 7
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",

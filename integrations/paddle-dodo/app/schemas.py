@@ -48,3 +48,31 @@ class SubscriptionOut(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class TrialCreate(BaseModel):
+    product_key: str
+
+
+class TrialOut(BaseModel):
+    id: int
+    user_id: int
+    product_key: str
+    started_at: datetime
+    ended_at: Optional[datetime] = None
+    status: str
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class TrialStatusResponse(BaseModel):
+    product_key: str
+    status: str
+    started_at: datetime
+    ended_at: Optional[datetime] = None
+    days_remaining: Optional[int] = None
+
+    class Config:
+        from_attributes = True

@@ -14,6 +14,7 @@ class User(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     subscriptions = relationship("Subscription", back_populates="user")
+    trials = relationship("Trial", back_populates="user")
 
 
 class Plan(Base):
@@ -42,3 +43,17 @@ class Subscription(Base):
 
     user = relationship("User", back_populates="subscriptions")
     plan = relationship("Plan", back_populates="subscriptions")
+
+
+class Trial(Base):
+    __tablename__ = "trials"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    product_key = Column(String, nullable=False, index=True)
+    started_at = Column(DateTime, default=datetime.utcnow)
+    ended_at = Column(DateTime, nullable=True)
+    status = Column(String, default="active")  # "active" | "expired" | "ended"
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    user = relationship("User", back_populates="trials")
