@@ -19,7 +19,6 @@ import { ModeToggle } from "../mode-toggle";
 import FeedbackButton from "./feedback";
 import { LocaleSwitcher } from "./locale-switcher";
 import { Links } from "./links";
-import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 
 export async function Header() {

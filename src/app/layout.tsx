@@ -11,8 +11,16 @@ const fontSans = FontSans({
 
 export const metadata: Metadata = {
   title: "Shanno · Independent AI Product Studio",
-  description: "AI tools built for Chinese speakers living abroad - Lease AI Review, Grammar Master, Cast Master",
-  keywords: ["AI", "LeaseReview", "Grammar", "Chinese", "Overseas Chinese", "International Students"],
+  description:
+    "AI tools built for Chinese speakers living abroad - Lease AI Review, Grammar Master, Cast Master",
+  keywords: [
+    "AI",
+    "LeaseReview",
+    "Grammar",
+    "Chinese",
+    "Overseas Chinese",
+    "International Students",
+  ],
   authors: [{ name: "Shanno" }],
   openGraph: {
     title: "Shanno · Independent AI Product Studio",
@@ -37,9 +45,7 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <RootProviders>
-          {children}
-        </RootProviders>
+        <RootProviders>{children}</RootProviders>
       </body>
     </html>
   );

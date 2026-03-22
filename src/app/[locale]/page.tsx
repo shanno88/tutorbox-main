@@ -1,4 +1,5 @@
 import { HeroSection } from "./(landing)/_sections/hero";
+import { FeaturedProductsSection } from "./(landing)/_sections/featured-products";
 import { ProductsSection } from "./(landing)/_sections/products";
 import { PricingSection } from "./(landing)/_sections/pricing";
 import { AboutSection } from "./(landing)/_sections/about";
@@ -15,6 +16,7 @@ export default async function LocaleHome({
   return (
     <div>
       <HeroSection />
+      <FeaturedProductsSection />
       <ProductsSection />
       <PricingSection />
       <AboutSection />

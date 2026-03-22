@@ -17,8 +17,8 @@ interface ExternalLinkButtonProps {
   children: ReactNode;
   variant?: "default" | "outline" | "ghost" | "link" | "destructive" | "secondary";
   className?: string;
-  hideWhenUnavailable?: boolean; // If true, hide button when link is unavailable
-  onUnavailableClick?: () => void; // Custom handler when unavailable link is clicked
+  hideWhenUnavailable?: boolean;
+  onUnavailableClick?: () => void;
 }
 
 export function ExternalLinkButton({
@@ -58,8 +58,8 @@ export function ExternalLinkButton({
       } else {
         alert(
           "The partner's trial page is currently unavailable (404 or unreachable). " +
-          "This is an issue on their side, not with your account or device. " +
-          "Please try again later or contact support."
+            "This is an issue on their side, not with your account or device. " +
+            "Please try again later or contact support."
         );
       }
     };
@@ -83,8 +83,9 @@ export function ExternalLinkButton({
           <TooltipContent className="max-w-xs">
             <p className="font-semibold mb-1">Partner page unavailable</p>
             <p className="text-xs">
-              The external trial page is currently returning a 404 or cannot be reached.
-              This is an issue on the partner's side, not with your account.
+              The external trial page is currently returning a 404 or cannot be
+              reached. This is an issue on the partner's side, not with your
+              account.
             </p>
             {lastError && (
               <p className="text-xs mt-1 text-muted-foreground">

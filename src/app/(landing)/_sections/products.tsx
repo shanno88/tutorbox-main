@@ -1,28 +1,64 @@
 "use client";
 
 import { products, Product } from "@/lib/products";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { FileSearch, PenTool, Video, ArrowRight, MessageCircle, Globe, MessageSquare, GitBranch, BookOpen, TrendingUp } from "lucide-react";
+import {
+  FileSearch,
+  PenTool,
+  Video,
+  ArrowRight,
+  MessageCircle,
+  Globe,
+  MessageSquare,
+  GitBranch,
+  BookOpen,
+  TrendingUp,
+} from "lucide-react";
 import { ExternalLinkButton } from "@/components/external-link-button";
 
 const iconMap: Record<string, React.ReactNode> = {
-  'file-search': <FileSearch className="w-8 h-8" />,
-  'pen-tool': <PenTool className="w-8 h-8" />,
-  'video': <Video className="w-8 h-8" />,
-  'message-circle': <MessageCircle className="w-8 h-8" />,
-  'globe': <Globe className="w-8 h-8" />,
-  'message-square': <MessageSquare className="w-8 h-8" />,
-  'git-branch': <GitBranch className="w-8 h-8" />,
-  'book-open': <BookOpen className="w-8 h-8" />,
-  'trending-up': <TrendingUp className="w-8 h-8" />,
+  "file-search": <FileSearch className="w-8 h-8" />,
+  "pen-tool": <PenTool className="w-8 h-8" />,
+  video: <Video className="w-8 h-8" />,
+  "message-circle": <MessageCircle className="w-8 h-8" />,
+  globe: <Globe className="w-8 h-8" />,
+  "message-square": <MessageSquare className="w-8 h-8" />,
+  "git-branch": <GitBranch className="w-8 h-8" />,
+  "book-open": <BookOpen className="w-8 h-8" />,
+  "trending-up": <TrendingUp className="w-8 h-8" />,
 };
 
-const statusConfig: Record<Product['status'], { label: string; labelCn: string; className: string }> = {
-  live: { label: 'Live', labelCn: '已上线', className: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' },
-  beta: { label: 'Beta', labelCn: '测试中', className: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' },
-  'coming-soon': { label: 'Coming Soon', labelCn: '即将上线', className: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300' },
+const statusConfig: Record<
+  Product["status"],
+  { label: string; labelCn: string; className: string }
+> = {
+  live: {
+    label: "Live",
+    labelCn: "已上线",
+    className:
+      "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+  },
+  beta: {
+    label: "Beta",
+    labelCn: "测试中",
+    className:
+      "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200",
+  },
+  "coming-soon": {
+    label: "Coming Soon",
+    labelCn: "即将上线",
+    className:
+      "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300",
+  },
 };
 
 function ProductCard({ product }: { product: Product }) {
@@ -36,7 +72,9 @@ function ProductCard({ product }: { product: Product }) {
           <div className="p-3 bg-primary/10 rounded-lg text-primary">
             {Icon}
           </div>
-          <span className={`px-2 py-1 text-xs font-medium rounded-full ${status.className}`}>
+          <span
+            className={`px-2 py-1 text-xs font-medium rounded-full ${status.className}`}
+          >
             {status.labelCn}
           </span>
         </div>
@@ -46,8 +84,12 @@ function ProductCard({ product }: { product: Product }) {
         </CardDescription>
       </CardHeader>
       <CardContent className="flex-1">
-        <p className="text-gray-600 dark:text-gray-400 mb-2">{product.taglineCn}</p>
-        <p className="text-sm text-gray-500 dark:text-gray-500">{product.tagline}</p>
+        <p className="text-gray-600 dark:text-gray-400 mb-2">
+          {product.taglineCn}
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-500">
+          {product.tagline}
+        </p>
       </CardContent>
       <CardFooter>
         {product.slug === "cast-master" ? (
@@ -62,8 +104,19 @@ function ProductCard({ product }: { product: Product }) {
           </ExternalLinkButton>
         ) : (
           <Button asChild variant="outline" className="w-full group">
-            <Link href={`/products/${product.slug}`}>
-              {product.cta ?? (product.status === 'coming-soon' ? '了解更多' : '立即体验')}
+            <Link
+              href={
+                product.slug === "lease-ai"
+                  ? "/en/lease-ai" // NOTE: Root landing page has no locale context; default locale is 'en'. lease-ai now has dedicated [locale]/lease-ai page; this is legacy/compatibility behavior.
+                  : product.slug === "grammar-master"
+                  ? "/zh/grammar-master"
+                  : product.slug === "cast-master"
+                  ? "/zh/cast-master"
+                  : `/products/${product.slug}`
+              }
+            >
+              {product.cta ??
+                (product.status === "coming-soon" ? "了解更多" : "立即体验")}
               <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </Button>

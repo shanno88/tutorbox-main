@@ -1,4 +1,5 @@
 // src/lib/auth.ts
+import "server-only";
 import { prisma } from "@/prisma";
 import { env } from "@/env";
 import { PrismaAdapter } from "@auth/prisma-adapter";

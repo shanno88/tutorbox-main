@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Dialog,
@@ -29,8 +29,9 @@ export function AnonymousTrialExpiredModal({
 
   const handleSignUp = () => {
     setIsRedirecting(true);
-    // Redirect to login page with return URL
-    router.push(`/en/login?redirect=${encodeURIComponent(window.location.pathname)}`);
+    router.push(
+      `/en/login?redirect=${encodeURIComponent(window.location.pathname)}`
+    );
   };
 
   return (
@@ -45,17 +46,22 @@ export function AnonymousTrialExpiredModal({
           </DialogTitle>
           <DialogDescription className="text-center space-y-3 pt-2">
             <p className="text-base">
-              You've been using <span className="font-semibold">{productName}</span> for 30 minutes.
+              You&apos;ve been using{" "}
+              <span className="font-semibold">{productName}</span> for 30
+              minutes.
             </p>
             <p className="text-sm text-muted-foreground">
-              To continue using {productName} and unlock full access, please sign up with your email
-              to start a <span className="font-semibold">3-day free trial</span>.
+              To continue using {productName} and unlock full access, please
+              sign up with your email to start a{" "}
+              <span className="font-semibold">3-day free trial</span>.
             </p>
           </DialogDescription>
         </DialogHeader>
 
         <div className="rounded-lg border bg-muted/50 p-4 space-y-2">
-          <h4 className="font-semibold text-sm">What you'll get with a free account:</h4>
+          <h4 className="font-semibold text-sm">
+            What you&apos;ll get with a free account:
+          </h4>
           <ul className="text-sm space-y-1 text-muted-foreground">
             <li className="flex items-start gap-2">
               <span className="text-green-600 mt-0.5">✓</span>
@@ -97,7 +103,8 @@ export function AnonymousTrialExpiredModal({
         </DialogFooter>
 
         <p className="text-xs text-center text-muted-foreground">
-          This is an issue on the partner's side, not with your account or device.
+          This is an issue on the partner&apos;s side, not with your account or
+          device.
         </p>
       </DialogContent>
     </Dialog>
@@ -115,7 +122,9 @@ export function AnonymousTrialExpiredModalCN({
 
   const handleSignUp = () => {
     setIsRedirecting(true);
-    router.push(`/zh/login?redirect=${encodeURIComponent(window.location.pathname)}`);
+    router.push(
+      `/zh/login?redirect=${encodeURIComponent(window.location.pathname)}`
+    );
   };
 
   return (
@@ -130,7 +139,8 @@ export function AnonymousTrialExpiredModalCN({
           </DialogTitle>
           <DialogDescription className="text-center space-y-3 pt-2">
             <p className="text-base">
-              你已经使用 <span className="font-semibold">{productName}</span> 30 分钟了。
+              你已经使用{" "}
+              <span className="font-semibold">{productName}</span> 30 分钟了。
             </p>
             <p className="text-sm text-muted-foreground">
               继续使用 {productName} 并解锁完整功能，请用邮箱注册，

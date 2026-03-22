@@ -1,3 +1,4 @@
+import "server-only";
 import type {
   GetServerSidePropsContext,
   NextApiRequest,
@@ -5,7 +6,7 @@ import type {
 } from "next";
 import { getServerSession as getNextAuthServerSession } from "next-auth";
 import { authConfig } from "./auth";
-import "server-only";
+
 
 export async function getSSRSession(
   ...args:

@@ -2,23 +2,28 @@
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export function Links() {
   const path = usePathname();
+  const params = useParams();
+  const locale = (params.locale as string) || "en";
+  const t = useTranslations("nav");
 
-  if (path !== "/") {
+  // 只在当前语言的首页显示导航
+  if (path !== "/" && !path.startsWith(`/${locale}`)) {
     return null;
   }
 
   return (
-    <div>
-      <Button variant={"link"} asChild>
-        <Link href="#products">产品</Link>
+    <div className="flex gap-2">
+      <Button variant="link" asChild>
+        <Link href={`/${locale}#products`}>{t("products")}</Link>
       </Button>
 
-      <Button variant={"link"} asChild>
-        <Link href="#about">关于</Link>
+      <Button variant="link" asChild>
+        <Link href={`/${locale}#about`}>{t("about")}</Link>
       </Button>
     </div>
   );
